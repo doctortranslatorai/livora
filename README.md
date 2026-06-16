@@ -1,22 +1,14 @@
-# LIVORA — Denunciar e Bloquear
+# LIVORA — Navegação corrigida
 
-Nova versão com:
-- Modal de denúncia na live.
-- Opção de bloquear utilizador.
-- Lista de utilizadores bloqueados no perfil.
-- Painel `admin_reports.html`.
-- SQL para `user_reports` e `user_blocks`.
+Correção:
+- adiciona atalho `Denúncias` no topo da plataforma.
+- mantém `Safety` e `Regras`.
+- mantém botão `Denunciar` dentro da live.
+- mantém painel `admin_reports.html`.
 
-## GitHub
-
-Enviar/substituir:
-- `index.html`
-- `entrada_livora.html`
-- `regras.html`
-- `admin_safety.html`
-- `admin_reports.html`
-
-## Supabase
-
-Executar no SQL Editor:
-- `supabase_livora_reports_blocks.sql`
+Upload no GitHub:
+- substituir `index.html`
+- manter/adicionar `admin_reports.html`
+- manter/adicionar `admin_safety.html`
+- manter `entrada_livora.html`
+- manter `regras.html`
