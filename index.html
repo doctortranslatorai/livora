@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LIVORA — Entrada Premium</title>
+
+  <script type="text/javascript" src="https://me.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=8EdGBzavdyInRfbwIxC2YEVhoqUmYQ6A1gMkSnjxFl6ceWKTZLx86huj2cbyRoUXB0dSWi7HGts49QdfyzzaY0xHdHXA9vTPQgmoXL12_bsT-R3g5hEOUxFLiO8FwtH3MX2lJp_BCnomvMnQWt-NITx3U8tj3WfRd8II-KyFIFP5QGaNY_Y9RjYOhOFk7_m9T8YjfmD8gBH11O9gO4rahGck-lbpzoZ1gqxHdpgPqJG-wRFkVn2nBww8bkQZwO57CMGwosv2ZM8Bjda47Lin3mMZwh9w36lsIpoiPfKxtk79SmcC5qKwrQ_Re7LdB4IB" charset="UTF-8"></script><script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap');
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background:
+        radial-gradient(circle at 15% 15%, rgba(236, 72, 153, 0.18), transparent 32%),
+        radial-gradient(circle at 85% 10%, rgba(124, 58, 237, 0.20), transparent 34%),
+        radial-gradient(circle at 55% 90%, rgba(79, 70, 229, 0.18), transparent 30%),
+        #070312;
+      min-height: 100vh;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    .glass {
+      background: rgba(12, 7, 33, 0.74);
+      border: 1px solid rgba(168, 85, 247, 0.25);
+      backdrop-filter: blur(22px);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+    }
+
+    .soft-card {
+      background: linear-gradient(180deg, rgba(20, 11, 46, 0.92), rgba(10, 5, 29, 0.96));
+      border: 1px solid rgba(168, 85, 247, 0.18);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-14px); }
+    }
+
+    @keyframes pulse-ring {
+      0% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.48); }
+      70% { box-shadow: 0 0 0 18px rgba(236, 72, 153, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0); }
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-110%); }
+      100% { transform: translateX(110%); }
+    }
+
+    .float {
+      animation: float 5s ease-in-out infinite;
+    }
+
+    .pulse-ring {
+      animation: pulse-ring 2.4s infinite;
+    }
+
+    .shine::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.10), transparent);
+      transform: translateX(-110%);
+      animation: shimmer 5s infinite;
+      pointer-events: none;
+    }
+
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    .role-card.active {
+      border-color: rgba(236, 72, 153, 0.85);
+      background: linear-gradient(180deg, rgba(236, 72, 153, 0.16), rgba(124, 58, 237, 0.13));
+      box-shadow: 0 0 30px rgba(236, 72, 153, 0.12);
+    }
+
+    .toast {
+      animation: toastIn .25s ease-out forwards;
+    }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(-8px) scale(.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+  </style>
+</head>
+
+<body class="selection:bg-pink-500 selection:text-white">
+
+  <!-- Toast -->
+  <div id="toast" class="hidden fixed top-5 right-5 z-50 max-w-sm rounded-2xl border border-pink-500/30 bg-[#120a2d] px-4 py-3 text-sm text-purple-100 shadow-2xl">
+    <div class="flex items-start gap-3">
+      <i data-lucide="sparkles" class="w-5 h-5 text-pink-400 shrink-0 mt-0.5"></i>
+      <p id="toast-text"></p>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="relative z-20 px-5 py-5 md:px-10 flex items-center justify-between">
+    <button onclick="goHome()" class="flex items-center gap-3 group">
+      <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-pink-500 via-purple-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-pink-500/20 group-hover:rotate-6 transition-all">
+        <span class="text-xl font-black italic tracking-tight">L</span>
+      </div>
+      <div class="text-left">
+        <div class="text-2xl font-black tracking-tight bg-gradient-to-r from-white via-purple-200 to-pink-400 bg-clip-text text-transparent">LIVORA</div>
+        <div class="text-[9px] text-pink-400 font-black tracking-[0.28em] uppercase -mt-1">Creator Live Network</div>
+      </div>
+    </button>
+
+    <div class="hidden md:flex items-center gap-3">
+      <span class="text-xs text-purple-300">Já tens conta?</span>
+      <button onclick="setMode('login')" class="rounded-full border border-purple-800 bg-[#110a2d]/80 px-5 py-2.5 text-xs font-bold text-purple-100 hover:border-pink-500 hover:text-white transition-all">
+        Entrar
+      </button>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="relative z-10 px-5 pb-10 md:px-10">
+    <section class="mx-auto grid max-w-7xl grid-cols-1 lg:grid-cols-12 gap-8 items-center min-h-[calc(100vh-110px)]">
+
+      <!-- Left Hero -->
+      <div class="lg:col-span-7 space-y-8">
+        <div class="inline-flex items-center gap-2 rounded-full border border-pink-500/30 bg-pink-500/10 px-4 py-2 text-xs font-black text-pink-300">
+          <span class="h-2 w-2 rounded-full bg-pink-500 animate-pulse"></span>
+          NOVA REDE SOCIAL DE LIVES, MATCHES E PRESENTES DIGITAIS
+        </div>
+
+        <div class="space-y-5">
+          <h1 class="max-w-4xl text-4xl md:text-6xl xl:text-7xl font-black leading-[0.95] tracking-tight">
+            Entra ao vivo.
+            <span class="block bg-gradient-to-r from-pink-400 via-purple-300 to-indigo-300 bg-clip-text text-transparent">
+              Conecta-te em segundos.
+            </span>
+          </h1>
+
+          <p class="max-w-2xl text-base md:text-lg text-purple-100/75 leading-relaxed">
+            A LIVORA é uma plataforma premium onde criadores fazem lives, recebem presentes digitais,
+            conversam com fãs e entram em vídeo match com pessoas reais.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-3xl">
+          <div class="soft-card rounded-2xl p-4">
+            <i data-lucide="radio" class="w-6 h-6 text-pink-400 mb-3"></i>
+            <h3 class="font-black text-sm">Lives</h3>
+            <p class="text-[11px] text-purple-300 mt-1">Salas ao vivo com chat e efeitos.</p>
+          </div>
+          <div class="soft-card rounded-2xl p-4">
+            <i data-lucide="video" class="w-6 h-6 text-purple-300 mb-3"></i>
+            <h3 class="font-black text-sm">Vídeo Match</h3>
+            <p class="text-[11px] text-purple-300 mt-1">Conexões rápidas por câmara.</p>
+          </div>
+          <div class="soft-card rounded-2xl p-4">
+            <i data-lucide="gift" class="w-6 h-6 text-yellow-300 mb-3"></i>
+            <h3 class="font-black text-sm">Presentes</h3>
+            <p class="text-[11px] text-purple-300 mt-1">Moedas, gifts e apoio a criadores.</p>
+          </div>
+          <div class="soft-card rounded-2xl p-4">
+            <i data-lucide="crown" class="w-6 h-6 text-indigo-300 mb-3"></i>
+            <h3 class="font-black text-sm">VIP</h3>
+            <p class="text-[11px] text-purple-300 mt-1">Perfis premium e clubes privados.</p>
+          </div>
+        </div>
+
+        <!-- Mock live cards -->
+        <div class="relative hidden md:block max-w-4xl h-64">
+          <div class="absolute left-0 top-6 w-52 rounded-3xl overflow-hidden border border-pink-500/40 bg-black shadow-2xl float">
+            <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=500" class="h-64 w-full object-cover opacity-90" alt="Live preview">
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/30"></div>
+            <span class="absolute top-3 left-3 rounded-full bg-pink-500 px-2.5 py-1 text-[9px] font-black">AO VIVO</span>
+            <div class="absolute bottom-4 left-4">
+              <p class="text-sm font-black">Música & conversa</p>
+              <p class="text-[10px] text-purple-200">8.7K pessoas</p>
+            </div>
+          </div>
+
+          <div class="absolute left-48 top-0 w-60 rounded-3xl overflow-hidden border border-purple-500/40 bg-black shadow-2xl float" style="animation-delay: .7s;">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500" class="h-64 w-full object-cover opacity-90" alt="Creator preview">
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/30"></div>
+            <span class="absolute top-3 left-3 rounded-full bg-purple-600 px-2.5 py-1 text-[9px] font-black">CREATOR</span>
+            <div class="absolute bottom-4 left-4">
+              <p class="text-sm font-black">Sala VIP</p>
+              <p class="text-[10px] text-purple-200">Presentes digitais ativos</p>
+            </div>
+          </div>
+
+          <div class="absolute left-[420px] top-10 w-52 rounded-3xl overflow-hidden border border-indigo-500/40 bg-black shadow-2xl float" style="animation-delay: 1.2s;">
+            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500" class="h-64 w-full object-cover opacity-90" alt="Video match preview">
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/30"></div>
+            <span class="absolute top-3 left-3 rounded-full bg-indigo-600 px-2.5 py-1 text-[9px] font-black">MATCH</span>
+            <div class="absolute bottom-4 left-4">
+              <p class="text-sm font-black">Vídeo chat</p>
+              <p class="text-[10px] text-purple-200">Ligação em segundos</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Auth Card -->
+      <div class="lg:col-span-5">
+        <div class="glass shine relative overflow-hidden rounded-[2rem] p-5 md:p-7">
+
+          <div class="mb-6 flex items-center justify-between">
+            <div>
+              <h2 id="form-title" class="text-2xl font-black">Criar conta</h2>
+              <p id="form-subtitle" class="text-xs text-purple-300 mt-1">Escolhe o teu perfil e entra na rede.</p>
+            </div>
+            <div class="h-12 w-12 rounded-2xl bg-gradient-to-tr from-pink-500 to-purple-600 flex items-center justify-center pulse-ring">
+              <i data-lucide="sparkles" class="w-6 h-6"></i>
+            </div>
+          </div>
+
+          <!-- Toggle -->
+          <div class="mb-6 grid grid-cols-2 gap-2 rounded-2xl bg-[#09051c] p-1 border border-purple-950">
+            <button id="signup-tab" onclick="setMode('signup')" class="rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 py-3 text-xs font-black text-white shadow-lg">
+              Criar conta
+            </button>
+            <button id="login-tab" onclick="setMode('login')" class="rounded-xl py-3 text-xs font-black text-purple-300 hover:text-white transition-all">
+              Entrar
+            </button>
+          </div>
+
+          <!-- Signup Panel -->
+          <div id="signup-panel" class="tab-panel active">
+            <form onsubmit="submitSignup(event)" class="space-y-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <label class="block">
+                  <span class="text-xs font-bold text-purple-300">Nome</span>
+                  <input id="signup-name" type="text" placeholder="O teu nome" class="mt-1 w-full rounded-2xl border border-purple-900/60 bg-[#10092c] px-4 py-3 text-sm text-white outline-none focus:border-pink-500" required>
+                </label>
+
+                <label class="block">
+                  <span class="text-xs font-bold text-purple-300">Username</span>
+                  <input id="signup-username" type="text" placeholder="@oteunome" class="mt-1 w-full rounded-2xl border border-purple-900/60 bg-[#10092c] px-4 py-3 text-sm text-white outline-none focus:border-pink-500" required>
+                </label>
+              </div>
+
+              <label class="block">
+                <span class="text-xs font-bold text-purple-300">Email</span>
+                <input id="signup-email" type="email" placeholder="email@exemplo.com" class="mt-1 w-full rounded-2xl border border-purple-900/60 bg-[#10092c] px-4 py-3 text-sm text-white outline-none focus:border-pink-500" required>
+              </label>
+
+              <label class="block">
+                <span class="text-xs font-bold text-purple-300">Palavra-passe</span>
+                <div class="mt-1 flex rounded-2xl border border-purple-900/60 bg-[#10092c] overflow-hidden focus-within:border-pink-500">
+                  <input id="signup-password" type="password" placeholder="Mínimo 6 caracteres" class="w-full bg-transparent px-4 py-3 text-sm text-white outline-none" minlength="6" required>
+                  <button type="button" onclick="togglePassword('signup-password')" class="px-4 text-purple-300 hover:text-white">
+                    <i data-lucide="eye" class="w-4 h-4"></i>
+                  </button>
+                </div>
+              </label>
+
+              <div>
+                <span class="text-xs font-bold text-purple-300">Tipo de perfil</span>
+                <div class="mt-2 grid grid-cols-2 gap-3">
+                  <button type="button" id="role-creator" onclick="selectRole('creator')" class="role-card active rounded-2xl border border-purple-900/60 bg-[#10092c] p-4 text-left transition-all">
+                    <i data-lucide="radio" class="w-5 h-5 text-pink-400 mb-3"></i>
+                    <p class="text-sm font-black">Criador</p>
+                    <p class="text-[10px] text-purple-300 mt-1">Faz lives e recebe gifts.</p>
+                  </button>
+                  <button type="button" id="role-viewer" onclick="selectRole('viewer')" class="role-card rounded-2xl border border-purple-900/60 bg-[#10092c] p-4 text-left transition-all">
+                    <i data-lucide="users" class="w-5 h-5 text-indigo-300 mb-3"></i>
+                    <p class="text-sm font-black">Visitante</p>
+                    <p class="text-[10px] text-purple-300 mt-1">Assiste, conversa e apoia.</p>
+                  </button>
+                </div>
+              </div>
+
+              <label class="flex items-start gap-3 rounded-2xl border border-purple-900/40 bg-[#09051c]/80 p-3 cursor-pointer">
+                <input id="age-check" type="checkbox" class="mt-1 accent-pink-500" required>
+                <span class="text-[11px] text-purple-200 leading-relaxed">
+                  Confirmo que tenho idade permitida para utilizar a plataforma e aceito os termos de segurança, respeito e comunidade.
+                </span>
+              </label>
+
+              <button type="submit" class="w-full rounded-2xl bg-gradient-to-r from-pink-500 via-purple-600 to-indigo-600 py-4 text-sm font-black uppercase tracking-wide shadow-lg shadow-pink-500/20 hover:opacity-95 active:scale-[0.99] transition-all">
+                Entrar na LIVORA
+              </button>
+
+              <button type="button" onclick="demoAccess()" class="w-full rounded-2xl border border-purple-800 bg-[#110a2d] py-3 text-xs font-bold text-purple-200 hover:border-pink-500 hover:text-white transition-all">
+                Ver demonstração sem criar conta
+              </button>
+            </form>
+          </div>
+
+          <!-- Login Panel -->
+          <div id="login-panel" class="tab-panel">
+            <form onsubmit="submitLogin(event)" class="space-y-4">
+              <label class="block">
+                <span class="text-xs font-bold text-purple-300">Email ou username</span>
+                <input id="login-id" type="text" placeholder="email@exemplo.com ou @username" class="mt-1 w-full rounded-2xl border border-purple-900/60 bg-[#10092c] px-4 py-3 text-sm text-white outline-none focus:border-pink-500" required>
+              </label>
+
+              <label class="block">
+                <span class="text-xs font-bold text-purple-300">Palavra-passe</span>
+                <div class="mt-1 flex rounded-2xl border border-purple-900/60 bg-[#10092c] overflow-hidden focus-within:border-pink-500">
+                  <input id="login-password" type="password" placeholder="A tua palavra-passe" class="w-full bg-transparent px-4 py-3 text-sm text-white outline-none" required>
+                  <button type="button" onclick="togglePassword('login-password')" class="px-4 text-purple-300 hover:text-white">
+                    <i data-lucide="eye" class="w-4 h-4"></i>
+                  </button>
+                </div>
+              </label>
+
+              <div class="flex items-center justify-between text-xs">
+                <label class="flex items-center gap-2 text-purple-300 cursor-pointer">
+                  <input type="checkbox" class="accent-pink-500">
+                  Lembrar-me
+                </label>
+                <button type="button" onclick="showToast('Recuperação de palavra-passe será ligada ao Supabase no próximo passo.')" class="text-pink-400 font-bold hover:text-pink-300">
+                  Esqueci-me
+                </button>
+              </div>
+
+              <button type="submit" class="w-full rounded-2xl bg-gradient-to-r from-pink-500 via-purple-600 to-indigo-600 py-4 text-sm font-black uppercase tracking-wide shadow-lg shadow-pink-500/20 hover:opacity-95 active:scale-[0.99] transition-all">
+                Entrar
+              </button>
+
+              <button type="button" onclick="demoAccess()" class="w-full rounded-2xl border border-purple-800 bg-[#110a2d] py-3 text-xs font-bold text-purple-200 hover:border-pink-500 hover:text-white transition-all">
+                Entrar em modo demonstração
+              </button>
+            </form>
+          </div>
+
+          <div class="mt-6 grid grid-cols-3 gap-2 text-center">
+            <div class="rounded-2xl bg-[#09051c]/80 border border-purple-950 p-3">
+              <p class="text-lg font-black text-pink-300">24K</p>
+              <p class="text-[9px] text-purple-400 uppercase tracking-wide">Criadores</p>
+            </div>
+            <div class="rounded-2xl bg-[#09051c]/80 border border-purple-950 p-3">
+              <p class="text-lg font-black text-purple-200">1.8M</p>
+              <p class="text-[9px] text-purple-400 uppercase tracking-wide">Matches</p>
+            </div>
+            <div class="rounded-2xl bg-[#09051c]/80 border border-purple-950 p-3">
+              <p class="text-lg font-black text-yellow-300">€</p>
+              <p class="text-[9px] text-purple-400 uppercase tracking-wide">Gifts</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <script>
+    let selectedRole = 'creator';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      const saved = localStorage.getItem('livora_user');
+      if (saved) {
+        try {
+          const user = JSON.parse(saved);
+          showToast(`Bem-vindo de volta, ${user.name || 'criador'}!`);
+        } catch(e) {}
+      }
+    });
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const text = document.getElementById('toast-text');
+      text.textContent = message;
+      toast.classList.remove('hidden');
+      toast.classList.add('toast');
+
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => {
+        toast.classList.add('hidden');
+        toast.classList.remove('toast');
+      }, 3600);
+
+      lucide.createIcons();
+    }
+
+    function setMode(mode) {
+      const signupPanel = document.getElementById('signup-panel');
+      const loginPanel = document.getElementById('login-panel');
+      const signupTab = document.getElementById('signup-tab');
+      const loginTab = document.getElementById('login-tab');
+      const title = document.getElementById('form-title');
+      const subtitle = document.getElementById('form-subtitle');
+
+      if (mode === 'login') {
+        signupPanel.classList.remove('active');
+        loginPanel.classList.add('active');
+
+        signupTab.className = "rounded-xl py-3 text-xs font-black text-purple-300 hover:text-white transition-all";
+        loginTab.className = "rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 py-3 text-xs font-black text-white shadow-lg";
+
+        title.textContent = "Entrar";
+        subtitle.textContent = "Acede à tua conta LIVORA.";
+      } else {
+        loginPanel.classList.remove('active');
+        signupPanel.classList.add('active');
+
+        loginTab.className = "rounded-xl py-3 text-xs font-black text-purple-300 hover:text-white transition-all";
+        signupTab.className = "rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 py-3 text-xs font-black text-white shadow-lg";
+
+        title.textContent = "Criar conta";
+        subtitle.textContent = "Escolhe o teu perfil e entra na rede.";
+      }
+    }
+
+    function selectRole(role) {
+      selectedRole = role;
+      document.getElementById('role-creator').classList.toggle('active', role === 'creator');
+      document.getElementById('role-viewer').classList.toggle('active', role === 'viewer');
+    }
+
+    function togglePassword(inputId) {
+      const input = document.getElementById(inputId);
+      input.type = input.type === 'password' ? 'text' : 'password';
+    }
+
+    function submitSignup(event) {
+      event.preventDefault();
+
+      const user = {
+        name: document.getElementById('signup-name').value.trim(),
+        username: document.getElementById('signup-username').value.trim(),
+        email: document.getElementById('signup-email').value.trim(),
+        role: selectedRole,
+        plan: 'demo',
+        coins: 12450,
+        createdAt: new Date().toISOString()
+      };
+
+      localStorage.setItem('livora_user', JSON.stringify(user));
+      showToast(`Conta criada em modo protótipo. Perfil: ${selectedRole === 'creator' ? 'Criador' : 'Visitante'}.`);
+
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 900);
+    }
+
+    function submitLogin(event) {
+      event.preventDefault();
+
+      const id = document.getElementById('login-id').value.trim();
+      const saved = localStorage.getItem('livora_user');
+
+      if (!saved) {
+        showToast('Ainda não existe conta guardada neste navegador. Usa “Criar conta” ou modo demonstração.');
+        return;
+      }
+
+      const user = JSON.parse(saved);
+
+      if (id && (id === user.email || id === user.username || id.replace('@','') === user.username.replace('@',''))) {
+        showToast(`Entrada autorizada. Bem-vindo, ${user.name}!`);
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 900);
+      } else {
+        showToast('Conta não encontrada neste protótipo local.');
+      }
+    }
+
+    function demoAccess() {
+      const user = {
+        name: 'Pedro Creator',
+        username: '@pedrocreator',
+        email: 'demo@livora.app',
+        role: 'creator',
+        plan: 'demo',
+        coins: 12450,
+        createdAt: new Date().toISOString()
+      };
+
+      localStorage.setItem('livora_user', JSON.stringify(user));
+      showToast('Modo demonstração ativado. A entrar na plataforma...');
+
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 900);
+    }
+
+    function goHome() {
+      showToast('Página de entrada LIVORA ativa.');
+    }
+  </script>
+</body>
+</html>
