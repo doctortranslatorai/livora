@@ -1,30 +1,29 @@
-# LIVORA — Creator Studio
+# LIVORA — Iniciar Live
 
 Nova página:
-- `creator_studio.html`
+- `go_live.html`
 
 Inclui:
-- Ferramentas de live
-- Câmara
-- Aprimorar
-- Efeitos
-- Atmosfera
-- Filtros
-- Fundos
-- Metas
-- Enquetes
-- Galeria de presentes
-- Fã-clube
-- Eventos de live
-- Segurança
+- pré-visualização da live
+- botão Iniciar LIVE
+- botão Terminar
+- ativar câmara
+- aplicar definições do Creator Studio
+- meta de live aplicada
+- ferramentas ativas visíveis
+- simular gifts
+- simular audiência
+- chat local
+- simulação Safety Review
 
 Upload no GitHub:
 - substituir `index.html`
-- adicionar `creator_studio.html`
+- adicionar `go_live.html`
+- manter `creator_studio.html`
 - manter `entrada_livora.html`
 - manter `regras.html`
 - manter `admin_safety.html`
 - manter `admin_reports.html`
 
 Supabase:
-- executar `supabase_livora_creator_studio.sql`
+- executar `supabase_livora_go_live.sql`
