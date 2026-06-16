@@ -501,6 +501,7 @@
                                     <div class="flex items-center gap-1.5 flex-wrap">
                                         <h4 id="live-streamer-name" class="font-black text-sm text-white">Larissa</h4>
                                         <button id="follow-btn" onclick="toggleFollowCurrentStreamer()" class="bg-pink-500 hover:bg-pink-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full transition-all">Seguir</button>
+                                        <button onclick="openReportUserModal(state.currentStreamer, USERS[state.currentStreamer]?.name, 'live')" class="bg-red-500/10 border border-red-500/30 text-red-300 text-[10px] font-black px-2.5 py-0.5 rounded-full transition-all">Denunciar</button>
                                         <button onclick="triggerSafetyRestriction('Saúde mental', 10)" class="safety-pill text-yellow-300 text-[10px] font-black px-2.5 py-0.5 rounded-full transition-all">Simular Safety Mode</button>
                                     </div>
                                     <span id="live-streamer-tag" class="text-[10px] text-purple-200">#Música</span>
@@ -670,6 +671,52 @@
                 <button onclick="closeSafetyRestriction()" class="bg-gradient-to-r from-yellow-500 to-amber-400 text-slate-950 font-black px-5 py-3 rounded-xl text-xs transition-all">
                     OK
                 </button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- MODAL: DENUNCIAR / BLOQUEAR UTILIZADOR -->
+    <div id="report-user-modal" class="hidden fixed inset-0 z-[70] flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
+        <div class="bg-[#0f0a28] border border-red-500/30 rounded-3xl p-6 max-w-lg w-full space-y-5 shadow-2xl relative">
+            <button onclick="closeReportUserModal()" class="absolute top-4 right-4 text-purple-400 hover:text-white">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <div class="flex items-start gap-4 pr-8">
+                <div class="w-12 h-12 rounded-2xl bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-300 shrink-0">
+                    <i data-lucide="flag" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-black text-white">Denunciar ou bloquear</h3>
+                    <p class="text-sm text-purple-200/80 mt-2 leading-relaxed">Ajuda a manter a LIVORA segura. A denúncia será enviada para revisão interna.</p>
+                </div>
+            </div>
+            <div class="rounded-2xl bg-[#09051c] border border-purple-950 p-4">
+                <p class="text-xs text-purple-300">Utilizador/Live: <strong id="report-target-name" class="text-pink-300">Criador</strong></p>
+            </div>
+            <div class="space-y-3">
+                <label class="text-xs font-bold text-purple-300">Motivo da denúncia</label>
+                <select id="report-reason" class="w-full bg-[#150d32] border border-purple-950 text-sm text-purple-100 outline-none rounded-xl px-4 py-3 focus:border-red-500/40">
+                    <option value="assédio">Assédio ou intimidação</option>
+                    <option value="conteúdo sexual explícito">Conteúdo sexual explícito</option>
+                    <option value="menores em risco">Menores em risco</option>
+                    <option value="golpe ou fraude">Golpe, fraude ou link perigoso</option>
+                    <option value="ódio ou discriminação">Ódio ou discriminação</option>
+                    <option value="violência ou ameaça">Violência ou ameaça</option>
+                    <option value="automutilação ou suicídio">Automutilação ou suicídio</option>
+                    <option value="privacidade">Exposição de dados privados</option>
+                    <option value="outro">Outro motivo</option>
+                </select>
+                <textarea id="report-details" rows="4" placeholder="Descreve o que aconteceu..." class="w-full bg-[#150d32] border border-purple-950 text-sm text-purple-100 outline-none rounded-xl px-4 py-3 focus:border-red-500/40 resize-none"></textarea>
+            </div>
+            <label class="flex items-start gap-3 rounded-2xl border border-purple-900/40 bg-[#09051c]/80 p-3 cursor-pointer">
+                <input id="report-block-check" type="checkbox" class="mt-1 accent-red-500">
+                <span class="text-[11px] text-purple-200 leading-relaxed">Também quero bloquear este utilizador. Ele deixará de aparecer para mim neste navegador.</span>
+            </label>
+            <div class="flex flex-col sm:flex-row gap-3 justify-end">
+                <button onclick="closeReportUserModal()" class="bg-[#150d32] hover:bg-[#1f134c] text-purple-200 border border-purple-900/60 font-bold px-4 py-3 rounded-xl text-xs transition-all">Cancelar</button>
+                <button onclick="submitUserReport()" class="bg-gradient-to-r from-red-500 to-pink-600 text-white font-black px-5 py-3 rounded-xl text-xs transition-all">Enviar denúncia</button>
             </div>
         </div>
     </div>
@@ -912,6 +959,102 @@ document.addEventListener("DOMContentLoaded", () => {
         function appealSafetyRestriction() {
             showToast("Feedback enviado para revisão do administrador.", "success");
             closeSafetyRestriction();
+        }
+
+
+
+        let currentReportTarget = { id: null, name: "Criador", context: "live" };
+
+        function getBlockedUsers() {
+            return JSON.parse(localStorage.getItem("livora_blocked_users") || "[]");
+        }
+
+        function setBlockedUsers(blocked) {
+            localStorage.setItem("livora_blocked_users", JSON.stringify(blocked));
+        }
+
+        function isUserBlocked(userId) {
+            return getBlockedUsers().some(item => item.id === userId);
+        }
+
+        function openReportUserModal(userId = null, name = null, context = "live") {
+            const targetId = userId || state.currentStreamer || "unknown";
+            const targetName = name || USERS[targetId]?.name || "Criador";
+            currentReportTarget = { id: targetId, name: targetName, context };
+            document.getElementById("report-target-name").innerText = targetName;
+            document.getElementById("report-reason").value = "assédio";
+            document.getElementById("report-details").value = "";
+            document.getElementById("report-block-check").checked = false;
+            document.getElementById("report-user-modal").classList.remove("hidden");
+            lucide.createIcons();
+        }
+
+        function closeReportUserModal() {
+            document.getElementById("report-user-modal").classList.add("hidden");
+        }
+
+        function submitUserReport() {
+            const reason = document.getElementById("report-reason").value;
+            const details = document.getElementById("report-details").value.trim();
+            const shouldBlock = document.getElementById("report-block-check").checked;
+
+            const report = {
+                id: "RP-" + Date.now(),
+                targetId: currentReportTarget.id,
+                targetName: currentReportTarget.name,
+                context: currentReportTarget.context,
+                reason,
+                details,
+                status: "pending_review",
+                severity: reason.includes("menores") || reason.includes("suicídio") || reason.includes("violência") ? "high" : "medium",
+                createdAt: new Date().toISOString(),
+                action: shouldBlock ? "reported_and_blocked" : "reported"
+            };
+
+            const reports = JSON.parse(localStorage.getItem("livora_user_reports") || "[]");
+            reports.unshift(report);
+            localStorage.setItem("livora_user_reports", JSON.stringify(reports));
+
+            if (shouldBlock) {
+                const blocked = getBlockedUsers();
+                if (!blocked.some(item => item.id === currentReportTarget.id)) {
+                    blocked.unshift({ id: currentReportTarget.id, name: currentReportTarget.name, context: currentReportTarget.context, blockedAt: new Date().toISOString() });
+                    setBlockedUsers(blocked);
+                }
+            }
+
+            closeReportUserModal();
+            showToast(shouldBlock ? "Denúncia enviada e utilizador bloqueado neste navegador." : "Denúncia enviada para revisão.", "success");
+            renderDiscoverGrid();
+            renderFollowingSidebar();
+        }
+
+        function unblockUser(userId) {
+            const blocked = getBlockedUsers().filter(item => item.id !== userId);
+            setBlockedUsers(blocked);
+            showToast("Utilizador desbloqueado.", "success");
+            renderBlockedUsersList();
+            renderDiscoverGrid();
+            renderFollowingSidebar();
+        }
+
+        function renderBlockedUsersList() {
+            const list = document.getElementById("blocked-users-list");
+            if (!list) return;
+            const blocked = getBlockedUsers();
+            if (!blocked.length) {
+                list.innerHTML = `<p class="text-xs text-purple-400 py-4">Ainda não bloqueaste nenhum utilizador.</p>`;
+                return;
+            }
+            list.innerHTML = blocked.map(item => `
+                <div class="flex items-center justify-between gap-3 p-3 rounded-2xl bg-[#09051c] border border-purple-950">
+                    <div>
+                        <p class="text-sm font-black text-purple-100">${item.name}</p>
+                        <p class="text-[10px] text-purple-500">Bloqueado em ${new Date(item.blockedAt).toLocaleString('pt-PT')}</p>
+                    </div>
+                    <button onclick="unblockUser('${item.id}')" class="bg-[#150d32] hover:bg-[#1f134c] text-purple-200 border border-purple-900/60 font-bold px-3 py-2 rounded-xl text-[10px] transition-all">Desbloquear</button>
+                </div>
+            `).join("");
         }
 
 
