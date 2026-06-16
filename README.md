@@ -1,24 +1,25 @@
-# LIVORA — Iniciar Live
+# LIVORA — Live Room Pública
 
 Nova página:
-- `go_live.html`
+- `live_room.html`
 
 Inclui:
-- pré-visualização da live
-- botão Iniciar LIVE
-- botão Terminar
-- ativar câmara
-- aplicar definições do Creator Studio
-- meta de live aplicada
-- ferramentas ativas visíveis
-- simular gifts
-- simular audiência
-- chat local
-- simulação Safety Review
+- sala pública para espectadores
+- chat público
+- seguir criador
+- denunciar live
+- enviar presentes
+- meta da live
+- enquete ativa
+- ferramentas do Estúdio visíveis
+- pedidos de co-host/convidado
+- desejos/desafios dos espectadores
+- leitura da live iniciada em `go_live.html`
 
 Upload no GitHub:
 - substituir `index.html`
-- adicionar `go_live.html`
+- substituir `go_live.html`
+- adicionar `live_room.html`
 - manter `creator_studio.html`
 - manter `entrada_livora.html`
 - manter `regras.html`
@@ -26,4 +27,4 @@ Upload no GitHub:
 - manter `admin_reports.html`
 
 Supabase:
-- executar `supabase_livora_go_live.sql`
+- executar `supabase_livora_live_room.sql`
