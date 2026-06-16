@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Regras da Comunidade — LIVORA</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap');
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(236, 72, 153, 0.16), transparent 32%),
+        radial-gradient(circle at 85% 15%, rgba(124, 58, 237, 0.18), transparent 34%),
+        radial-gradient(circle at 50% 100%, rgba(79, 70, 229, 0.16), transparent 35%),
+        #070312;
+      color: white;
+      min-height: 100vh;
+    }
+
+    .glass {
+      background: rgba(12, 7, 33, 0.76);
+      border: 1px solid rgba(168, 85, 247, 0.25);
+      backdrop-filter: blur(22px);
+      box-shadow: 0 30px 90px rgba(0,0,0,.34);
+    }
+
+    .rule-card {
+      background: linear-gradient(180deg, rgba(20, 11, 46, 0.92), rgba(10, 5, 29, 0.96));
+      border: 1px solid rgba(168, 85, 247, 0.18);
+    }
+
+    .badge {
+      background: rgba(236, 72, 153, 0.12);
+      border: 1px solid rgba(236, 72, 153, 0.30);
+    }
+  </style>
+</head>
+
+<body class="selection:bg-pink-500 selection:text-white">
+
+  <header class="px-5 py-5 md:px-10 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-3 group">
+      <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-pink-500 via-purple-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-pink-500/20 group-hover:rotate-6 transition-all">
+        <span class="text-xl font-black italic tracking-tight">L</span>
+      </div>
+      <div>
+        <div class="text-2xl font-black tracking-tight bg-gradient-to-r from-white via-purple-200 to-pink-400 bg-clip-text text-transparent">LIVORA</div>
+        <div class="text-[9px] text-pink-400 font-black tracking-[0.28em] uppercase -mt-1">Community Safety</div>
+      </div>
+    </a>
+
+    <div class="flex items-center gap-3">
+      <a href="entrada_livora.html" class="hidden sm:inline-flex rounded-full border border-purple-800 bg-[#110a2d]/80 px-5 py-2.5 text-xs font-bold text-purple-100 hover:border-pink-500 hover:text-white transition-all">
+        Criar conta
+      </a>
+      <a href="index.html" class="rounded-full bg-gradient-to-r from-pink-500 to-purple-600 px-5 py-2.5 text-xs font-black text-white shadow-lg shadow-pink-500/20">
+        Voltar
+      </a>
+    </div>
+  </header>
+
+  <main class="px-5 pb-12 md:px-10">
+    <section class="mx-auto max-w-6xl">
+      <div class="glass rounded-[2rem] p-6 md:p-10 overflow-hidden relative">
+        <div class="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_20%_0%,rgba(236,72,153,.12),transparent_32%)]"></div>
+
+        <div class="relative z-10 max-w-3xl">
+          <span class="badge inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-black text-pink-300">
+            <i data-lucide="shield-check" class="w-4 h-4"></i>
+            REGRAS OFICIAIS DA COMUNIDADE
+          </span>
+
+          <h1 class="mt-5 text-4xl md:text-6xl font-black leading-[0.95] tracking-tight">
+            Regras da Comunidade
+            <span class="block bg-gradient-to-r from-pink-400 via-purple-300 to-indigo-300 bg-clip-text text-transparent">
+              LIVORA
+            </span>
+          </h1>
+
+          <p class="mt-5 text-purple-100/75 leading-relaxed">
+            A LIVORA existe para criar ligações reais entre criadores, fãs e comunidades. Para manter o espaço seguro,
+            respeitoso e saudável, todos os utilizadores devem cumprir estas regras.
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-5">
+        <article class="rule-card rounded-3xl p-6">
+          <div class="w-12 h-12 rounded-2xl bg-pink-500/10 flex items-center justify-center text-pink-400 mb-4">
+            <i data-lucide="heart-handshake"></i>
+          </div>
+          <h2 class="font-black text-xl">1. Respeito obrigatório</h2>
+          <p class="mt-3 text-sm text-purple-200/75 leading-relaxed">
+            Não são permitidos insultos, humilhações, ameaças, perseguição, assédio, discriminação, discurso de ódio
+            ou ataques à dignidade de qualquer pessoa.
+          </p>
+        </article>
+
+        <article class="rule-card rounded-3xl p-6">
+          <div class="w-12 h-12 rounded-2xl bg-purple-500/10 flex items-center justify-center text-purple-300 mb-4">
+            <i data-lucide="eye-off"></i>
+          </div>
+          <h2 class="font-black text-xl">2. Conteúdo sexual explícito proibido</h2>
+          <p class="mt-3 text-sm text-purple-200/75 leading-relaxed">
+            É proibido publicar, transmitir ou enviar conteúdo sexual explícito em lives, vídeo match, mensagens,
+            imagens de perfil, nomes de utilizador ou biografias.
+          </p>
+        </article>
+
+        <article class="rule-card rounded-3xl p-6">
+          <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-indigo-300 mb-4">
+            <i data-lucide="baby"></i>
+          </div>
+          <h2 class="font-black text-xl">3. Proteção de menores</h2>
+          <p class="mt-3 text-sm text-purple-200/75 leading-relaxed">
+            A segurança de menores é prioridade absoluta. Qualquer comportamento suspeito, exploração, aliciamento
+            ou tentativa de contacto impróprio resulta em bloqueio e denúncia às autoridades quando aplicável.
+          </p>
+        </article>
+
+        <article class="rule-card rounded-3xl p-6">
+          <div class="w-12 h-12 rounded-2xl bg-yellow-500/10 flex items-center justify-center text-yellow-300 mb-4">
+            <i data-lucide="coins"></i>
+          </div>
+          <h2 class="font-black text-xl">4. Presentes digitais e moedas</h2>
+          <p class="mt-3 text-sm text-purple-200/75 leading-relaxed">
+            Moedas, gifts e recompensas são elementos virtuais da plataforma. No MVP são fictícios. Qualquer futura
+            funcionalidade com dinheiro real terá regras e termos próprios.
+          </p>
+        </article>
+
+        <article class="rule-card rounded-3xl p-6">
+          <div class="w-12 h-12 rounded-2xl bg-red-500/10 flex items-center justify-center text-red-300 mb-4">
+            <i data-lucide="ban"></i>
+          </div>
+          <h2 class="font-black text-xl">5. Proibidos golpes e manipulação</h2>
+          <p class="mt-3 text-sm text-purple-200/75 leading-relaxed">
+            Não são permitidos esquemas, falsas promessas, links perigosos, extorsão, chantagem emocional,
+            phishing ou pedidos suspeitos de dinheiro.
+          </p>
+        </article>
+
+        <article class="rule-card rounded-3xl p-6">
+          <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-300 mb-4">
+            <i data-lucide="lock"></i>
+          </div>
+          <h2 class="font-black text-xl">6. Privacidade acima de tudo</h2>
+          <p class="mt-3 text-sm text-purple-200/75 leading-relaxed">
+            É proibido divulgar dados pessoais de terceiros, incluindo moradas, números de telefone, documentos,
+            fotos privadas, conversas ou informações sensíveis sem autorização.
+          </p>
+        </article>
+
+        <article class="rule-card rounded-3xl p-6">
+          <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 flex items-center justify-center text-cyan-300 mb-4">
+            <i data-lucide="flag"></i>
+          </div>
+          <h2 class="font-black text-xl">7. Denunciar e bloquear</h2>
+          <p class="mt-3 text-sm text-purple-200/75 leading-relaxed">
+            Utilizadores devem denunciar comportamentos abusivos, suspeitos ou perigosos. A LIVORA poderá incluir
+            botões de denúncia e bloqueio em perfis, lives, mensagens e vídeo match.
+          </p>
+        </article>
+
+        <article class="rule-card rounded-3xl p-6">
+          <div class="w-12 h-12 rounded-2xl bg-orange-500/10 flex items-center justify-center text-orange-300 mb-4">
+            <i data-lucide="gavel"></i>
+          </div>
+          <h2 class="font-black text-xl">8. Moderação e suspensão</h2>
+          <p class="mt-3 text-sm text-purple-200/75 leading-relaxed">
+            A LIVORA pode avisar, limitar, suspender ou remover contas que violem as regras, tentem contornar
+            bloqueios ou coloquem outros utilizadores em risco.
+          </p>
+        </article>
+      </div>
+
+      <div class="mt-8 glass rounded-[2rem] p-6 md:p-8">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+          <div>
+            <h2 class="text-2xl font-black">Resumo simples</h2>
+            <p class="mt-2 text-sm text-purple-200/75 leading-relaxed">
+              Na LIVORA, sê humano, respeita os outros, protege a tua privacidade e denuncia qualquer comportamento estranho.
+              Quem cria segurança, cria comunidade.
+            </p>
+          </div>
+
+          <a href="entrada_livora.html" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-pink-500 via-purple-600 to-indigo-600 px-6 py-4 text-sm font-black text-white shadow-lg shadow-pink-500/20">
+            Aceito e quero entrar
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </a>
+        </div>
+      </div>
+
+      <footer class="mt-8 text-center text-xs text-purple-400">
+        © LIVORA — Protótipo MVP. Regras atualizadas para ambiente de demonstração.
+      </footer>
+    </section>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+    });
+  </script>
+</body>
+</html>
