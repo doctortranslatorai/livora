@@ -8,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
         
@@ -604,6 +605,10 @@
 
     <!-- JAVASCRIPT PRINCIPAL -->
     <script>
+        const SUPABASE_URL = "https://cgitrfqsnipqlecejwtd.supabase.co";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNnaXRyZnFzbmlwcWxlY2Vqd3RkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2MTU5MTEsImV4cCI6MjA5NzE5MTkxMX0.N3GWrR771k-fa7TTRAWsHewKXSdN0cmiIoWABQQ0bxA";
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
         // CONFIGURAÇÕES DO ESTADO DA APLICAÇÃO
         let state = {
             coins: 12450,
@@ -707,6 +712,61 @@
                 // Navegador bloqueia AudioContext inicialmente até interação do usuário
             }
         }
+
+
+        async function hydrateSupabaseSession() {
+            try {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                if (!session?.user) return;
+
+                const { data: profile } = await supabaseClient
+                    .from('profiles')
+                    .select('*')
+                    .eq('id', session.user.id)
+                    .maybeSingle();
+
+                if (profile) {
+                    state.user.name = profile.name || state.user.name;
+                    state.user.bio = profile.bio || state.user.bio;
+                    state.user.avatar = profile.avatar_url || state.user.avatar;
+                    state.coins = typeof profile.coins === 'number' ? profile.coins : state.coins;
+                    state.supabaseUserId = session.user.id;
+                    updateUIInfo();
+            hydrateSupabaseSession();
+                }
+            } catch (error) {
+                console.warn('Sessão Supabase não carregada:', error);
+            }
+        }
+
+        async function logoutLivora() {
+            try {
+                await supabaseClient.auth.signOut();
+                localStorage.removeItem('livora_user');
+                showToast('Sessão terminada.');
+                setTimeout(() => window.location.href = 'entrada_livora.html', 800);
+            } catch (error) {
+                showToast('Não foi possível terminar sessão.');
+            }
+        }
+
+        async function saveProfileToSupabase() {
+            try {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                if (!session?.user) return;
+
+                await supabaseClient.from('profiles').upsert({
+                    id: session.user.id,
+                    name: state.user.name,
+                    bio: state.user.bio,
+                    avatar_url: state.user.avatar,
+                    coins: state.coins
+                });
+            } catch (error) {
+                console.warn('Perfil não guardado no Supabase:', error);
+            }
+        }
+
 
         // INICIALIZAÇÃO DA APLICAÇÃO
         
@@ -879,6 +939,7 @@ document.addEventListener("DOMContentLoaded", () => {
             updateUIInfo();
             closeEditProfileModal();
             showToast("Perfil atualizado com sucesso!", "success");
+            saveProfileToSupabase();
         }
 
         // DROPDOWN NOTIFICAÇÕES

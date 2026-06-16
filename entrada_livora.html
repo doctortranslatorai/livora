@@ -7,6 +7,7 @@
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap');
@@ -356,6 +357,10 @@
   </main>
 
   <script>
+    const SUPABASE_URL = "https://cgitrfqsnipqlecejwtd.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNnaXRyZnFzbmlwcWxlY2Vqd3RkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2MTU5MTEsImV4cCI6MjA5NzE5MTkxMX0.N3GWrR771k-fa7TTRAWsHewKXSdN0cmiIoWABQQ0bxA";
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
     let selectedRole = 'creator';
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -425,47 +430,82 @@
       input.type = input.type === 'password' ? 'text' : 'password';
     }
 
-    function submitSignup(event) {
+    async function submitSignup(event) {
       event.preventDefault();
 
-      const user = {
-        name: document.getElementById('signup-name').value.trim(),
-        username: document.getElementById('signup-username').value.trim(),
-        email: document.getElementById('signup-email').value.trim(),
+      const name = document.getElementById('signup-name').value.trim();
+      const username = document.getElementById('signup-username').value.trim().replace('@', '').toLowerCase();
+      const email = document.getElementById('signup-email').value.trim();
+      const password = document.getElementById('signup-password').value;
+
+      const localUser = {
+        name,
+        username: '@' + username,
+        email,
         role: selectedRole,
-        plan: 'demo',
+        plan: 'supabase',
         coins: 12450,
         createdAt: new Date().toISOString()
       };
 
-      localStorage.setItem('livora_user', JSON.stringify(user));
-      showToast(`Conta criada em modo protótipo. Perfil: ${selectedRole === 'creator' ? 'Criador' : 'Visitante'}.`);
+      localStorage.setItem('livora_user', JSON.stringify(localUser));
 
-      setTimeout(() => {
-        window.location.href = 'index.html';
-      }, 900);
+      try {
+        const { data, error } = await supabaseClient.auth.signUp({
+          email,
+          password,
+          options: {
+            data: { name, username, role: selectedRole }
+          }
+        });
+
+        if (error) {
+          showToast('Supabase: ' + error.message);
+          return;
+        }
+
+        showToast('Conta criada. Se receberes email de confirmação, confirma primeiro. A abrir a LIVORA...');
+        setTimeout(() => { window.location.href = 'index.html'; }, 1200);
+      } catch (error) {
+        showToast('Erro de ligação ao Supabase. Modo local guardado.');
+      }
     }
 
-    function submitLogin(event) {
+    async function submitLogin(event) {
       event.preventDefault();
 
-      const id = document.getElementById('login-id').value.trim();
-      const saved = localStorage.getItem('livora_user');
+      const email = document.getElementById('login-id').value.trim();
+      const password = document.getElementById('login-password').value;
 
-      if (!saved) {
-        showToast('Ainda não existe conta guardada neste navegador. Usa “Criar conta” ou modo demonstração.');
+      if (!email.includes('@')) {
+        showToast('Nesta fase do MVP, entra com o email em vez do username.');
         return;
       }
 
-      const user = JSON.parse(saved);
+      try {
+        const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
 
-      if (id && (id === user.email || id === user.username || id.replace('@','') === user.username.replace('@',''))) {
-        showToast(`Entrada autorizada. Bem-vindo, ${user.name}!`);
-        setTimeout(() => {
-          window.location.href = 'index.html';
-        }, 900);
-      } else {
-        showToast('Conta não encontrada neste protótipo local.');
+        if (error) {
+          showToast('Supabase: ' + error.message);
+          return;
+        }
+
+        const user = data.user;
+        const localUser = {
+          name: user.user_metadata?.name || 'Criador LIVORA',
+          username: '@' + (user.user_metadata?.username || email.split('@')[0]),
+          email,
+          role: user.user_metadata?.role || 'viewer',
+          plan: 'supabase',
+          coins: 12450,
+          createdAt: new Date().toISOString()
+        };
+
+        localStorage.setItem('livora_user', JSON.stringify(localUser));
+        showToast('Entrada autorizada. A abrir a LIVORA...');
+        setTimeout(() => { window.location.href = 'index.html'; }, 900);
+      } catch (error) {
+        showToast('Erro de ligação ao Supabase.');
       }
     }
 
