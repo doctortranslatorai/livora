@@ -590,9 +590,21 @@
                     <label class="text-xs font-bold text-purple-300">A tua biografia</label>
                     <textarea id="edit-bio-input" rows="3" class="bg-[#150d32] border border-purple-950 text-xs text-purple-100 outline-none rounded-xl px-4 py-3 focus:border-pink-500/40 w-full resize-none"></textarea>
                 </div>
-                <div class="flex flex-col gap-1.5">
-                    <label class="text-xs font-bold text-purple-300">URL do Avatar</label>
-                    <input id="edit-avatar-input" type="text" class="bg-[#150d32] border border-purple-950 text-xs text-purple-100 outline-none rounded-xl px-4 py-3 focus:border-pink-500/40 w-full" />
+                <div class="flex flex-col gap-2">
+                    <label class="text-xs font-bold text-purple-300">Foto de perfil</label>
+
+                    <div class="flex items-center gap-4 bg-[#150d32] border border-purple-950 rounded-2xl p-3">
+                        <img id="edit-avatar-preview" src="" class="w-16 h-16 rounded-full object-cover border-2 border-pink-500 shadow-lg" alt="Pré-visualização da foto" />
+
+                        <div class="flex-1">
+                            <label for="edit-avatar-file" class="inline-flex cursor-pointer items-center gap-2 bg-gradient-to-r from-pink-500 to-purple-600 hover:opacity-95 text-white text-xs font-extrabold px-4 py-2.5 rounded-xl transition-all">
+                                <i data-lucide="camera" class="w-4 h-4"></i>
+                                Escolher nova foto
+                            </label>
+                            <input id="edit-avatar-file" type="file" accept="image/*" class="hidden" onchange="handleEditAvatar(event)" />
+                            <p class="text-[10px] text-purple-400 mt-2">A foto será guardada no perfil deste navegador e sincronizada com o Supabase quando possível.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -910,11 +922,86 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById('user-profile-bio').innerText = state.user.bio;
         }
 
+
+        function compressImageToDataUrl(file, callback) {
+            const reader = new FileReader();
+
+            reader.onload = function(event) {
+                const img = new Image();
+
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const maxSize = 420;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height && width > maxSize) {
+                        height = Math.round((height * maxSize) / width);
+                        width = maxSize;
+                    } else if (height > maxSize) {
+                        width = Math.round((width * maxSize) / height);
+                        height = maxSize;
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.78);
+                    callback(dataUrl);
+                };
+
+                img.src = event.target.result;
+            };
+
+            reader.readAsDataURL(file);
+        }
+
+        function handleEditAvatar(event) {
+            const file = event.target.files?.[0];
+
+            if (!file) return;
+
+            if (!file.type.startsWith('image/')) {
+                showToast("Escolhe um ficheiro de imagem válido.", "error");
+                return;
+            }
+
+            compressImageToDataUrl(file, function(dataUrl) {
+                state.user.avatar = dataUrl;
+                document.getElementById('edit-avatar-preview').src = dataUrl;
+                updateUIInfo();
+                saveLocalLivoraUser();
+                saveProfileToSupabase();
+                showToast("Foto de perfil atualizada com sucesso!", "success");
+            });
+        }
+
+        function saveLocalLivoraUser() {
+            try {
+                const current = JSON.parse(localStorage.getItem('livora_user') || '{}');
+                const updated = {
+                    ...current,
+                    name: state.user.name,
+                    bio: state.user.bio,
+                    avatar: state.user.avatar,
+                    coins: state.coins,
+                    updatedAt: new Date().toISOString()
+                };
+                localStorage.setItem('livora_user', JSON.stringify(updated));
+            } catch (error) {
+                console.warn('Não foi possível guardar o perfil local:', error);
+            }
+        }
+
+
         // EDITAR PERFIL MODAL
         function openEditProfileModal() {
             document.getElementById('edit-name-input').value = state.user.name;
             document.getElementById('edit-bio-input').value = state.user.bio;
-            document.getElementById('edit-avatar-input').value = state.user.avatar;
+            document.getElementById('edit-avatar-preview').src = state.user.avatar;
             document.getElementById('edit-profile-modal').classList.remove('hidden');
         }
 
@@ -925,8 +1012,6 @@ document.addEventListener("DOMContentLoaded", () => {
         function saveProfileChanges() {
             const nameInput = document.getElementById('edit-name-input').value.trim();
             const bioInput = document.getElementById('edit-bio-input').value.trim();
-            const avatarInput = document.getElementById('edit-avatar-input').value.trim();
-
             if (!nameInput) {
                 showToast("O nome não pode ficar em branco.", "error");
                 return;
@@ -934,9 +1019,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             state.user.name = nameInput;
             state.user.bio = bioInput;
-            if (avatarInput) state.user.avatar = avatarInput;
-
             updateUIInfo();
+            saveLocalLivoraUser();
             closeEditProfileModal();
             showToast("Perfil atualizado com sucesso!", "success");
             saveProfileToSupabase();
