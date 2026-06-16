@@ -55,6 +55,167 @@
     
         .profile-bg-card.active{border-color:rgba(236,72,153,.95)!important;box-shadow:0 0 24px rgba(236,72,153,.20);transform:translateY(-2px)}
         .safety-pill{background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.28)}
+    
+        .livora-effect-layer {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            border-radius: inherit;
+            z-index: 0;
+        }
+
+        #profile-hero-card > *:not(.livora-effect-layer) {
+            position: relative;
+            z-index: 1;
+        }
+
+        .effect-option.active {
+            border-color: rgba(236, 72, 153, 0.95) !important;
+            box-shadow: 0 0 24px rgba(236,72,153,.20);
+            transform: translateY(-2px);
+        }
+
+        .fx-aurora::before,
+        .fx-aurora::after {
+            content: "";
+            position: absolute;
+            width: 55%;
+            height: 55%;
+            filter: blur(45px);
+            opacity: .42;
+            border-radius: 999px;
+            animation: livoraAurora 9s ease-in-out infinite alternate;
+        }
+
+        .fx-aurora::before {
+            background: rgba(236, 72, 153, .72);
+            left: -12%;
+            top: -18%;
+        }
+
+        .fx-aurora::after {
+            background: rgba(124, 58, 237, .72);
+            right: -15%;
+            bottom: -20%;
+            animation-delay: -3s;
+        }
+
+        @keyframes livoraAurora {
+            0% { transform: translate(0,0) scale(1); }
+            50% { transform: translate(18%,12%) scale(1.15); }
+            100% { transform: translate(4%,24%) scale(.95); }
+        }
+
+        .fx-particles {
+            background-image:
+                radial-gradient(circle, rgba(255,255,255,.55) 1px, transparent 1.5px),
+                radial-gradient(circle, rgba(236,72,153,.45) 1px, transparent 1.5px);
+            background-size: 34px 34px, 58px 58px;
+            animation: livoraParticles 14s linear infinite;
+            opacity: .52;
+        }
+
+        @keyframes livoraParticles {
+            from { background-position: 0 0, 0 0; }
+            to { background-position: 160px -180px, -140px 160px; }
+        }
+
+        .fx-hearts {
+            background-image:
+                radial-gradient(circle at 20% 80%, rgba(236,72,153,.30) 0 4px, transparent 5px),
+                radial-gradient(circle at 50% 40%, rgba(255,255,255,.20) 0 3px, transparent 4px),
+                radial-gradient(circle at 80% 70%, rgba(236,72,153,.24) 0 5px, transparent 6px);
+            background-size: 88px 88px;
+            animation: livoraHearts 10s ease-in-out infinite;
+            opacity: .55;
+        }
+
+        @keyframes livoraHearts {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-18px); }
+        }
+
+        .fx-stars {
+            background-image:
+                radial-gradient(circle, rgba(255,255,255,.70) 1px, transparent 2px),
+                radial-gradient(circle, rgba(240,171,252,.60) 1px, transparent 2px);
+            background-size: 42px 42px, 76px 76px;
+            animation: livoraStars 18s linear infinite;
+            opacity: .60;
+        }
+
+        @keyframes livoraStars {
+            from { background-position: 0 0, 0 0; }
+            to { background-position: 220px 160px, -180px 260px; }
+        }
+
+        .fx-neon_pulse {
+            box-shadow: inset 0 0 45px rgba(236,72,153,.35), inset 0 0 90px rgba(124,58,237,.30);
+            animation: livoraPulse 2.8s ease-in-out infinite;
+        }
+
+        @keyframes livoraPulse {
+            0%, 100% { opacity: .45; }
+            50% { opacity: .95; }
+        }
+
+        .fx-digital_rain {
+            background:
+                repeating-linear-gradient(90deg, rgba(34,197,94,.18) 0 1px, transparent 1px 18px),
+                repeating-linear-gradient(180deg, rgba(34,197,94,.12) 0 2px, transparent 2px 20px);
+            animation: livoraRain 1.6s linear infinite;
+            opacity: .38;
+        }
+
+        @keyframes livoraRain {
+            from { background-position: 0 -40px, 0 -40px; }
+            to { background-position: 0 80px, 0 80px; }
+        }
+
+        .fx-scanlines {
+            background: repeating-linear-gradient(180deg, rgba(255,255,255,.10) 0 1px, transparent 1px 6px);
+            opacity: .35;
+            animation: livoraScan 4s linear infinite;
+        }
+
+        @keyframes livoraScan {
+            from { transform: translateY(-14px); }
+            to { transform: translateY(14px); }
+        }
+
+        .fx-bubbles {
+            background-image:
+                radial-gradient(circle at 12% 80%, rgba(255,255,255,.22) 0 9px, transparent 10px),
+                radial-gradient(circle at 40% 60%, rgba(236,72,153,.20) 0 13px, transparent 14px),
+                radial-gradient(circle at 78% 72%, rgba(124,58,237,.24) 0 10px, transparent 11px);
+            background-size: 120px 120px;
+            animation: livoraBubbles 9s ease-in-out infinite;
+            opacity: .56;
+        }
+
+        @keyframes livoraBubbles {
+            0%, 100% { background-position: 0 0; }
+            50% { background-position: 0 -70px; }
+        }
+
+        .fx-mist::before {
+            content: "";
+            position: absolute;
+            inset: -25%;
+            background:
+                radial-gradient(circle at 20% 40%, rgba(255,255,255,.18), transparent 28%),
+                radial-gradient(circle at 70% 50%, rgba(236,72,153,.16), transparent 30%),
+                radial-gradient(circle at 45% 75%, rgba(124,58,237,.18), transparent 28%);
+            filter: blur(24px);
+            animation: livoraMist 13s ease-in-out infinite alternate;
+        }
+
+        @keyframes livoraMist {
+            from { transform: translateX(-4%) translateY(2%); opacity: .45; }
+            to { transform: translateX(6%) translateY(-4%); opacity: .80; }
+        }
+
     </style>
 </head>
 <body class="min-h-screen bg-[#070312] text-slate-100 flex flex-col justify-between overflow-x-hidden selection:bg-pink-500 selection:text-white">
@@ -457,6 +618,7 @@
             <!-- ABA: PERFIL DO USUÁRIO E EDITAR -->
             <div id="tab-profile" class="tab-content space-y-6">
                 <div id="profile-hero-card" class="bg-gradient-to-b from-[#1b0d46] to-[#0c0721] border border-purple-900/40 rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-8 shadow-2xl overflow-hidden relative">
+                    <div id="profile-effect-layer" class="livora-effect-layer"></div>
                     <div class="relative group">
                         <img id="user-profile-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300" class="w-32 h-32 rounded-full border-4 border-pink-500 object-cover shadow-2xl" onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'"/>
                         <div class="absolute inset-0 bg-black/60 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
@@ -645,6 +807,21 @@
                     <input id="edit-background-file" type="file" accept="image/*" class="hidden" onchange="handleEditBackground(event)" />
                 </div>
 
+            
+                <div class="flex flex-col gap-2">
+                    <div class="flex items-center justify-between gap-3">
+                        <label class="text-xs font-bold text-purple-300">Efeito animado do fundo</label>
+                        <span id="edit-effect-status" class="text-[10px] text-pink-300 font-bold">Efeito atual: Aurora viva</span>
+                    </div>
+
+                    <div id="edit-effect-grid" class="grid grid-cols-2 md:grid-cols-5 gap-2"></div>
+
+                    <p class="text-[10px] text-purple-400">
+                        Os efeitos são visuais e aparecem por cima do cenário escolhido.
+                    </p>
+                </div>
+
+
             <div class="flex justify-end gap-3 pt-4">
                 <button onclick="closeEditProfileModal()" class="bg-purple-950 hover:bg-purple-900 text-purple-300 text-xs font-semibold px-4 py-2.5 rounded-xl">Cancelar</button>
                 <button onclick="saveProfileChanges()" class="bg-gradient-to-r from-pink-500 to-purple-600 hover:opacity-90 text-white text-xs font-extrabold px-5 py-2.5 rounded-xl">Salvar Mudanças</button>
@@ -738,6 +915,8 @@
 
         const LIVORA_BACKGROUNDS = [{"id": "neon_roxo", "name": "Neon Roxo", "style": "linear-gradient(135deg, #0A0318, #8B00FF 45%, #FF00C7)"}, {"id": "ceu_noturno", "name": "Céu Noturno", "style": "radial-gradient(circle at 30% 20%, #7C3AED, transparent 25%), linear-gradient(135deg, #020617, #111827, #312E81)"}, {"id": "estudio_musical", "name": "Estúdio Musical", "style": "linear-gradient(135deg, #111827, #7F1D1D 55%, #F97316)"}, {"id": "cidade_futurista", "name": "Cidade Futurista", "style": "linear-gradient(135deg, #030712, #0E7490 45%, #A855F7)"}, {"id": "praia_sunset", "name": "Praia Sunset", "style": "linear-gradient(135deg, #0F172A, #F97316 48%, #EC4899)"}, {"id": "gamer_room", "name": "Gamer Room", "style": "linear-gradient(135deg, #020617, #16A34A 45%, #06B6D4)"}, {"id": "luxo_minimalista", "name": "Luxo Minimalista", "style": "linear-gradient(135deg, #0F0F0F, #3F3F46 55%, #D4AF37)"}, {"id": "cafe_artistico", "name": "Café Artístico", "style": "linear-gradient(135deg, #1C0A00, #92400E 55%, #F59E0B)"}, {"id": "espaco_cosmico", "name": "Espaço Cósmico", "style": "radial-gradient(circle at 70% 20%, #F0ABFC, transparent 18%), linear-gradient(135deg, #020617, #4C1D95 45%, #DB2777)"}, {"id": "floresta_mistica", "name": "Floresta Mística", "style": "linear-gradient(135deg, #052E16, #166534 55%, #A3E635)"}];
 
+        const LIVORA_EFFECTS = [{"id": "none", "name": "Sem efeito", "icon": "○"}, {"id": "aurora", "name": "Aurora viva", "icon": "✨"}, {"id": "particles", "name": "Partículas", "icon": "✦"}, {"id": "hearts", "name": "Corações", "icon": "💗"}, {"id": "stars", "name": "Estrelas", "icon": "⭐"}, {"id": "neon_pulse", "name": "Pulso Neon", "icon": "⚡"}, {"id": "digital_rain", "name": "Chuva Digital", "icon": "▥"}, {"id": "scanlines", "name": "Scanlines", "icon": "≋"}, {"id": "bubbles", "name": "Bolhas", "icon": "◌"}, {"id": "mist", "name": "Neblina", "icon": "☁"}];
+
         // CONFIGURAÇÕES DO ESTADO DA APLICAÇÃO
         let state = {
             coins: 12450,
@@ -753,7 +932,8 @@
                 bio: "Criador digital, fã de lives, vídeo match e comunidades criativas. Entra, conversa e apoia quem cria. 👋",
                 avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300",
                 backgroundPreset: "neon_roxo",
-                backgroundUrl: ""
+                backgroundUrl: "",
+                backgroundEffect: "aurora"
             },
             followedStreamers: ['larissa', 'gabriel'],
             webcamStream: null
@@ -862,6 +1042,7 @@
                     state.user.avatar = profile.avatar_url || state.user.avatar;
                     state.user.backgroundPreset = profile.background_preset || state.user.backgroundPreset;
                     state.user.backgroundUrl = profile.background_url || state.user.backgroundUrl;
+                    state.user.backgroundEffect = profile.background_effect || state.user.backgroundEffect;
                     state.coins = typeof profile.coins === 'number' ? profile.coins : state.coins;
                     state.supabaseUserId = session.user.id;
                     updateUIInfo();
@@ -895,6 +1076,7 @@
                     avatar_url: state.user.avatar,
                     background_preset: state.user.backgroundPreset,
                     background_url: state.user.backgroundUrl,
+                    background_effect: state.user.backgroundEffect,
                     coins: state.coins
                 });
             } catch (error) {
@@ -1177,6 +1359,60 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
+        function applyBackgroundEffect() {
+            const layer = document.getElementById('profile-effect-layer');
+            if (!layer) return;
+
+            layer.className = 'livora-effect-layer';
+
+            const effect = state.user.backgroundEffect || 'none';
+
+            if (effect !== 'none') {
+                layer.classList.add('fx-' + effect);
+            }
+        }
+
+        function renderEditEffects() {
+            const grid = document.getElementById('edit-effect-grid');
+            if (!grid) return;
+
+            grid.innerHTML = LIVORA_EFFECTS.map(effect => `
+                <button type="button"
+                        onclick="selectEditEffect('${effect.id}')"
+                        id="edit-effect-${effect.id}"
+                        class="effect-option rounded-2xl border border-purple-900/60 bg-[#09051c] p-3 text-left transition-all">
+                    <div class="text-lg">${effect.icon}</div>
+                    <p class="text-[10px] font-black text-purple-100 truncate mt-1">${effect.name}</p>
+                </button>
+            `).join('');
+
+            document.querySelectorAll('.effect-option').forEach(card => card.classList.remove('active'));
+
+            const active = document.getElementById('edit-effect-' + (state.user.backgroundEffect || 'none'));
+            if (active) active.classList.add('active');
+
+            const status = document.getElementById('edit-effect-status');
+            if (status) {
+                const effect = LIVORA_EFFECTS.find(item => item.id === (state.user.backgroundEffect || 'none')) || LIVORA_EFFECTS[0];
+                status.textContent = 'Efeito atual: ' + effect.name;
+            }
+
+            lucide.createIcons();
+        }
+
+        function selectEditEffect(id) {
+            state.user.backgroundEffect = id;
+            applyBackgroundEffect();
+            renderEditEffects();
+            saveLocalLivoraUser();
+            saveProfileToSupabase();
+
+            const effect = LIVORA_EFFECTS.find(item => item.id === id);
+            showToast(`Efeito atualizado: ${effect ? effect.name : 'novo efeito'}.`, "success");
+        }
+
+
         function getBackgroundStyle() {
             if (state.user.backgroundUrl) return `linear-gradient(180deg, rgba(7,3,18,.25), rgba(7,3,18,.88)), url('${state.user.backgroundUrl}') center/cover`;
             const bg = LIVORA_BACKGROUNDS.find(item => item.id === state.user.backgroundPreset) || LIVORA_BACKGROUNDS[0];
@@ -1302,6 +1538,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     avatar: state.user.avatar,
                     backgroundPreset: state.user.backgroundPreset,
                     backgroundUrl: state.user.backgroundUrl,
+                    backgroundEffect: state.user.backgroundEffect,
                     coins: state.coins,
                     updatedAt: new Date().toISOString()
                 };

@@ -1,14 +1,29 @@
-# LIVORA — Navegação corrigida
+# LIVORA — Fundos com efeitos animados
 
-Correção:
-- adiciona atalho `Denúncias` no topo da plataforma.
-- mantém `Safety` e `Regras`.
-- mantém botão `Denunciar` dentro da live.
-- mantém painel `admin_reports.html`.
+Inclui:
+- 10 cenários de fundo.
+- upload de cenário personalizado.
+- 10 efeitos animados:
+  - Sem efeito
+  - Aurora viva
+  - Partículas
+  - Corações
+  - Estrelas
+  - Pulso Neon
+  - Chuva Digital
+  - Scanlines
+  - Bolhas
+  - Neblina
+- seleção no registo.
+- troca no editar perfil.
+- efeito visível no cartão do perfil.
 
-Upload no GitHub:
-- substituir `index.html`
-- manter/adicionar `admin_reports.html`
-- manter/adicionar `admin_safety.html`
-- manter `entrada_livora.html`
-- manter `regras.html`
+Upload GitHub:
+- index.html
+- entrada_livora.html
+- regras.html
+- admin_safety.html
+- admin_reports.html
+
+Supabase:
+- executar supabase_livora_background_effects.sql

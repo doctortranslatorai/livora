@@ -96,7 +96,14 @@
       from { opacity: 0; transform: translateY(-8px) scale(.98); }
       to { opacity: 1; transform: translateY(0) scale(1); }
     }
-  .background-card.active{border-color:rgba(236,72,153,.95)!important;box-shadow:0 0 24px rgba(236,72,153,.18);transform:translateY(-2px)}</style>
+  .background-card.active{border-color:rgba(236,72,153,.95)!important;box-shadow:0 0 24px rgba(236,72,153,.18);transform:translateY(-2px)}
+    .effect-card.active {
+      border-color: rgba(236,72,153,.95) !important;
+      box-shadow: 0 0 24px rgba(236,72,153,.18);
+      transform: translateY(-2px);
+    }
+
+  </style>
 </head>
 
 <body class="selection:bg-pink-500 selection:text-white">
@@ -333,6 +340,21 @@
                 </div>
               </div>
 
+              
+              <div class="rounded-2xl border border-purple-900/60 bg-[#10092c] p-4">
+                <div class="flex items-center justify-between gap-3">
+                  <div>
+                    <span class="text-xs font-bold text-purple-300">Efeito do fundo</span>
+                    <p class="mt-1 text-[10px] text-purple-400">Escolhe o movimento visual do teu perfil.</p>
+                  </div>
+                  <span class="rounded-full bg-purple-500/10 border border-purple-500/30 px-3 py-1 text-[9px] font-black text-purple-300">EFEITO</span>
+                </div>
+
+                <div id="signup-effect-grid" class="mt-4 grid grid-cols-2 md:grid-cols-5 gap-2"></div>
+                <p id="signup-effect-status" class="mt-3 text-[10px] text-purple-400">Efeito atual: Aurora viva</p>
+              </div>
+
+
               <label class="flex items-start gap-3 rounded-2xl border border-purple-900/40 bg-[#09051c]/80 p-3 cursor-pointer">
                 <input id="age-check" type="checkbox" class="mt-1 accent-pink-500" required>
                 <span class="text-[11px] text-purple-200 leading-relaxed">
@@ -417,10 +439,12 @@
     let selectedAvatarDataUrl = '';
     let selectedBackgroundPreset = 'neon_roxo';
     let selectedBackgroundUrl = '';
+    let selectedBackgroundEffect = 'aurora';
 
     document.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
       renderSignupBackgrounds();
+      renderSignupEffects();
       const saved = localStorage.getItem('livora_user');
       if (saved) {
         try {
@@ -488,7 +512,43 @@
 
 
 
+    const LIVORA_EFFECTS = [{"id": "none", "name": "Sem efeito", "icon": "○"}, {"id": "aurora", "name": "Aurora viva", "icon": "✨"}, {"id": "particles", "name": "Partículas", "icon": "✦"}, {"id": "hearts", "name": "Corações", "icon": "💗"}, {"id": "stars", "name": "Estrelas", "icon": "⭐"}, {"id": "neon_pulse", "name": "Pulso Neon", "icon": "⚡"}, {"id": "digital_rain", "name": "Chuva Digital", "icon": "▥"}, {"id": "scanlines", "name": "Scanlines", "icon": "≋"}, {"id": "bubbles", "name": "Bolhas", "icon": "◌"}, {"id": "mist", "name": "Neblina", "icon": "☁"}];
+
     const LIVORA_BACKGROUNDS = [{"id": "neon_roxo", "name": "Neon Roxo", "style": "linear-gradient(135deg, #0A0318, #8B00FF 45%, #FF00C7)"}, {"id": "ceu_noturno", "name": "Céu Noturno", "style": "radial-gradient(circle at 30% 20%, #7C3AED, transparent 25%), linear-gradient(135deg, #020617, #111827, #312E81)"}, {"id": "estudio_musical", "name": "Estúdio Musical", "style": "linear-gradient(135deg, #111827, #7F1D1D 55%, #F97316)"}, {"id": "cidade_futurista", "name": "Cidade Futurista", "style": "linear-gradient(135deg, #030712, #0E7490 45%, #A855F7)"}, {"id": "praia_sunset", "name": "Praia Sunset", "style": "linear-gradient(135deg, #0F172A, #F97316 48%, #EC4899)"}, {"id": "gamer_room", "name": "Gamer Room", "style": "linear-gradient(135deg, #020617, #16A34A 45%, #06B6D4)"}, {"id": "luxo_minimalista", "name": "Luxo Minimalista", "style": "linear-gradient(135deg, #0F0F0F, #3F3F46 55%, #D4AF37)"}, {"id": "cafe_artistico", "name": "Café Artístico", "style": "linear-gradient(135deg, #1C0A00, #92400E 55%, #F59E0B)"}, {"id": "espaco_cosmico", "name": "Espaço Cósmico", "style": "radial-gradient(circle at 70% 20%, #F0ABFC, transparent 18%), linear-gradient(135deg, #020617, #4C1D95 45%, #DB2777)"}, {"id": "floresta_mistica", "name": "Floresta Mística", "style": "linear-gradient(135deg, #052E16, #166534 55%, #A3E635)"}];
+
+
+    function renderSignupEffects() {
+      const grid = document.getElementById('signup-effect-grid');
+      if (!grid) return;
+
+      grid.innerHTML = LIVORA_EFFECTS.map(effect => `
+        <button type="button"
+                onclick="selectSignupEffect('${effect.id}')"
+                id="signup-effect-${effect.id}"
+                class="effect-card rounded-2xl border border-purple-900/60 bg-[#09051c] p-3 text-left transition-all">
+          <div class="text-lg">${effect.icon}</div>
+          <p class="text-[10px] font-black text-purple-100 truncate mt-1">${effect.name}</p>
+        </button>
+      `).join('');
+
+      selectSignupEffect(selectedBackgroundEffect);
+      lucide.createIcons();
+    }
+
+    function selectSignupEffect(id) {
+      selectedBackgroundEffect = id;
+
+      document.querySelectorAll('.effect-card').forEach(card => card.classList.remove('active'));
+
+      const active = document.getElementById('signup-effect-' + id);
+      if (active) active.classList.add('active');
+
+      const effect = LIVORA_EFFECTS.find(item => item.id === id);
+      const status = document.getElementById('signup-effect-status');
+
+      if (status && effect) status.textContent = 'Efeito atual: ' + effect.name;
+    }
+
 
     function renderSignupBackgrounds() {
       const grid = document.getElementById('signup-background-grid');
@@ -603,6 +663,7 @@
         avatar: selectedAvatarDataUrl || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300',
         backgroundPreset: selectedBackgroundPreset,
         backgroundUrl: selectedBackgroundUrl,
+        backgroundEffect: selectedBackgroundEffect,
         createdAt: new Date().toISOString()
       };
 
@@ -613,7 +674,7 @@
           email,
           password,
           options: {
-            data: { name, username, role: selectedRole, avatar_url: selectedAvatarDataUrl || '', background_preset: selectedBackgroundPreset, background_url: selectedBackgroundUrl || '' }
+            data: { name, username, role: selectedRole, avatar_url: selectedAvatarDataUrl || '', background_preset: selectedBackgroundPreset, background_url: selectedBackgroundUrl || '', background_effect: selectedBackgroundEffect }
           }
         });
 
@@ -678,6 +739,7 @@
         avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300',
         backgroundPreset: 'neon_roxo',
         backgroundUrl: '',
+        backgroundEffect: 'aurora',
         createdAt: new Date().toISOString()
       };
 
