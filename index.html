@@ -1,496 +1,1442 @@
 <!DOCTYPE html>
 <html lang="pt-PT">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LIVORA — Entrada Premium</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIVORA — Plataforma Premium de Live Stream, Vídeo Chat & Creator Economy</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
 
-  <script type="text/javascript" src="https://me.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=8EdGBzavdyInRfbwIxC2YEVhoqUmYQ6A1gMkSnjxFl6ceWKTZLx86huj2cbyRoUXB0dSWi7HGts49QdfyzzaY0xHdHXA9vTPQgmoXL12_bsT-R3g5hEOUxFLiO8FwtH3MX2lJp_BCnomvMnQWt-NITx3U8tj3WfRd8II-KyFIFP5QGaNY_Y9RjYOhOFk7_m9T8YjfmD8gBH11O9gO4rahGck-lbpzoZ1gqxHdpgPqJG-wRFkVn2nBww8bkQZwO57CMGwosv2ZM8Bjda47Lin3mMZwh9w36lsIpoiPfKxtk79SmcC5qKwrQ_Re7LdB4IB" charset="UTF-8"></script><script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
+        /* Animações avançadas */
+        @keyframes float-heart {
+            0% { transform: translateY(0) scale(0.8) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            50% { transform: translateY(-100px) scale(1.3) rotate(15deg); opacity: 0.9; }
+            100% { transform: translateY(-260px) scale(0.7) rotate(-20deg); opacity: 0; }
+        }
+        .animate-float-heart { animation: float-heart 3s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; }
+        
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.5); }
+            70% { transform: scale(1); box-shadow: 0 0 0 12px rgba(236, 72, 153, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(236, 72, 153, 0); }
+        }
+        .animate-pulse-ring { animation: pulse-ring 2s infinite; }
 
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap');
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        .scanline::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: rgba(236, 72, 153, 0.3);
+            animation: scanline 4s linear infinite;
+        }
 
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background:
-        radial-gradient(circle at 15% 15%, rgba(236, 72, 153, 0.18), transparent 32%),
-        radial-gradient(circle at 85% 10%, rgba(124, 58, 237, 0.20), transparent 34%),
-        radial-gradient(circle at 55% 90%, rgba(79, 70, 229, 0.18), transparent 30%),
-        #070312;
-      min-height: 100vh;
-      color: white;
-      overflow-x: hidden;
-    }
-
-    .glass {
-      background: rgba(12, 7, 33, 0.74);
-      border: 1px solid rgba(168, 85, 247, 0.25);
-      backdrop-filter: blur(22px);
-      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
-    }
-
-    .soft-card {
-      background: linear-gradient(180deg, rgba(20, 11, 46, 0.92), rgba(10, 5, 29, 0.96));
-      border: 1px solid rgba(168, 85, 247, 0.18);
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-14px); }
-    }
-
-    @keyframes pulse-ring {
-      0% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.48); }
-      70% { box-shadow: 0 0 0 18px rgba(236, 72, 153, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0); }
-    }
-
-    @keyframes shimmer {
-      0% { transform: translateX(-110%); }
-      100% { transform: translateX(110%); }
-    }
-
-    .float {
-      animation: float 5s ease-in-out infinite;
-    }
-
-    .pulse-ring {
-      animation: pulse-ring 2.4s infinite;
-    }
-
-    .shine::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.10), transparent);
-      transform: translateX(-110%);
-      animation: shimmer 5s infinite;
-      pointer-events: none;
-    }
-
-    .tab-panel {
-      display: none;
-    }
-
-    .tab-panel.active {
-      display: block;
-    }
-
-    .role-card.active {
-      border-color: rgba(236, 72, 153, 0.85);
-      background: linear-gradient(180deg, rgba(236, 72, 153, 0.16), rgba(124, 58, 237, 0.13));
-      box-shadow: 0 0 30px rgba(236, 72, 153, 0.12);
-    }
-
-    .toast {
-      animation: toastIn .25s ease-out forwards;
-    }
-
-    @keyframes toastIn {
-      from { opacity: 0; transform: translateY(-8px) scale(.98); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-  </style>
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #070312; }
+        ::-webkit-scrollbar-thumb { background: #2e1065; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #ec4899; }
+    </style>
 </head>
+<body class="min-h-screen bg-[#070312] text-slate-100 flex flex-col justify-between overflow-x-hidden selection:bg-pink-500 selection:text-white">
 
-<body class="selection:bg-pink-500 selection:text-white">
+    <!-- NOTIFICAÇÕES TOAST (Substitutos elegantes de alert) -->
+    <div id="toast-container" class="fixed top-6 right-6 z-50 flex flex-col gap-3 max-w-sm w-full"></div>
 
-  <!-- Toast -->
-  <div id="toast" class="hidden fixed top-5 right-5 z-50 max-w-sm rounded-2xl border border-pink-500/30 bg-[#120a2d] px-4 py-3 text-sm text-purple-100 shadow-2xl">
-    <div class="flex items-start gap-3">
-      <i data-lucide="sparkles" class="w-5 h-5 text-pink-400 shrink-0 mt-0.5"></i>
-      <p id="toast-text"></p>
-    </div>
-  </div>
-
-  <!-- Header -->
-  <header class="relative z-20 px-5 py-5 md:px-10 flex items-center justify-between">
-    <button onclick="goHome()" class="flex items-center gap-3 group">
-      <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-pink-500 via-purple-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-pink-500/20 group-hover:rotate-6 transition-all">
-        <span class="text-xl font-black italic tracking-tight">L</span>
-      </div>
-      <div class="text-left">
-        <div class="text-2xl font-black tracking-tight bg-gradient-to-r from-white via-purple-200 to-pink-400 bg-clip-text text-transparent">LIVORA</div>
-        <div class="text-[9px] text-pink-400 font-black tracking-[0.28em] uppercase -mt-1">Creator Live Network</div>
-      </div>
-    </button>
-
-    <div class="hidden md:flex items-center gap-3">
-      <span class="text-xs text-purple-300">Já tens conta?</span>
-      <button onclick="setMode('login')" class="rounded-full border border-purple-800 bg-[#110a2d]/80 px-5 py-2.5 text-xs font-bold text-purple-100 hover:border-pink-500 hover:text-white transition-all">
-        Entrar
-      </button>
-    </div>
-  </header>
-
-  <!-- Main -->
-  <main class="relative z-10 px-5 pb-10 md:px-10">
-    <section class="mx-auto grid max-w-7xl grid-cols-1 lg:grid-cols-12 gap-8 items-center min-h-[calc(100vh-110px)]">
-
-      <!-- Left Hero -->
-      <div class="lg:col-span-7 space-y-8">
-        <div class="inline-flex items-center gap-2 rounded-full border border-pink-500/30 bg-pink-500/10 px-4 py-2 text-xs font-black text-pink-300">
-          <span class="h-2 w-2 rounded-full bg-pink-500 animate-pulse"></span>
-          NOVA REDE SOCIAL DE LIVES, MATCHES E PRESENTES DIGITAIS
+    <!-- HEADER PRINCIPAL -->
+    <header class="sticky top-0 z-40 bg-[#0c0721]/90 backdrop-blur-lg border-b border-purple-900/40 px-4 py-3 lg:px-8 flex items-center justify-between shadow-lg">
+        <!-- Logo -->
+        <div class="flex items-center gap-3 cursor-pointer group" onclick="switchTab('inicio')">
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-pink-500 via-purple-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-pink-500/20 group-hover:rotate-6 transition-all duration-300">
+                <span class="text-xl font-black italic text-white tracking-wider">L</span>
+            </div>
+            <div class="flex flex-col">
+                <span class="text-2xl font-black bg-gradient-to-r from-white via-purple-200 to-pink-400 bg-clip-text text-transparent tracking-tight">LIVORA</span>
+                <span class="text-[9px] text-pink-400 font-bold uppercase tracking-widest -mt-1">Creator Live Network</span>
+            </div>
         </div>
 
-        <div class="space-y-5">
-          <h1 class="max-w-4xl text-4xl md:text-6xl xl:text-7xl font-black leading-[0.95] tracking-tight">
-            Entra ao vivo.
-            <span class="block bg-gradient-to-r from-pink-400 via-purple-300 to-indigo-300 bg-clip-text text-transparent">
-              Conecta-te em segundos.
+        <span class="hidden xl:inline-flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-pink-300 bg-pink-500/10 border border-pink-500/25 rounded-full px-2.5 py-1">
+                <span class="w-1.5 h-1.5 bg-pink-500 rounded-full animate-pulse"></span> PROTÓTIPO MVP
             </span>
-          </h1>
 
-          <p class="max-w-2xl text-base md:text-lg text-purple-100/75 leading-relaxed">
-            A LIVORA é uma plataforma premium onde criadores fazem lives, recebem presentes digitais,
-            conversam com fãs e entram em vídeo match com pessoas reais.
-          </p>
+        <!-- Barra de Busca Interativa -->
+        <div class="hidden md:flex items-center gap-3 bg-[#110a2d] rounded-full px-5 py-2.5 border border-purple-900/50 w-96 focus-within:border-pink-500/50 transition-all">
+            <i data-lucide="search" class="w-4 h-4 text-purple-400"></i>
+            <input id="global-search" type="text" oninput="handleSearch(this.value)" placeholder="Procurar criadores, lives, tags ou categorias..." class="bg-transparent text-sm text-purple-100 outline-none w-full placeholder:text-purple-400/60" />
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-3xl">
-          <div class="soft-card rounded-2xl p-4">
-            <i data-lucide="radio" class="w-6 h-6 text-pink-400 mb-3"></i>
-            <h3 class="font-black text-sm">Lives</h3>
-            <p class="text-[11px] text-purple-300 mt-1">Salas ao vivo com chat e efeitos.</p>
-          </div>
-          <div class="soft-card rounded-2xl p-4">
-            <i data-lucide="video" class="w-6 h-6 text-purple-300 mb-3"></i>
-            <h3 class="font-black text-sm">Vídeo Match</h3>
-            <p class="text-[11px] text-purple-300 mt-1">Conexões rápidas por câmara.</p>
-          </div>
-          <div class="soft-card rounded-2xl p-4">
-            <i data-lucide="gift" class="w-6 h-6 text-yellow-300 mb-3"></i>
-            <h3 class="font-black text-sm">Presentes</h3>
-            <p class="text-[11px] text-purple-300 mt-1">Moedas, gifts e apoio a criadores.</p>
-          </div>
-          <div class="soft-card rounded-2xl p-4">
-            <i data-lucide="crown" class="w-6 h-6 text-indigo-300 mb-3"></i>
-            <h3 class="font-black text-sm">VIP</h3>
-            <p class="text-[11px] text-purple-300 mt-1">Perfis premium e clubes privados.</p>
-          </div>
-        </div>
-
-        <!-- Mock live cards -->
-        <div class="relative hidden md:block max-w-4xl h-64">
-          <div class="absolute left-0 top-6 w-52 rounded-3xl overflow-hidden border border-pink-500/40 bg-black shadow-2xl float">
-            <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=500" class="h-64 w-full object-cover opacity-90" alt="Live preview">
-            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/30"></div>
-            <span class="absolute top-3 left-3 rounded-full bg-pink-500 px-2.5 py-1 text-[9px] font-black">AO VIVO</span>
-            <div class="absolute bottom-4 left-4">
-              <p class="text-sm font-black">Música & conversa</p>
-              <p class="text-[10px] text-purple-200">8.7K pessoas</p>
-            </div>
-          </div>
-
-          <div class="absolute left-48 top-0 w-60 rounded-3xl overflow-hidden border border-purple-500/40 bg-black shadow-2xl float" style="animation-delay: .7s;">
-            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500" class="h-64 w-full object-cover opacity-90" alt="Creator preview">
-            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/30"></div>
-            <span class="absolute top-3 left-3 rounded-full bg-purple-600 px-2.5 py-1 text-[9px] font-black">CREATOR</span>
-            <div class="absolute bottom-4 left-4">
-              <p class="text-sm font-black">Sala VIP</p>
-              <p class="text-[10px] text-purple-200">Presentes digitais ativos</p>
-            </div>
-          </div>
-
-          <div class="absolute left-[420px] top-10 w-52 rounded-3xl overflow-hidden border border-indigo-500/40 bg-black shadow-2xl float" style="animation-delay: 1.2s;">
-            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500" class="h-64 w-full object-cover opacity-90" alt="Video match preview">
-            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/30"></div>
-            <span class="absolute top-3 left-3 rounded-full bg-indigo-600 px-2.5 py-1 text-[9px] font-black">MATCH</span>
-            <div class="absolute bottom-4 left-4">
-              <p class="text-sm font-black">Vídeo chat</p>
-              <p class="text-[10px] text-purple-200">Ligação em segundos</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Auth Card -->
-      <div class="lg:col-span-5">
-        <div class="glass shine relative overflow-hidden rounded-[2rem] p-5 md:p-7">
-
-          <div class="mb-6 flex items-center justify-between">
-            <div>
-              <h2 id="form-title" class="text-2xl font-black">Criar conta</h2>
-              <p id="form-subtitle" class="text-xs text-purple-300 mt-1">Escolhe o teu perfil e entra na rede.</p>
-            </div>
-            <div class="h-12 w-12 rounded-2xl bg-gradient-to-tr from-pink-500 to-purple-600 flex items-center justify-center pulse-ring">
-              <i data-lucide="sparkles" class="w-6 h-6"></i>
-            </div>
-          </div>
-
-          <!-- Toggle -->
-          <div class="mb-6 grid grid-cols-2 gap-2 rounded-2xl bg-[#09051c] p-1 border border-purple-950">
-            <button id="signup-tab" onclick="setMode('signup')" class="rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 py-3 text-xs font-black text-white shadow-lg">
-              Criar conta
-            </button>
-            <button id="login-tab" onclick="setMode('login')" class="rounded-xl py-3 text-xs font-black text-purple-300 hover:text-white transition-all">
-              Entrar
-            </button>
-          </div>
-
-          <!-- Signup Panel -->
-          <div id="signup-panel" class="tab-panel active">
-            <form onsubmit="submitSignup(event)" class="space-y-4">
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <label class="block">
-                  <span class="text-xs font-bold text-purple-300">Nome</span>
-                  <input id="signup-name" type="text" placeholder="O teu nome" class="mt-1 w-full rounded-2xl border border-purple-900/60 bg-[#10092c] px-4 py-3 text-sm text-white outline-none focus:border-pink-500" required>
-                </label>
-
-                <label class="block">
-                  <span class="text-xs font-bold text-purple-300">Username</span>
-                  <input id="signup-username" type="text" placeholder="@oteunome" class="mt-1 w-full rounded-2xl border border-purple-900/60 bg-[#10092c] px-4 py-3 text-sm text-white outline-none focus:border-pink-500" required>
-                </label>
-              </div>
-
-              <label class="block">
-                <span class="text-xs font-bold text-purple-300">Email</span>
-                <input id="signup-email" type="email" placeholder="email@exemplo.com" class="mt-1 w-full rounded-2xl border border-purple-900/60 bg-[#10092c] px-4 py-3 text-sm text-white outline-none focus:border-pink-500" required>
-              </label>
-
-              <label class="block">
-                <span class="text-xs font-bold text-purple-300">Palavra-passe</span>
-                <div class="mt-1 flex rounded-2xl border border-purple-900/60 bg-[#10092c] overflow-hidden focus-within:border-pink-500">
-                  <input id="signup-password" type="password" placeholder="Mínimo 6 caracteres" class="w-full bg-transparent px-4 py-3 text-sm text-white outline-none" minlength="6" required>
-                  <button type="button" onclick="togglePassword('signup-password')" class="px-4 text-purple-300 hover:text-white">
-                    <i data-lucide="eye" class="w-4 h-4"></i>
-                  </button>
-                </div>
-              </label>
-
-              <div>
-                <span class="text-xs font-bold text-purple-300">Tipo de perfil</span>
-                <div class="mt-2 grid grid-cols-2 gap-3">
-                  <button type="button" id="role-creator" onclick="selectRole('creator')" class="role-card active rounded-2xl border border-purple-900/60 bg-[#10092c] p-4 text-left transition-all">
-                    <i data-lucide="radio" class="w-5 h-5 text-pink-400 mb-3"></i>
-                    <p class="text-sm font-black">Criador</p>
-                    <p class="text-[10px] text-purple-300 mt-1">Faz lives e recebe gifts.</p>
-                  </button>
-                  <button type="button" id="role-viewer" onclick="selectRole('viewer')" class="role-card rounded-2xl border border-purple-900/60 bg-[#10092c] p-4 text-left transition-all">
-                    <i data-lucide="users" class="w-5 h-5 text-indigo-300 mb-3"></i>
-                    <p class="text-sm font-black">Visitante</p>
-                    <p class="text-[10px] text-purple-300 mt-1">Assiste, conversa e apoia.</p>
-                  </button>
-                </div>
-              </div>
-
-              <label class="flex items-start gap-3 rounded-2xl border border-purple-900/40 bg-[#09051c]/80 p-3 cursor-pointer">
-                <input id="age-check" type="checkbox" class="mt-1 accent-pink-500" required>
-                <span class="text-[11px] text-purple-200 leading-relaxed">
-                  Confirmo que tenho idade permitida para utilizar a plataforma e aceito os termos de segurança, respeito e comunidade.
-                </span>
-              </label>
-
-              <button type="submit" class="w-full rounded-2xl bg-gradient-to-r from-pink-500 via-purple-600 to-indigo-600 py-4 text-sm font-black uppercase tracking-wide shadow-lg shadow-pink-500/20 hover:opacity-95 active:scale-[0.99] transition-all">
-                Entrar na LIVORA
-              </button>
-
-              <button type="button" onclick="demoAccess()" class="w-full rounded-2xl border border-purple-800 bg-[#110a2d] py-3 text-xs font-bold text-purple-200 hover:border-pink-500 hover:text-white transition-all">
-                Ver demonstração sem criar conta
-              </button>
-            </form>
-          </div>
-
-          <!-- Login Panel -->
-          <div id="login-panel" class="tab-panel">
-            <form onsubmit="submitLogin(event)" class="space-y-4">
-              <label class="block">
-                <span class="text-xs font-bold text-purple-300">Email ou username</span>
-                <input id="login-id" type="text" placeholder="email@exemplo.com ou @username" class="mt-1 w-full rounded-2xl border border-purple-900/60 bg-[#10092c] px-4 py-3 text-sm text-white outline-none focus:border-pink-500" required>
-              </label>
-
-              <label class="block">
-                <span class="text-xs font-bold text-purple-300">Palavra-passe</span>
-                <div class="mt-1 flex rounded-2xl border border-purple-900/60 bg-[#10092c] overflow-hidden focus-within:border-pink-500">
-                  <input id="login-password" type="password" placeholder="A tua palavra-passe" class="w-full bg-transparent px-4 py-3 text-sm text-white outline-none" required>
-                  <button type="button" onclick="togglePassword('login-password')" class="px-4 text-purple-300 hover:text-white">
-                    <i data-lucide="eye" class="w-4 h-4"></i>
-                  </button>
-                </div>
-              </label>
-
-              <div class="flex items-center justify-between text-xs">
-                <label class="flex items-center gap-2 text-purple-300 cursor-pointer">
-                  <input type="checkbox" class="accent-pink-500">
-                  Lembrar-me
-                </label>
-                <button type="button" onclick="showToast('Recuperação de palavra-passe será ligada ao Supabase no próximo passo.')" class="text-pink-400 font-bold hover:text-pink-300">
-                  Esqueci-me
+        <!-- Ações do Cabeçalho -->
+        <div class="flex items-center gap-4">
+            <!-- Balanço de Moedas -->
+            <div class="flex items-center gap-2 bg-[#170e3a] border border-yellow-500/30 rounded-full py-1.5 px-3.5 shadow-[0_0_15px_rgba(234,179,8,0.08)]">
+                <i data-lucide="coins" class="w-5 h-5 text-yellow-400 animate-pulse"></i>
+                <span id="coin-balance" class="text-sm font-bold text-yellow-300">12.450</span>
+                <button onclick="openStoreModal()" class="bg-gradient-to-tr from-yellow-500 to-amber-400 hover:from-yellow-400 hover:to-amber-300 text-slate-950 rounded-full p-1 ml-1.5 transition-all shadow-md active:scale-95" title="Recarregar Moedas">
+                    <i data-lucide="plus" class="w-3.5 h-3.5 stroke-[3]"></i>
                 </button>
-              </div>
-
-              <button type="submit" class="w-full rounded-2xl bg-gradient-to-r from-pink-500 via-purple-600 to-indigo-600 py-4 text-sm font-black uppercase tracking-wide shadow-lg shadow-pink-500/20 hover:opacity-95 active:scale-[0.99] transition-all">
-                Entrar
-              </button>
-
-              <button type="button" onclick="demoAccess()" class="w-full rounded-2xl border border-purple-800 bg-[#110a2d] py-3 text-xs font-bold text-purple-200 hover:border-pink-500 hover:text-white transition-all">
-                Entrar em modo demonstração
-              </button>
-            </form>
-          </div>
-
-          <div class="mt-6 grid grid-cols-3 gap-2 text-center">
-            <div class="rounded-2xl bg-[#09051c]/80 border border-purple-950 p-3">
-              <p class="text-lg font-black text-pink-300">24K</p>
-              <p class="text-[9px] text-purple-400 uppercase tracking-wide">Criadores</p>
             </div>
-            <div class="rounded-2xl bg-[#09051c]/80 border border-purple-950 p-3">
-              <p class="text-lg font-black text-purple-200">1.8M</p>
-              <p class="text-[9px] text-purple-400 uppercase tracking-wide">Matches</p>
+
+            <!-- Notificações -->
+            <div class="relative">
+                <button onclick="toggleNotifications()" class="relative p-2.5 rounded-full bg-[#110a2d] hover:bg-[#1a0f44] border border-purple-900/50 text-purple-200 hover:text-white transition-all">
+                    <i data-lucide="bell" class="w-5 h-5"></i>
+                    <span id="notification-dot" class="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-pink-500 rounded-full border-2 border-[#110a2d]"></span>
+                </button>
+                <div id="notification-dropdown" class="hidden absolute right-0 mt-3 w-80 bg-[#10092c] border border-purple-900/60 rounded-2xl p-4 shadow-2xl z-50">
+                    <div class="flex items-center justify-between border-b border-purple-950 pb-2 mb-3">
+                        <h4 class="font-bold text-sm text-purple-200">Notificações</h4>
+                        <button onclick="clearNotifications()" class="text-xs text-pink-400 hover:text-pink-300">Limpar tudo</button>
+                    </div>
+                    <div id="notification-list" class="space-y-3 max-h-64 overflow-y-auto">
+                        <div class="flex gap-3 text-xs p-2 rounded-lg bg-[#150d3a] hover:bg-[#1c114d] cursor-pointer" onclick="switchTab('live-room', 'larissa')">
+                            <div class="w-2 h-2 rounded-full bg-pink-500 mt-1.5 shrink-0"></div>
+                            <div>
+                                <p class="text-purple-100"><strong>Larissa</strong> está em direto agora!</p>
+                                <span class="text-[10px] text-purple-400">Agora</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-3 text-xs p-2 rounded-lg bg-[#150d3a] hover:bg-[#1c114d] cursor-pointer" onclick="switchTab('mensagens', 'gabriel')">
+                            <div class="w-2 h-2 rounded-full bg-pink-500 mt-1.5 shrink-0"></div>
+                            <div>
+                                <p class="text-purple-100"><strong>Gabriel</strong> enviou-te uma mensagem.</p>
+                                <span class="text-[10px] text-purple-400">Há 2 min</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="rounded-2xl bg-[#09051c]/80 border border-purple-950 p-3">
-              <p class="text-lg font-black text-yellow-300">€</p>
-              <p class="text-[9px] text-purple-400 uppercase tracking-wide">Gifts</p>
-            </div>
-          </div>
+
+            <!-- Perfil do Usuário -->
+            <button onclick="switchTab('profile')" class="flex items-center gap-2.5 p-1 pr-3 rounded-full bg-[#110a2d] border border-purple-900/50 hover:border-pink-500/50 transition-all">
+                <img id="user-navbar-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150" alt="O teu perfil" class="w-8 h-8 rounded-full border border-pink-500 object-cover" onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'" />
+                <span id="user-navbar-name" class="text-xs font-semibold text-purple-200 hidden md:inline">Pedro Creator</span>
+            </button>
         </div>
-      </div>
+    </header>
 
-    </section>
-  </main>
+    <!-- CONTAINER DE CONTEÚDO PRINCIPAL -->
+    <div class="flex-1 max-w-8xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-6 p-4 lg:p-8">
+        
+        <!-- SIDEBAR DE NAVEGAÇÃO DESKTOP -->
+        <aside class="hidden lg:flex lg:col-span-2 flex-col gap-2">
+            <nav id="desktop-nav" class="space-y-1.5 bg-[#0c0721]/60 border border-purple-950 p-3.5 rounded-2xl sticky top-24">
+                <button onclick="switchTab('inicio')" data-tab="inicio" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-pink-500 to-purple-600 shadow-lg shadow-purple-600/20">
+                    <i data-lucide="tv" class="w-5 h-5"></i><span>Início</span>
+                </button>
+                <button onclick="switchTab('descobrir')" data-tab="descobrir" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-purple-300 hover:bg-[#150d3a] hover:text-white transition-all">
+                    <i data-lucide="compass" class="w-5 h-5"></i><span>Descobrir</span>
+                </button>
+                <button onclick="switchTab('mensagens')" data-tab="mensagens" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-purple-300 hover:bg-[#150d3a] hover:text-white transition-all relative">
+                    <i data-lucide="message-square" class="w-5 h-5"></i><span>Mensagens</span>
+                    <span class="absolute right-3 bg-pink-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">2</span>
+                </button>
+                <button onclick="switchTab('ranking')" data-tab="ranking" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-purple-300 hover:bg-[#150d3a] hover:text-white transition-all">
+                    <i data-lucide="award" class="w-5 h-5"></i><span>Ranking</span>
+                </button>
+                <button onclick="switchTab('videochat')" data-tab="videochat" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-purple-300 hover:bg-[#150d3a] hover:text-white transition-all">
+                    <i data-lucide="video" class="w-5 h-5 text-pink-500 animate-pulse"></i>
+                    <div class="flex items-center gap-1.5">
+                        <span>Vídeo Chat</span>
+                        <span class="text-[9px] bg-pink-500/20 text-pink-400 font-bold px-1.5 py-0.5 rounded-full border border-pink-500/30">MATCH</span>
+                    </div>
+                </button>
 
-  <script>
-    let selectedRole = 'creator';
+                <!-- Sessão Seguindo -->
+                <div class="border-t border-purple-950/60 my-4 pt-4">
+                    <span class="text-[10px] font-bold text-purple-400/60 uppercase tracking-widest px-4 block mb-3">Seguindo</span>
+                    <div id="following-list" class="space-y-1.5">
+                        <!-- Renderizado via Javascript -->
+                    </div>
+                </div>
+            </nav>
+        </aside>
 
-    document.addEventListener('DOMContentLoaded', () => {
-      lucide.createIcons();
-      const saved = localStorage.getItem('livora_user');
-      if (saved) {
-        try {
-          const user = JSON.parse(saved);
-          showToast(`Bem-vindo de volta, ${user.name || 'criador'}!`);
-        } catch(e) {}
-      }
-    });
+        <!-- CONTEÚDO PRINCIPAL MUTÁVEL -->
+        <main class="col-span-1 lg:col-span-10 flex flex-col gap-6">
+            
+            <!-- ABA: INÍCIO (BANNER E EM DESTAQUE) -->
+            <div id="tab-inicio" class="tab-content active space-y-8">
+                <!-- Banner Promocional -->
+                <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-purple-950 via-[#1c0e3a] to-[#0a051d] border border-purple-900/30 p-6 md:p-10 flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl">
+                    <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(236,72,153,0.1),transparent)]"></div>
+                    <div class="space-y-4 max-w-lg relative z-10 text-center md:text-left">
+                        <span class="inline-flex items-center gap-1.5 bg-pink-500/20 text-pink-400 text-xs font-bold px-3 py-1.5 rounded-full border border-pink-500/30">
+                            <i data-lucide="flame" class="w-3.5 h-3.5 text-pink-500"></i> AO VIVO • CONECTA-TE HOJE
+                        </span>
+                        <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight leading-none text-white">
+                            Vive momentos reais <br class="hidden md:block"/><span class="bg-gradient-to-r from-pink-500 via-purple-400 to-indigo-400 bg-clip-text text-transparent">ao vivo e a cores.</span>
+                        </h1>
+                        <p class="text-purple-200/80 text-sm md:text-base">
+                            Entra em lives dinâmicas, conversa por vídeo com pessoas reais e apoia os teus criadores favoritos com presentes digitais exclusivos.
+                        </p>
+                        <div class="flex items-center justify-center md:justify-start gap-3.5 pt-2">
+                            <button onclick="switchTab('descobrir')" class="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-400 hover:to-purple-500 text-white font-bold px-6 py-3 rounded-full shadow-lg shadow-pink-500/10 transition-all active:scale-95">Descobrir lives</button>
+                            <button onclick="switchTab('videochat')" class="bg-[#1a103d] hover:bg-[#251854] text-purple-200 font-semibold px-6 py-3 rounded-full border border-purple-900/60 transition-all">Começar vídeo match</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Streamer em Destaque no Banner -->
+                    <div class="relative z-10 shrink-0 cursor-pointer hover:scale-[1.03] transition-all duration-300" onclick="switchTab('live-room', 'larissa')">
+                        <div class="relative w-64 h-80 rounded-2xl overflow-hidden border-2 border-pink-500 shadow-2xl animate-pulse-ring">
+                            <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400" alt="Larissa" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400'" />
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/45 flex flex-col justify-between p-3.5">
+                                <div class="flex items-center justify-between">
+                                    <span class="bg-pink-500 text-white font-bold text-[10px] px-2 py-0.5 rounded-full flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 bg-white rounded-full animate-ping"></span> AO VIVO
+                                    </span>
+                                    <span class="bg-black/65 text-white text-[10px] font-bold px-2 py-0.5 rounded-full backdrop-blur-md">👥 8.7K</span>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-sm text-white">Larissa 💖</h3>
+                                    <p class="text-[11px] text-purple-200">#Música & Acústico</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-    function showToast(message) {
-      const toast = document.getElementById('toast');
-      const text = document.getElementById('toast-text');
-      text.textContent = message;
-      toast.classList.remove('hidden');
-      toast.classList.add('toast');
+                <!-- Painel de Recursos Rápidos -->
+                <section class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="p-5 rounded-2xl bg-gradient-to-b from-[#140b2e] to-[#0a051d] border border-purple-950 flex flex-col gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-pink-500/10 flex items-center justify-center text-pink-500"><i data-lucide="tv"></i></div>
+                        <div>
+                            <h4 class="font-bold text-sm text-purple-100">Live Streams</h4>
+                            <p class="text-[11px] text-purple-400">Transmite o teu talento e recebe apoio.</p>
+                        </div>
+                    </div>
+                    <div class="p-5 rounded-2xl bg-gradient-to-b from-[#140b2e] to-[#0a051d] border border-purple-950 flex flex-col gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400"><i data-lucide="video"></i></div>
+                        <div>
+                            <h4 class="font-bold text-sm text-purple-100">Video Chat</h4>
+                            <p class="text-[11px] text-purple-400">Match instantâneo por chamada de vídeo.</p>
+                        </div>
+                    </div>
+                    <div class="p-5 rounded-2xl bg-gradient-to-b from-[#140b2e] to-[#0a051d] border border-purple-950 flex flex-col gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-yellow-500/10 flex items-center justify-center text-yellow-400"><i data-lucide="gift"></i></div>
+                        <div>
+                            <h4 class="font-bold text-sm text-purple-100">Presentes Virtuais</h4>
+                            <p class="text-[11px] text-purple-400">Apoia criadores com efeitos digitais premium.</p>
+                        </div>
+                    </div>
+                    <div class="p-5 rounded-2xl bg-gradient-to-b from-[#140b2e] to-[#0a051d] border border-purple-950 flex flex-col gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400"><i data-lucide="users"></i></div>
+                        <div>
+                            <h4 class="font-bold text-sm text-purple-100">Seguidores e Clubes</h4>
+                            <p class="text-[11px] text-purple-400">Cria amizades e comunidades de fãs.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
 
-      clearTimeout(window.toastTimer);
-      window.toastTimer = setTimeout(() => {
-        toast.classList.add('hidden');
-        toast.classList.remove('toast');
-      }, 3600);
+            <!-- ABA: DESCOBRIR (FILTROS E STREAMERS GRID) -->
+            <div id="tab-descobrir" class="tab-content space-y-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-2xl font-black">Descobrir Criadores</h2>
+                        <p class="text-sm text-purple-400">Encontra criadores incríveis em direto em Portugal e no mundo lusófono.</p>
+                    </div>
+                    
+                    <!-- Chips de Categorias -->
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="filterCategory('Tudo')" class="category-chip active px-4 py-1.5 rounded-full text-xs font-bold bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-md">Tudo</button>
+                        <button onclick="filterCategory('Música')" class="category-chip px-4 py-1.5 rounded-full text-xs font-semibold bg-[#110a2d] border border-purple-900/40 text-purple-300 hover:text-white transition-all">Música</button>
+                        <button onclick="filterCategory('Conversa')" class="category-chip px-4 py-1.5 rounded-full text-xs font-semibold bg-[#110a2d] border border-purple-900/40 text-purple-300 hover:text-white transition-all">Conversa</button>
+                        <button onclick="filterCategory('Jogando')" class="category-chip px-4 py-1.5 rounded-full text-xs font-semibold bg-[#110a2d] border border-purple-900/40 text-purple-300 hover:text-white transition-all">Jogando</button>
+                        <button onclick="filterCategory('Vlog')" class="category-chip px-4 py-1.5 rounded-full text-xs font-semibold bg-[#110a2d] border border-purple-900/40 text-purple-300 hover:text-white transition-all">Vlogs</button>
+                    </div>
+                </div>
+                
+                <!-- Grid Dinâmico -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6" id="discover-grid">
+                    <!-- Gerado Dinamicamente por JavaScript -->
+                </div>
+            </div>
 
-      lucide.createIcons();
-    }
+            <!-- ABA: MENSAGENS DIRETAS (CHATBOX) -->
+            <div id="tab-mensagens" class="tab-content bg-[#0b061d] border border-purple-950 rounded-3xl grid grid-cols-1 md:grid-cols-12 overflow-hidden h-[600px] shadow-2xl">
+                <!-- Lista de Contactos -->
+                <div class="md:col-span-4 border-r border-purple-950 flex flex-col h-full bg-[#0c0721]/80">
+                    <div class="p-4 border-b border-purple-950 bg-[#10092c]"><h3 class="font-extrabold text-base">Mensagens</h3></div>
+                    <div class="flex-1 overflow-y-auto p-2 space-y-1.5" id="dm-contacts">
+                        <!-- Gerado Dinamicamente -->
+                    </div>
+                </div>
+                <!-- Histórico de Conversa -->
+                <div class="md:col-span-8 flex flex-col h-full bg-[#070312]/50 relative">
+                    <div class="p-4 border-b border-purple-950 bg-[#10092c] flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <img id="chat-header-avatar" src="" class="w-10 h-10 rounded-full object-cover border border-purple-800" onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'" />
+                            <div>
+                                <h4 id="chat-header-name" class="font-bold text-sm text-purple-100">Selecionar contacto</h4>
+                                <span class="text-[10px] text-green-500 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-ping"></span> Ativo agora</span>
+                            </div>
+                        </div>
+                        <button id="go-to-live-btn" onclick="" class="bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold text-xs px-4 py-2 rounded-full transition-all hover:opacity-90">Ver Live</button>
+                    </div>
+                    
+                    <div id="dm-messages-container" class="flex-1 overflow-y-auto p-4 space-y-3">
+                        <!-- Mensagens dinâmicas -->
+                    </div>
+                    
+                    <!-- Formulário de Mensagens -->
+                    <form id="dm-form" onsubmit="sendDirectMessage(event)" class="p-4 border-t border-purple-950 bg-[#10092c] flex items-center gap-2">
+                        <input id="dm-input" type="text" placeholder="Escreve uma mensagem..." class="flex-1 bg-[#150d32] border border-purple-950 text-xs text-purple-100 outline-none rounded-xl px-4 py-3 focus:border-pink-500/40 transition-all" />
+                        <button type="submit" class="bg-gradient-to-tr from-pink-500 to-purple-600 hover:from-pink-400 hover:to-purple-500 text-white p-3 rounded-xl transition-all shadow-md active:scale-95"><i data-lucide="send" class="w-4 h-4"></i></button>
+                    </form>
+                </div>
+            </div>
 
-    function setMode(mode) {
-      const signupPanel = document.getElementById('signup-panel');
-      const loginPanel = document.getElementById('login-panel');
-      const signupTab = document.getElementById('signup-tab');
-      const loginTab = document.getElementById('login-tab');
-      const title = document.getElementById('form-title');
-      const subtitle = document.getElementById('form-subtitle');
+            <!-- ABA: RANKING DE CRIADORES -->
+            <div id="tab-ranking" class="tab-content space-y-6">
+                <div class="text-center md:text-left">
+                    <h2 class="text-2xl font-black flex items-center justify-center md:justify-start gap-2"><i data-lucide="award" class="text-yellow-400"></i> Ranking Semanal</h2>
+                    <p class="text-sm text-purple-400">Os criadores que mais ganharam corações e presentes esta semana.</p>
+                </div>
+                
+                <!-- Pódio de Vencedores -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end pt-12 max-w-4xl mx-auto">
+                    <!-- Segundo Lugar -->
+                    <div class="bg-[#0e0828] border border-purple-950 rounded-2xl p-6 text-center flex flex-col items-center relative order-2 md:order-1 hover:scale-[1.02] transition-all">
+                        <div class="absolute -top-14">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200" class="w-20 h-20 rounded-full border-4 border-slate-400 object-cover" />
+                                <span class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-slate-400 text-slate-950 font-black text-xs px-2.5 py-0.5 rounded-full border border-purple-950">#2</span>
+                            </div>
+                        </div>
+                        <div class="mt-10 space-y-2">
+                            <h3 class="font-extrabold text-base text-white">Gabriel</h3>
+                            <p class="text-xs font-semibold text-purple-300">#Conversa</p>
+                            <div class="flex items-center gap-1 bg-[#1a0f44] text-yellow-300 px-3 py-1 rounded-full text-xs font-extrabold justify-center">
+                                <i data-lucide="coins" class="w-3.5 h-3.5"></i> 16.7K Moedas
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Primeiro Lugar -->
+                    <div class="bg-gradient-to-b from-[#1b0d46] to-[#0e0828] border-2 border-yellow-500 rounded-2xl p-8 text-center flex flex-col items-center relative order-1 md:order-2 transform md:-translate-y-4 shadow-2xl hover:scale-[1.03] transition-all duration-300">
+                        <div class="absolute -top-16">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200" class="w-24 h-24 rounded-full border-4 border-yellow-500 object-cover shadow-2xl shadow-yellow-500/20" />
+                                <span class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-yellow-500 text-slate-950 font-black text-sm px-3 py-1 rounded-full border-2 border-purple-950 animate-bounce">🏆 #1</span>
+                            </div>
+                        </div>
+                        <div class="mt-12 space-y-2">
+                            <span class="text-[10px] bg-yellow-500/20 text-yellow-400 font-extrabold px-3 py-1 rounded-full tracking-widest uppercase">Líder do Rank</span>
+                            <h3 class="font-black text-xl text-white">Juliana Santos</h3>
+                            <p class="text-xs font-semibold text-purple-300">#Música</p>
+                            <div class="flex items-center gap-1 bg-yellow-500 text-slate-950 px-4 py-1.5 rounded-full text-xs font-black justify-center shadow-lg shadow-yellow-500/15">
+                                <i data-lucide="coins" class="w-4 h-4"></i> 24.1K Moedas
+                            </div>
+                        </div>
+                    </div>
 
-      if (mode === 'login') {
-        signupPanel.classList.remove('active');
-        loginPanel.classList.add('active');
+                    <!-- Terceiro Lugar -->
+                    <div class="bg-[#0e0828] border border-purple-950 rounded-2xl p-6 text-center flex flex-col items-center relative order-3 hover:scale-[1.02] transition-all">
+                        <div class="absolute -top-14">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=200" class="w-20 h-20 rounded-full border-4 border-amber-700 object-cover" />
+                                <span class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-amber-700 text-slate-950 font-black text-xs px-2.5 py-0.5 rounded-full border border-purple-950">#3</span>
+                            </div>
+                        </div>
+                        <div class="mt-10 space-y-2">
+                            <h3 class="font-extrabold text-base text-white">Beatriz Costa</h3>
+                            <p class="text-xs font-semibold text-purple-300">#Jogando</p>
+                            <div class="flex items-center gap-1 bg-[#1a0f44] text-yellow-300 px-3 py-1 rounded-full text-xs font-extrabold justify-center">
+                                <i data-lucide="coins" class="w-3.5 h-3.5"></i> 15.2K Moedas
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        signupTab.className = "rounded-xl py-3 text-xs font-black text-purple-300 hover:text-white transition-all";
-        loginTab.className = "rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 py-3 text-xs font-black text-white shadow-lg";
+            <!-- ABA: RADAR VÍDEO CHAT -->
+            <div id="tab-videochat" class="tab-content space-y-6">
+                <div class="text-center md:text-left">
+                    <h2 class="text-2xl font-black flex items-center justify-center md:justify-start gap-2 text-pink-500"><i data-lucide="video" class="animate-pulse"></i> Radar Vídeo Match</h2>
+                    <p class="text-sm text-purple-400">Match inteligente e dinâmico com usuários em Portugal e no mundo lusófono.</p>
+                </div>
+                
+                <div class="bg-[#0b061d] border border-purple-950 rounded-3xl p-8 min-h-[480px] flex flex-col items-center justify-center relative overflow-hidden shadow-2xl">
+                    
+                    <!-- Estado Inicial (Idle) -->
+                    <div id="video-idle" class="text-center space-y-6 max-w-md relative z-10">
+                        <div class="w-24 h-24 rounded-full bg-gradient-to-tr from-pink-500 via-purple-600 to-indigo-600 flex items-center justify-center mx-auto shadow-xl shadow-pink-500/20 animate-bounce">
+                            <i data-lucide="video" class="w-10 h-10 text-white"></i>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="font-black text-xl">Iniciar nova chamada</h3>
+                            <p class="text-xs text-purple-400">Ativa a tua câmara para conversar com pessoas em tempo real e com áudio integrado.</p>
+                        </div>
+                        <button onclick="startMatchmaking()" class="w-full bg-gradient-to-r from-pink-500 via-purple-600 to-indigo-600 hover:from-pink-400 hover:to-indigo-500 text-white font-black px-8 py-4 rounded-full tracking-wider text-sm uppercase shadow-lg shadow-pink-500/15 active:scale-95 transition-all">Iniciar vídeo match</button>
+                    </div>
 
-        title.textContent = "Entrar";
-        subtitle.textContent = "Acede à tua conta LIVORA.";
-      } else {
-        loginPanel.classList.remove('active');
-        signupPanel.classList.add('active');
+                    <!-- Buscando Parceiro (Searching) -->
+                    <div id="video-searching" class="hidden text-center space-y-8 relative z-10">
+                        <div class="relative flex items-center justify-center">
+                            <div class="w-28 h-28 rounded-full bg-pink-500/10 border-2 border-pink-500/40 flex items-center justify-center animate-ping duration-1000"></div>
+                            <div class="absolute w-20 h-20 rounded-full bg-gradient-to-tr from-pink-500 to-purple-600 flex items-center justify-center shadow-lg"><i data-lucide="compass" class="w-8 h-8 text-white animate-spin duration-3000"></i></div>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="font-extrabold text-lg text-purple-200">Cruzando o radar de sinais...</h3>
+                            <p class="text-xs text-purple-400">A aguardar novos utilizadores com câmara ativa</p>
+                        </div>
+                        <button onclick="stopVideoChat()" class="bg-red-950 hover:bg-red-900 text-red-400 font-bold px-6 py-2.5 rounded-full border border-red-900/60 text-xs tracking-wider transition-all">Cancelar procura</button>
+                    </div>
 
-        loginTab.className = "rounded-xl py-3 text-xs font-black text-purple-300 hover:text-white transition-all";
-        signupTab.className = "rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 py-3 text-xs font-black text-white shadow-lg";
+                    <!-- Chamada conectada (Connected UI) -->
+                    <div id="video-connected" class="hidden w-full grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                        
+                        <!-- Video Do Parceiro (Matched Feed) -->
+                        <div class="relative rounded-2xl overflow-hidden bg-black aspect-video border border-pink-500/30 shadow-lg group">
+                            <!-- Loop de Vídeo Falso (Utilizando Avatar Real do Streamer) -->
+                            <img id="matched-avatar" src="" class="w-full h-full object-cover group-hover:scale-[1.01] transition-all" />
+                            <div class="scanline absolute inset-0 pointer-events-none"></div>
+                            <div class="absolute top-4 right-4 bg-red-600 text-white font-extrabold text-[9px] px-2 py-0.5 rounded-full flex items-center gap-1 uppercase tracking-wider shadow-md"><span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> Ao Vivo</div>
+                            <div class="absolute bottom-4 left-4"><span id="matched-name" class="bg-[#0c0721]/90 backdrop-blur-md text-pink-400 border border-pink-500/40 font-bold text-xs px-3 py-1.5 rounded-full"></span></div>
+                        </div>
+                        
+                        <!-- Seu Feed de Video (A tua câmara) -->
+                        <div class="relative rounded-2xl overflow-hidden bg-[#110a2d] aspect-video border border-purple-900/60 shadow-lg">
+                            <!-- Tag de vídeo caso webcam esteja ativa -->
+                            <video id="self-video" class="w-full h-full object-cover hidden" autoplay playsinline muted></video>
+                            <!-- Canvas Fallback se webcam não estiver disponível -->
+                            <canvas id="self-canvas" class="w-full h-full object-cover block"></canvas>
+                            <div class="absolute bottom-4 left-4"><span class="bg-[#0c0721]/80 backdrop-blur-md text-purple-200 text-xs px-3 py-1.5 rounded-full border border-purple-950">Tu (Pedro)</span></div>
+                        </div>
 
-        title.textContent = "Criar conta";
-        subtitle.textContent = "Escolhe o teu perfil e entra na rede.";
-      }
-    }
+                        <!-- Painel de Controle de Match -->
+                        <div class="col-span-1 md:col-span-2 flex flex-col md:flex-row items-center justify-between bg-[#110a2d] rounded-2xl p-4 border border-purple-950 gap-4 mt-2">
+                            <div class="flex items-center gap-3">
+                                <span class="w-3.5 h-3.5 bg-green-500 rounded-full animate-ping"></span>
+                                <span class="text-xs font-bold text-purple-200">Chamada conectada: <span id="match-timer" class="text-pink-400 font-mono text-sm ml-1">00:00</span></span>
+                            </div>
+                            <div class="flex items-center gap-2 w-full md:w-auto">
+                                <button onclick="stopVideoChat()" class="flex-1 md:flex-none bg-red-600 hover:bg-red-500 text-white font-bold text-xs px-6 py-3 rounded-xl transition-all shadow-md active:scale-95">Desligar</button>
+                                <button onclick="startMatchmaking()" class="flex-1 md:flex-none bg-gradient-to-r from-pink-500 to-purple-600 hover:opacity-90 text-white font-bold text-xs px-6 py-3 rounded-xl transition-all shadow-md active:scale-95">Próximo match ➔</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    function selectRole(role) {
-      selectedRole = role;
-      document.getElementById('role-creator').classList.toggle('active', role === 'creator');
-      document.getElementById('role-viewer').classList.toggle('active', role === 'viewer');
-    }
+            <!-- ABA: PERFIL DO USUÁRIO E EDITAR -->
+            <div id="tab-profile" class="tab-content space-y-6">
+                <div class="bg-gradient-to-b from-[#1b0d46] to-[#0c0721] border border-purple-900/40 rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-8 shadow-2xl">
+                    <div class="relative group">
+                        <img id="user-profile-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300" class="w-32 h-32 rounded-full border-4 border-pink-500 object-cover shadow-2xl" onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'"/>
+                        <div class="absolute inset-0 bg-black/60 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                            <p class="text-[10px] font-bold uppercase tracking-wider text-white">Trocar Foto</p>
+                        </div>
+                    </div>
+                    <div class="flex-1 space-y-4 text-center md:text-left">
+                        <div class="flex flex-col md:flex-row items-center gap-3">
+                            <h2 id="user-profile-name" class="text-3xl font-black">Pedro Creator</h2>
+                            <span class="bg-gradient-to-tr from-yellow-500 to-amber-400 text-slate-950 font-black text-[10px] px-2.5 py-0.5 rounded-full flex items-center gap-1 uppercase tracking-wide"><i data-lucide="crown" class="w-3 h-3"></i>VIP Nível 4</span>
+                        </div>
+                        <p id="user-profile-bio" class="text-xs text-purple-300 max-w-xl">Criador digital, fã de lives, vídeo match e comunidades criativas. Entra, conversa e apoia quem cria. 👋</p>
+                        
+                        <div class="flex justify-center md:justify-start gap-4">
+                            <button onclick="openEditProfileModal()" class="bg-[#150d32] hover:bg-[#1f134c] text-purple-200 border border-purple-900/60 font-semibold px-4 py-2 rounded-xl text-xs transition-all flex items-center gap-2"><i data-lucide="edit" class="w-3.5 h-3.5"></i>Editar Perfil</button>
+                            <button onclick="openStoreModal()" class="bg-gradient-to-r from-yellow-500 to-amber-400 text-slate-950 font-extrabold px-4 py-2 rounded-xl text-xs transition-all flex items-center gap-2"><i data-lucide="coins" class="w-3.5 h-3.5"></i>Recarregar Moedas</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    function togglePassword(inputId) {
-      const input = document.getElementById(inputId);
-      input.type = input.type === 'password' ? 'text' : 'password';
-    }
+            <!-- ABA: LIVE STREAMING EM TEMPO REAL -->
+            <div id="tab-live-room" class="tab-content grid grid-cols-1 lg:grid-cols-12 gap-6 relative">
+                
+                <!-- Player de Vídeo e Presentes -->
+                <div class="lg:col-span-8 flex flex-col gap-4 relative">
+                    <!-- Player da Stream -->
+                    <div id="live-player" class="relative rounded-3xl overflow-hidden bg-black aspect-video lg:aspect-[16/10] border border-purple-900/40 shadow-2xl flex flex-col justify-between">
+                        <!-- Feed do Vídeo (Streamer Avatar Background ou Webcam) -->
+                        <div class="absolute inset-0 z-0">
+                            <img id="live-stream-poster" src="" class="w-full h-full object-cover blur-sm opacity-50" />
+                            <canvas id="streamer-visualizer-canvas" class="w-full h-full object-cover block absolute inset-0"></canvas>
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#070312] via-transparent to-black/50"></div>
+                        </div>
 
-    function submitSignup(event) {
-      event.preventDefault();
+                        <!-- Animação do Presente Enviado (Overlay) -->
+                        <div id="gift-overlay" class="hidden absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/70 text-center animate-fade-in">
+                            <div id="gift-overlay-icon" class="text-8xl mb-4 animate-bounce">🌹</div>
+                            <h2 id="gift-overlay-text" class="text-2xl font-black text-yellow-300 tracking-tight">ENVIASTE UM PRESENTE!</h2>
+                        </div>
 
-      const user = {
-        name: document.getElementById('signup-name').value.trim(),
-        username: document.getElementById('signup-username').value.trim(),
-        email: document.getElementById('signup-email').value.trim(),
-        role: selectedRole,
-        plan: 'demo',
-        coins: 12450,
-        createdAt: new Date().toISOString()
-      };
+                        <!-- Cabeçalho do Player -->
+                        <div class="relative z-10 p-4 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <img id="live-streamer-avatar" src="" class="w-10 h-10 rounded-full object-cover border-2 border-pink-500" onerror="this.src='https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=150'"/>
+                                <div>
+                                    <div class="flex items-center gap-1.5">
+                                        <h4 id="live-streamer-name" class="font-black text-sm text-white">Larissa</h4>
+                                        <button id="follow-btn" onclick="toggleFollowCurrentStreamer()" class="bg-pink-500 hover:bg-pink-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full transition-all">Seguir</button>
+                                    </div>
+                                    <span id="live-streamer-tag" class="text-[10px] text-purple-200">#Música</span>
+                                </div>
+                            </div>
+                            <span class="bg-black/50 text-white text-xs font-bold px-3 py-1.5 rounded-full border border-white/10 backdrop-blur-md flex items-center gap-1">👥 <span id="live-viewer-count">8.734</span></span>
+                        </div>
 
-      localStorage.setItem('livora_user', JSON.stringify(user));
-      showToast(`Conta criada em modo protótipo. Perfil: ${selectedRole === 'creator' ? 'Criador' : 'Visitante'}.`);
+                        <!-- Recipiente para Corações flutuantes -->
+                        <div id="heart-container" class="absolute right-4 bottom-24 h-64 w-32 z-10 pointer-events-none overflow-hidden"></div>
 
-      setTimeout(() => {
-        window.location.href = 'index.html';
-      }, 900);
-    }
+                        <!-- Controles de Interação Inferiores -->
+                        <div class="relative z-10 p-4 flex items-center justify-between">
+                            <form onsubmit="sendLiveComment(event)" class="flex-1 max-w-lg flex items-center gap-2 mr-4 bg-black/50 backdrop-blur-md border border-purple-900/40 rounded-xl px-3.5 py-2">
+                                <input id="live-input" type="text" placeholder="Escreve algo incrível no chat..." class="bg-transparent text-xs text-white outline-none w-full placeholder:text-purple-300/60" />
+                                <button type="submit" class="text-pink-500"><i data-lucide="send" class="w-4.5 h-4.5"></i></button>
+                            </form>
+                            <div class="flex items-center gap-3">
+                                <button onclick="spawnHeart()" class="p-3 bg-pink-500 text-white rounded-full transition-all duration-200 hover:scale-110 active:scale-95 shadow-lg shadow-pink-500/25"><i data-lucide="heart" class="w-5 h-5 fill-current"></i></button>
+                            </div>
+                        </div>
+                    </div>
 
-    function submitLogin(event) {
-      event.preventDefault();
+                    <!-- Sessão de Presentes Rápidos -->
+                    <div class="bg-[#0c0721] border border-purple-950 rounded-3xl p-4 space-y-3">
+                        <div class="flex items-center justify-between border-b border-purple-950 pb-2"><h4 class="font-extrabold text-xs tracking-widest uppercase text-purple-300">Enviar um presente</h4></div>
+                        <div class="grid grid-cols-3 md:grid-cols-6 gap-2.5" id="gifts-grid">
+                            <!-- Gerado dinamicamente -->
+                        </div>
+                    </div>
+                </div>
 
-      const id = document.getElementById('login-id').value.trim();
-      const saved = localStorage.getItem('livora_user');
+                <!-- Chat Lateral da Live -->
+                <div class="lg:col-span-4 bg-[#0c0721] border border-purple-950 rounded-3xl flex flex-col h-[500px] lg:h-auto overflow-hidden shadow-2xl">
+                    <div class="p-4 border-b border-purple-950 bg-[#10092c] flex items-center justify-between">
+                        <h3 class="font-black text-sm">Chat da live</h3>
+                        <span class="text-[9px] bg-green-500/20 text-green-400 font-black px-2 py-0.5 rounded-full border border-green-500/30 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Ligado</span>
+                    </div>
+                    <div id="live-messages" class="flex-1 overflow-y-auto p-4 space-y-3 bg-[#080418]/60">
+                        <!-- Comentários da Live em tempo real -->
+                    </div>
+                </div>
+            </div>
 
-      if (!saved) {
-        showToast('Ainda não existe conta guardada neste navegador. Usa “Criar conta” ou modo demonstração.');
-        return;
-      }
+        </main>
+    </div>
 
-      const user = JSON.parse(saved);
+    <!-- NAVEGAÇÃO FOOTER PARA MOBILE -->
+    <footer class="lg:hidden sticky bottom-0 z-40 bg-[#0c0721]/95 border-t border-purple-950/60 py-2.5 px-6 flex items-center justify-between backdrop-blur-md">
+        <button onclick="switchTab('inicio')" class="mobile-nav-btn flex flex-col items-center text-pink-500"><i data-lucide="tv" class="w-5 h-5"></i><span class="text-[9px] font-bold">Início</span></button>
+        <button onclick="switchTab('descobrir')" class="mobile-nav-btn flex flex-col items-center text-purple-400"><i data-lucide="compass" class="w-5 h-5"></i><span class="text-[9px]">Descobrir</span></button>
+        <button onclick="switchTab('mensagens')" class="mobile-nav-btn flex flex-col items-center text-purple-400 relative"><i data-lucide="message-square" class="w-5 h-5"></i><span class="text-[9px]">Mensagens</span></button>
+        <button onclick="switchTab('ranking')" class="mobile-nav-btn flex flex-col items-center text-purple-400"><i data-lucide="award" class="w-5 h-5"></i><span class="text-[9px]">Ranking</span></button>
+        <button onclick="switchTab('videochat')" class="mobile-nav-btn flex flex-col items-center text-purple-400"><i data-lucide="video" class="w-5 h-5"></i><span class="text-[9px]">Vídeo Chat</span></button>
+    </footer>
 
-      if (id && (id === user.email || id === user.username || id.replace('@','') === user.username.replace('@',''))) {
-        showToast(`Entrada autorizada. Bem-vindo, ${user.name}!`);
-        setTimeout(() => {
-          window.location.href = 'index.html';
-        }, 900);
-      } else {
-        showToast('Conta não encontrada neste protótipo local.');
-      }
-    }
+    <!-- MODAL: RECIBO / LOJA DE MOEDAS -->
+    <div id="store-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-fade-in">
+        <div class="bg-[#0f0a28] border border-purple-900 rounded-3xl p-6 max-w-md w-full space-y-6 shadow-2xl relative">
+            <button onclick="closeStoreModal()" class="absolute top-4 right-4 text-purple-400 hover:text-white"><i data-lucide="x" class="w-6 h-6"></i></button>
+            <div class="text-center">
+                <h3 class="text-xl font-black text-white flex items-center justify-center gap-2"><i data-lucide="coins" class="text-yellow-400"></i> Loja de moedas</h3>
+                <p class="text-xs text-purple-400">Adquire pacotes fictícios para oferecer presentes digitais aos teus criadores favoritos!</p>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-3">
+                <button onclick="simulateAddCoins(1000, 4.90)" class="p-4 bg-[#150d32] border border-purple-950 hover:border-yellow-500/50 rounded-2xl flex flex-col items-center justify-between gap-1.5 transition-all hover:scale-[1.02]">
+                    <span class="text-yellow-300 font-extrabold text-base flex items-center gap-1"><i data-lucide="coins" class="w-4 h-4"></i>1.000</span>
+                    <span class="text-[10px] bg-yellow-500/10 text-yellow-400 font-black px-2 py-0.5 rounded-full">€4,90</span>
+                </button>
+                <button onclick="simulateAddCoins(5000, 19.90)" class="p-4 bg-[#150d32] border border-purple-950 hover:border-yellow-500/50 rounded-2xl flex flex-col items-center justify-between gap-1.5 transition-all hover:scale-[1.02]">
+                    <span class="text-yellow-300 font-extrabold text-base flex items-center gap-1"><i data-lucide="coins" class="w-4 h-4"></i>5.000</span>
+                    <span class="text-[10px] bg-yellow-500/10 text-yellow-400 font-black px-2 py-0.5 rounded-full">€19,90</span>
+                </button>
+                <button onclick="simulateAddCoins(10000, 39.90)" class="p-4 bg-[#150d32] border border-purple-950 hover:border-yellow-500/50 rounded-2xl flex flex-col items-center justify-between gap-1.5 transition-all hover:scale-[1.02]">
+                    <span class="text-yellow-300 font-extrabold text-base flex items-center gap-1"><i data-lucide="coins" class="w-4 h-4"></i>10.000</span>
+                    <span class="text-[10px] bg-yellow-500/10 text-yellow-400 font-black px-2 py-0.5 rounded-full">€39,90</span>
+                </button>
+                <button onclick="simulateAddCoins(50000, 149.90)" class="p-4 bg-[#150d32] border border-purple-950 hover:border-yellow-500/50 rounded-2xl flex flex-col items-center justify-between gap-1.5 transition-all hover:scale-[1.02]">
+                    <span class="text-yellow-300 font-extrabold text-base flex items-center gap-1"><i data-lucide="coins" class="w-4 h-4"></i>50.000</span>
+                    <span class="text-[10px] bg-yellow-500/10 text-yellow-400 font-black px-2 py-0.5 rounded-full">€149,90</span>
+                </button>
+            </div>
+            
+            <p class="text-[9px] text-center text-purple-500">Esta compra é puramente fictícia e serve apenas para demonstração do protótipo.</p>
+        </div>
+    </div>
 
-    function demoAccess() {
-      const user = {
-        name: 'Pedro Creator',
-        username: '@pedrocreator',
-        email: 'demo@livora.app',
-        role: 'creator',
-        plan: 'demo',
-        coins: 12450,
-        createdAt: new Date().toISOString()
-      };
+    <!-- MODAL: EDITAR PERFIL -->
+    <div id="edit-profile-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-fade-in">
+        <div class="bg-[#0f0a28] border border-purple-900 rounded-3xl p-6 max-w-md w-full space-y-4 shadow-2xl relative">
+            <button onclick="closeEditProfileModal()" class="absolute top-4 right-4 text-purple-400 hover:text-white"><i data-lucide="x" class="w-6 h-6"></i></button>
+            <h3 class="text-lg font-black text-white">Editar Informações de Perfil</h3>
+            
+            <div class="space-y-3.5">
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-xs font-bold text-purple-300">O teu nome</label>
+                    <input id="edit-name-input" type="text" class="bg-[#150d32] border border-purple-950 text-xs text-purple-100 outline-none rounded-xl px-4 py-3 focus:border-pink-500/40 w-full" />
+                </div>
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-xs font-bold text-purple-300">A tua biografia</label>
+                    <textarea id="edit-bio-input" rows="3" class="bg-[#150d32] border border-purple-950 text-xs text-purple-100 outline-none rounded-xl px-4 py-3 focus:border-pink-500/40 w-full resize-none"></textarea>
+                </div>
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-xs font-bold text-purple-300">URL do Avatar</label>
+                    <input id="edit-avatar-input" type="text" class="bg-[#150d32] border border-purple-950 text-xs text-purple-100 outline-none rounded-xl px-4 py-3 focus:border-pink-500/40 w-full" />
+                </div>
+            </div>
 
-      localStorage.setItem('livora_user', JSON.stringify(user));
-      showToast('Modo demonstração ativado. A entrar na plataforma...');
+            <div class="flex justify-end gap-3 pt-4">
+                <button onclick="closeEditProfileModal()" class="bg-purple-950 hover:bg-purple-900 text-purple-300 text-xs font-semibold px-4 py-2.5 rounded-xl">Cancelar</button>
+                <button onclick="saveProfileChanges()" class="bg-gradient-to-r from-pink-500 to-purple-600 hover:opacity-90 text-white text-xs font-extrabold px-5 py-2.5 rounded-xl">Salvar Mudanças</button>
+            </div>
+        </div>
+    </div>
 
-      setTimeout(() => {
-        window.location.href = 'index.html';
-      }, 900);
-    }
+    <!-- JAVASCRIPT PRINCIPAL -->
+    <script>
+        // CONFIGURAÇÕES DO ESTADO DA APLICAÇÃO
+        let state = {
+            coins: 12450,
+            activeTab: 'inicio',
+            currentChatUser: 'larissa',
+            currentStreamer: 'larissa',
+            matchTimerInterval: null,
+            matchSeconds: 0,
+            searchFilter: '',
+            activeCategory: 'Tudo',
+            user: {
+                name: "Pedro Creator",
+                bio: "Criador digital, fã de lives, vídeo match e comunidades criativas. Entra, conversa e apoia quem cria. 👋",
+                avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300"
+            },
+            followedStreamers: ['larissa', 'gabriel'],
+            webcamStream: null
+        };
 
-    function goHome() {
-      showToast('Página de entrada LIVORA ativa.');
-    }
-  </script>
+        // BASE DE DADOS DOS CRIADORES
+        const USERS = {
+            larissa: { id: 'larissa', name: "Larissa 💖", avatar: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400", views: "8.7K", tag: "Música", bio: "Cantora solo 🎸 | Lives de conversa de terça a domingo às 20h. Vem relaxar com boa música!", reaction: "Nossa, muito obrigada por esse carinho imenso! 😍" },
+            gabriel: { id: 'gabriel', name: "Gabriel", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400", views: "3.1K", tag: "Conversa", bio: "Conversa livre, boa energia e comunidade. Entra, senta-te e conta como foi o teu dia.", reaction: "Que presente sensacional! Tamo junto demais, irmão! 👊🚀" },
+            juliana: { id: 'juliana', name: "Juliana Santos", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400", views: "6.2K", tag: "Música", bio: "Voz lírica e covers acústicos. Aceito pedidos no chat especial!", reaction: "Ai meu coração! Tus são simplesmente perfeitos! 😭💘" },
+            beatriz: { id: 'beatriz', name: "Beatriz Costa", avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400", views: "2.5K", tag: "Jogando", bio: "Gametime 🎮 Terror, sobrevivência e boas gargalhadas. Entra e acompanha a gameplay.", reaction: "MEU DEUS! Valeu pela força! Agora consigo focar na gameplay! 👾" },
+            matheus: { id: 'matheus', name: "Matheus Ramos", avatar: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400", views: "1.8K", tag: "Humor", bio: "Comédia standup improvisada e imitações engraçadas. Quem rir primeiro manda presente!", reaction: "HAHAHA sensacional! Esse presente aí merece uma piada especial, valeu!" },
+            carla: { id: 'carla', name: "Carla Vlogs", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400", views: "4.1K", tag: "Vlog", bio: "Partilho rotinas, viagens, cafés e lugares especiais. Vem viajar comigo.", reaction: "Uau, que lindo! Agradeço de coração o o teu apoio no canal." }
+        };
+
+        const GIFTS = [
+            { id: 'rosa', name: 'Rosa', cost: 10, icon: '🌹' },
+            { id: 'coracao', name: 'Coração', cost: 49, icon: '💖' },
+            { id: 'urso', name: 'Urso', cost: 99, icon: '🧸' },
+            { id: 'microfone', name: 'Microfone', cost: 199, icon: '🎤' },
+            { id: 'foguete', name: 'Foguete', cost: 499, icon: '🚀' },
+            { id: 'castelo', name: 'Castelo', cost: 999, icon: '🏰' }
+        ];
+
+        let chatsData = {
+            larissa: [
+                { sender: 'them', text: 'Oi Pedro! Tudo bem? Fiquei mega feliz que tu passaste na live hoje!', time: '14:40' },
+                { sender: 'me', text: 'Oi Larissa! Suas músicas de violão são fantásticas, impossível perder!', time: '14:42' }
+            ],
+            gabriel: [
+                { sender: 'them', text: 'E aí Pedro, vai rolar live mais tarde? Topa um PK de batalha?', time: '14:30' }
+            ],
+            juliana: [],
+            beatriz: [],
+            matheus: [],
+            carla: []
+        };
+
+        // AUDIO SYNTHESIZER (Utilizando Web Audio API para feedbacks incríveis)
+        let audioCtx;
+        function playSynthesizedSound(type) {
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                
+                let osc = audioCtx.createOscillator();
+                let gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                const now = audioCtx.currentTime;
+
+                if (type === 'click') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(600, now);
+                    osc.frequency.exponentialRampToValueAtTime(100, now + 0.1);
+                    gain.gain.setValueAtTime(0.08, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.1);
+                    osc.start(now);
+                    osc.stop(now + 0.1);
+                } else if (type === 'coin') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(587.33, now); // D5
+                    osc.frequency.setValueAtTime(880, now + 0.08); // A5
+                    gain.gain.setValueAtTime(0.05, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.25);
+                    osc.start(now);
+                    osc.stop(now + 0.25);
+                } else if (type === 'success') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(523.25, now); // C5
+                    osc.frequency.exponentialRampToValueAtTime(1046.5, now + 0.2); // C6
+                    gain.gain.setValueAtTime(0.06, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.2);
+                    osc.start(now);
+                    osc.stop(now + 0.2);
+                } else if (type === 'match') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(150, now);
+                    osc.frequency.exponentialRampToValueAtTime(350, now + 0.15);
+                    osc.frequency.exponentialRampToValueAtTime(600, now + 0.3);
+                    gain.gain.setValueAtTime(0.04, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.35);
+                    osc.start(now);
+                    osc.stop(now + 0.35);
+                }
+            } catch (err) {
+                // Navegador bloqueia AudioContext inicialmente até interação do usuário
+            }
+        }
+
+        // INICIALIZAÇÃO DA APLICAÇÃO
+        
+        function hydrateUserFromLocalStorage() {
+            try {
+                const saved = localStorage.getItem('livora_user');
+                if (!saved) return;
+                const user = JSON.parse(saved);
+                if (user.name) state.user.name = user.name;
+                if (user.avatar) state.user.avatar = user.avatar;
+                if (typeof user.coins === 'number') state.coins = user.coins;
+                if (user.role) state.user.role = user.role;
+            } catch (error) {
+                console.warn('Não foi possível carregar o utilizador LIVORA:', error);
+            }
+        }
+
+document.addEventListener("DOMContentLoaded", () => {
+            hydrateUserFromLocalStorage();
+            lucide.createIcons();
+            renderDiscoverGrid();
+            renderGiftsGrid();
+            renderDmContacts();
+            renderFollowingSidebar();
+            selectContact('larissa');
+            updateUIInfo();
+            
+            // Loop para simular conversas ativas nas lives ao fundo
+            setInterval(simulateLiveComments, 3500);
+
+            // Iniciar animação do canvas simulado da Live
+            startCanvasVisualizer();
+        });
+
+        // TOASTS DE NOTIFICAÇÃO CUSTOMIZADOS
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `flex items-center gap-3 p-4 rounded-2xl shadow-xl transition-all duration-300 transform translate-x-12 opacity-0 text-xs font-bold border ${
+                type === 'error' ? 'bg-[#2a0e19] text-pink-400 border-pink-500/30' :
+                type === 'success' ? 'bg-[#0f1d16] text-green-400 border-green-500/30' :
+                'bg-[#120e2e] text-purple-200 border-purple-900/40'
+            }`;
+
+            let icon = 'info';
+            if (type === 'error') icon = 'alert-circle';
+            if (type === 'success') icon = 'check-circle';
+
+            toast.innerHTML = `
+                <i data-lucide="${icon}" class="w-4 h-4 shrink-0"></i>
+                <span class="flex-1">${message}</span>
+            `;
+
+            container.appendChild(toast);
+            lucide.createIcons();
+
+            // Animar Entrada
+            setTimeout(() => {
+                toast.classList.remove('translate-x-12', 'opacity-0');
+            }, 10);
+
+            // Remover e Animar Saída
+            setTimeout(() => {
+                toast.classList.add('translate-x-12', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        // SISTEMA DE ABAS (INTERATIVO)
+        function switchTab(tabId, param = null) {
+            playSynthesizedSound('click');
+            state.activeTab = tabId;
+            
+            // Gerenciar visual de classes de abas
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            const activeContent = document.getElementById(`tab-${tabId}`);
+            if (activeContent) activeContent.classList.add('active');
+
+            // Parar webcam se sairmos do vídeo-chat
+            if (tabId !== 'videochat' && state.webcamStream) {
+                state.webcamStream.getTracks().forEach(track => track.stop());
+                state.webcamStream = null;
+            }
+
+            // Ações específicas por aba
+            if (tabId === 'live-room' && param) {
+                loadLiveRoom(param);
+            } else if (tabId === 'live-room' && !param) {
+                loadLiveRoom('larissa'); // Fallback para Larissa
+            } else if (tabId === 'mensagens' && param) {
+                selectContact(param);
+            }
+
+            // Atualização do menu ativo Desktop
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if (btn.getAttribute('data-tab') === tabId) {
+                    btn.className = "nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-pink-500 to-purple-600 shadow-lg shadow-purple-600/20";
+                } else {
+                    btn.className = "nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-purple-300 hover:bg-[#150d3a] hover:text-white transition-all";
+                }
+            });
+
+            // Atualização do menu ativo Mobile
+            document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+                const span = btn.querySelector('span');
+                const btnTab = btn.getAttribute('onclick').match(/'([^']+)'/)[1];
+                if (btnTab === tabId) {
+                    btn.className = "mobile-nav-btn flex flex-col items-center text-pink-500 transition-all";
+                    if (span) span.classList.add('font-bold');
+                } else {
+                    btn.className = "mobile-nav-btn flex flex-col items-center text-purple-400 transition-all";
+                    if (span) span.classList.remove('font-bold');
+                }
+            });
+        }
+
+        // LOJA DE MOEDAS MODAL
+        function openStoreModal() {
+            playSynthesizedSound('click');
+            document.getElementById('store-modal').classList.remove('hidden');
+        }
+
+        function closeStoreModal() {
+            document.getElementById('store-modal').classList.add('hidden');
+        }
+
+        function simulateAddCoins(amount, price) {
+            state.coins += amount;
+            playSynthesizedSound('coin');
+            updateUIInfo();
+            closeStoreModal();
+            showToast(`Sucesso! Tu adquiriu ${amount.toLocaleString()} moedas fictícias.`, 'success');
+        }
+
+        function updateUIInfo() {
+            document.getElementById('coin-balance').innerText = state.coins.toLocaleString();
+            document.getElementById('user-navbar-name').innerText = state.user.name;
+            document.getElementById('user-navbar-avatar').src = state.user.avatar;
+            document.getElementById('user-profile-avatar').src = state.user.avatar;
+            document.getElementById('user-profile-name').innerText = state.user.name;
+            document.getElementById('user-profile-bio').innerText = state.user.bio;
+        }
+
+        // EDITAR PERFIL MODAL
+        function openEditProfileModal() {
+            document.getElementById('edit-name-input').value = state.user.name;
+            document.getElementById('edit-bio-input').value = state.user.bio;
+            document.getElementById('edit-avatar-input').value = state.user.avatar;
+            document.getElementById('edit-profile-modal').classList.remove('hidden');
+        }
+
+        function closeEditProfileModal() {
+            document.getElementById('edit-profile-modal').classList.add('hidden');
+        }
+
+        function saveProfileChanges() {
+            const nameInput = document.getElementById('edit-name-input').value.trim();
+            const bioInput = document.getElementById('edit-bio-input').value.trim();
+            const avatarInput = document.getElementById('edit-avatar-input').value.trim();
+
+            if (!nameInput) {
+                showToast("O nome não pode ficar em branco.", "error");
+                return;
+            }
+
+            state.user.name = nameInput;
+            state.user.bio = bioInput;
+            if (avatarInput) state.user.avatar = avatarInput;
+
+            updateUIInfo();
+            closeEditProfileModal();
+            showToast("Perfil atualizado com sucesso!", "success");
+        }
+
+        // DROPDOWN NOTIFICAÇÕES
+        function toggleNotifications() {
+            playSynthesizedSound('click');
+            document.getElementById('notification-dropdown').classList.toggle('hidden');
+        }
+
+        function clearNotifications() {
+            document.getElementById('notification-list').innerHTML = `
+                <p class="text-center text-xs text-purple-400 py-6">Nenhuma notificação nova por enquanto.</p>
+            `;
+            document.getElementById('notification-dot').style.display = 'none';
+            showToast("Notificações limpas.");
+        }
+
+        // SEGUIR / SIDEBAR GERENCIAMENTO
+        function renderFollowingSidebar() {
+            const list = document.getElementById('following-list');
+            list.innerHTML = state.followedStreamers.map(key => {
+                const u = USERS[key];
+                if (!u) return '';
+                return `
+                    <div onclick="switchTab('live-room', '${u.id}')" class="flex items-center gap-3.5 p-2 rounded-xl hover:bg-[#150d3a] cursor-pointer border border-transparent transition-all group">
+                        <div class="relative">
+                            <img src="${u.avatar}" class="w-8 h-8 rounded-full object-cover border-2 border-pink-500" alt="${u.name}" onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'"/>
+                            <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-[#070312]"></span>
+                        </div>
+                        <div class="truncate">
+                            <p class="text-xs font-bold text-purple-100 group-hover:text-pink-400 transition-all">${u.name}</p>
+                            <span class="text-[10px] text-pink-400 font-bold flex items-center gap-1">
+                                <span class="w-1 h-1 rounded-full bg-pink-500 animate-ping"></span> AO VIVO
+                            </span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleFollowCurrentStreamer() {
+            const streamerId = state.currentStreamer;
+            const index = state.followedStreamers.indexOf(streamerId);
+            
+            if (index > -1) {
+                // Unfollow
+                state.followedStreamers.splice(index, 1);
+                showToast(`Tu deixou de seguir ${USERS[streamerId].name}.`);
+            } else {
+                // Follow
+                state.followedStreamers.push(streamerId);
+                showToast(`Agora tu estás seguindo ${USERS[streamerId].name}!`, "success");
+            }
+
+            renderFollowingSidebar();
+            updateFollowButton();
+        }
+
+        function updateFollowButton() {
+            const btn = document.getElementById('follow-btn');
+            if (state.followedStreamers.includes(state.currentStreamer)) {
+                btn.innerText = "Seguindo";
+                btn.className = "bg-[#150d32] border border-purple-900 text-purple-300 text-[10px] font-black px-2.5 py-0.5 rounded-full transition-all";
+            } else {
+                btn.innerText = "Seguir";
+                btn.className = "bg-pink-500 hover:bg-pink-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full transition-all";
+            }
+        }
+
+        // CARREGAR LIVE DE UM CRIADOR ESPECÍFICO
+        function loadLiveRoom(streamerId) {
+            state.currentStreamer = streamerId;
+            const u = USERS[streamerId];
+            if (!u) return;
+
+            document.getElementById('live-streamer-name').innerText = u.name;
+            document.getElementById('live-streamer-avatar').src = u.avatar;
+            document.getElementById('live-streamer-tag').innerText = `#${u.tag}`;
+            document.getElementById('live-stream-poster').src = u.avatar;
+            
+            // Gerar visualizador de estúdio dinâmico para cada streamer
+            startCanvasVisualizer();
+            updateFollowButton();
+
+            // Limpar chat e dar as boas vindas
+            const chatContainer = document.getElementById('live-messages');
+            chatContainer.innerHTML = `
+                <div class="text-center p-3 border border-purple-900/20 bg-purple-950/20 rounded-xl">
+                    <p class="text-[10px] text-purple-400">Tu entrou no chat ao vivo de <strong>${u.name}</strong>. Respeite as regras da comunidade.</p>
+                </div>
+            `;
+            
+            // Setar número de visualizadores dinâmico próximo ao original do mockup
+            document.getElementById('live-viewer-count').innerText = u.views;
+        }
+
+        // GRID DE DESCOBERTA DE CRIADORES
+        function renderDiscoverGrid() {
+            const grid = document.getElementById('discover-grid');
+            let usersArray = Object.values(USERS);
+
+            if (state.searchFilter) {
+                usersArray = usersArray.filter(u => 
+                    u.name.toLowerCase().includes(state.searchFilter.toLowerCase()) || 
+                    u.tag.toLowerCase().includes(state.searchFilter.toLowerCase())
+                );
+            }
+
+            if (state.activeCategory !== 'Tudo') {
+                usersArray = usersArray.filter(u => u.tag === state.activeCategory);
+            }
+
+            if (usersArray.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-12">
+                        <i data-lucide="compass" class="w-12 h-12 text-purple-500 mx-auto opacity-30 mb-3"></i>
+                        <p class="text-xs text-purple-400">Nenhum criador ao vivo correspondente encontrado.</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            grid.innerHTML = usersArray.map(u => `
+                <div onclick="switchTab('live-room', '${u.id}')" class="relative rounded-2xl overflow-hidden bg-[#0e0828] border border-purple-950/60 transition-all hover:scale-[1.03] group cursor-pointer shadow-lg">
+                    <div class="aspect-[3/4] relative">
+                        <img src="${u.avatar}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent p-3.5 flex flex-col justify-between">
+                            <span class="bg-pink-500 text-white font-extrabold text-[9px] px-2 py-0.5 rounded-full self-start flex items-center gap-1"><span class="w-1 h-1 bg-white rounded-full"></span> LIVE</span>
+                            <div>
+                                <p class="font-bold text-sm text-white truncate">${u.name}</p>
+                                <div class="flex items-center justify-between mt-1">
+                                    <span class="text-[10px] text-pink-400 font-semibold">#${u.tag}</span>
+                                    <span class="text-[9px] text-purple-300">👥 ${u.views}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        // PESQUISA E CATEGORIAS
+        function handleSearch(val) {
+            state.searchFilter = val;
+            renderDiscoverGrid();
+        }
+
+        function filterCategory(cat) {
+            state.activeCategory = cat;
+            
+            document.querySelectorAll('.category-chip').forEach(btn => {
+                if (btn.innerText === cat || (cat === 'Tudo' && btn.innerText === 'Tudo') || (cat === 'Vlog' && btn.innerText === 'Vlogs')) {
+                    btn.className = "category-chip active px-4 py-1.5 rounded-full text-xs font-bold bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-md";
+                } else {
+                    btn.className = "category-chip px-4 py-1.5 rounded-full text-xs font-semibold bg-[#110a2d] border border-purple-900/40 text-purple-300 hover:text-white transition-all";
+                }
+            });
+
+            renderDiscoverGrid();
+        }
+
+        // --- SISTEMA LIVE ROOM (CURTIDAS, PRESENTES E REAÇÕES) ---
+        function spawnHeart() {
+            playSynthesizedSound('click');
+            const container = document.getElementById('heart-container');
+            const heart = document.createElement('span');
+            heart.className = 'absolute bottom-0 text-3xl animate-float-heart';
+            
+            // Selecionar emojis de carinho randômicos
+            const hearts = ['❤️', '💖', '🔥', '✨', '🥰', '🎈'];
+            heart.innerText = hearts[Math.floor(Math.random() * hearts.length)];
+            heart.style.left = `calc(50% + ${Math.floor(Math.random() * 80) - 40}px)`;
+            container.appendChild(heart);
+            setTimeout(() => heart.remove(), 3000);
+        }
+
+        function renderGiftsGrid() {
+            const grid = document.getElementById('gifts-grid');
+            grid.innerHTML = GIFTS.map(gift => `
+                <div onclick="sendGift('${gift.id}')" class="bg-[#110a2d] hover:bg-[#1a0f44] border border-purple-950 rounded-2xl p-2.5 text-center cursor-pointer flex flex-col items-center justify-between transition-all hover:scale-[1.03] shadow-md group">
+                    <div class="text-3xl group-hover:scale-110 transition-transform">${gift.icon}</div>
+                    <p class="font-bold text-[10px] text-purple-100 mt-1">${gift.name}</p>
+                    <div class="flex items-center gap-0.5 bg-[#170e3a] px-2 py-0.5 rounded-full text-yellow-300 text-[9px] font-black mt-1">
+                        <span>${gift.cost}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function sendGift(giftId) {
+            const gift = GIFTS.find(g => g.id === giftId);
+            const streamer = USERS[state.currentStreamer];
+
+            if (state.coins < gift.cost) {
+                showToast("Saldo de moedas insuficiente para enviar o presente!", "error");
+                return;
+            }
+
+            // Subtrair moedas
+            state.coins -= gift.cost;
+            playSynthesizedSound('coin');
+            updateUIInfo();
+
+            // Animação de Overlay do Presente
+            const overlay = document.getElementById('gift-overlay');
+            document.getElementById('gift-overlay-icon').innerText = gift.icon;
+            document.getElementById('gift-overlay-text').innerText = `VOCÊ ENVIOU UM(A) ${gift.name.toUpperCase()} PARA ${streamer.name.toUpperCase()}!`;
+            
+            overlay.classList.remove('hidden');
+            setTimeout(() => overlay.classList.add('hidden'), 2500);
+
+            // Log no Chat
+            appendLiveMessage("Tu", `enviou um(a) ${gift.name} ${gift.icon}!`, true);
+
+            // Resposta personalizada e animada do Streamer em tempo real após 1.5 segundos
+            setTimeout(() => {
+                appendLiveMessage(streamer.name, streamer.reaction);
+                playSynthesizedSound('success');
+            }, 1200);
+        }
+
+        function sendLiveComment(e) {
+            e.preventDefault();
+            const input = document.getElementById('live-input');
+            if (!input.value.trim()) return;
+
+            appendLiveMessage("Tu", input.value);
+            input.value = "";
+        }
+
+        function appendLiveMessage(user, text, isGift = false) {
+            const container = document.getElementById('live-messages');
+            const item = document.createElement('div');
+            
+            if (isGift) {
+                item.className = "flex items-start gap-2 text-xs bg-purple-950/40 p-3 rounded-2xl border-l-4 border-yellow-500 shadow-md animate-fade-in";
+            } else {
+                item.className = "flex items-start gap-2 text-xs p-1.5 rounded-lg animate-fade-in";
+            }
+
+            const senderColor = user === "Tu" ? "text-pink-400 font-extrabold" : "text-purple-300 font-extrabold";
+
+            item.innerHTML = `
+                <div class="flex-1">
+                    <span class="${senderColor} mr-1.5">${user}:</span>
+                    <span class="text-purple-100">${text}</span>
+                </div>
+            `;
+            container.appendChild(item);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function simulateLiveComments() {
+            if (state.activeTab !== 'live-room') return;
+
+            const comments = [
+                "Que transmissão incrível!",
+                "Estou adorando a live de hoje ✨",
+                "Manda um abraço para o pessoal de São Paulo!",
+                "Qual é a sua programação amanhã?",
+                "Simplesmente a melhor streamer da LIVORA! 🔥",
+                "Estou aqui compartilhando com meus amigos",
+                "Canta aquela acústica!",
+                "Alguém tem moedas sobrando para um castelo? 😂"
+            ];
+            const users = ["Guilherme", "Lucas", "Mariana", "Renan", "Isabela", "Ana Clara", "Thiago"];
+
+            const randomUser = users[Math.floor(Math.random() * users.length)];
+            const randomComment = comments[Math.floor(Math.random() * comments.length)];
+
+            appendLiveMessage(randomUser, randomComment);
+
+            // Flutuar levemente a contagem de viewers para maior realismo
+            const countEl = document.getElementById('live-viewer-count');
+            const cleanVal = parseFloat(countEl.innerText.replace('K', '').replace(',', '.'));
+            const variance = (Math.random() * 0.4 - 0.2); // flutua de -0.2 a +0.2K
+            const newVal = Math.max(1.0, cleanVal + variance).toFixed(1);
+            countEl.innerText = `${newVal}K`;
+        }
+
+        // --- SISTEMA DE DIRETAS (DM) ---
+        function renderDmContacts() {
+            const container = document.getElementById('dm-contacts');
+            
+            container.innerHTML = Object.keys(chatsData).map(key => {
+                const u = USERS[key];
+                if (!u) return '';
+                return `
+                    <div id="dm-contact-${key}" onclick="selectContact('${key}')" class="flex items-center gap-3 p-3 rounded-xl cursor-pointer hover:bg-[#150d3a] transition-all duration-200">
+                        <div class="relative">
+                            <img src="${u.avatar}" class="w-10 h-10 rounded-full object-cover border border-purple-900" onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'"/>
+                            <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full border border-[#070312]"></span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h4 class="font-bold text-xs text-purple-100 truncate">${u.name}</h4>
+                            <p class="text-[10px] text-purple-400 truncate">Clique para visualizar o chat...</p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function selectContact(key) {
+            state.currentChatUser = key;
+            const u = USERS[key];
+            if (!u) return;
+
+            // Highlight no contacto selecionado
+            Object.keys(chatsData).forEach(k => {
+                const el = document.getElementById(`dm-contact-${k}`);
+                if (el) {
+                    if (k === key) el.classList.add('bg-[#150d3a]', 'border-l-2', 'border-pink-500');
+                    else el.classList.remove('bg-[#150d3a]', 'border-l-2', 'border-pink-500');
+                }
+            });
+
+            document.getElementById('chat-header-name').innerText = u.name;
+            document.getElementById('chat-header-avatar').src = u.avatar;
+            document.getElementById('go-to-live-btn').setAttribute('onclick', `switchTab('live-room', '${key}')`);
+
+            renderDmMessages();
+        }
+
+        function renderDmMessages() {
+            const container = document.getElementById('dm-messages-container');
+            const messages = chatsData[state.currentChatUser] || [];
+
+            if (messages.length === 0) {
+                container.innerHTML = `
+                    <div class="h-full flex flex-col items-center justify-center text-center p-6">
+                        <i data-lucide="message-square" class="w-12 h-12 text-purple-500/20 mb-3"></i>
+                        <p class="text-xs text-purple-400">Essa conversa está limpa. Diga um "Oi!" e inicie a conversa!</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            container.innerHTML = messages.map(msg => `
+                <div class="flex ${msg.sender === 'me' ? 'justify-end' : 'justify-start'}">
+                    <div class="max-w-[70%] p-3.5 rounded-2xl text-xs ${
+                        msg.sender === 'me' 
+                        ? 'bg-gradient-to-tr from-pink-500 to-purple-600 text-white rounded-tr-none shadow-md' 
+                        : 'bg-[#150d32] border border-purple-900/40 text-purple-100 rounded-tl-none shadow-md'
+                    }">
+                        <p>${msg.text}</p>
+                    </div>
+                </div>
+            `).join('');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function sendDirectMessage(e) {
+            e.preventDefault();
+            const input = document.getElementById('dm-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            chatsData[state.currentChatUser].push({ sender: 'me', text: text });
+            renderDmMessages();
+            input.value = "";
+
+            // Simulação de resposta rápida do criador
+            setTimeout(() => {
+                if (state.currentChatUser === 'larissa') {
+                    chatsData.larissa.push({ sender: 'them', text: "Oii! Obrigada por me mandar mensagem. Nos vemos na live às 20h para conversarmos ao vivo? 💖" });
+                } else {
+                    chatsData[state.currentChatUser].push({ sender: 'them', text: "E aí! Que bacana sua mensagem. Te vejo na transmissão daqui a pouco!" });
+                }
+                renderDmMessages();
+                playSynthesizedSound('click');
+            }, 1500);
+        }
+
+        // --- MATCHMAKER VÍDEO CHAT ---
+        function startMatchmaking() {
+            playSynthesizedSound('click');
+            document.getElementById('video-idle').classList.add('hidden');
+            document.getElementById('video-connected').classList.add('hidden');
+            document.getElementById('video-searching').classList.remove('hidden');
+
+            // Tentar ativar câmera do usuário (Webcam) para maior fidelidade
+            activateWebcam();
+
+            setTimeout(() => {
+                // Selecionar parceiro randômico da lista de streamers
+                const candidates = Object.keys(USERS);
+                const randomKey = candidates[Math.floor(Math.random() * candidates.length)];
+                const matched = USERS[randomKey];
+
+                document.getElementById('video-searching').classList.add('hidden');
+                document.getElementById('video-connected').classList.remove('hidden');
+
+                document.getElementById('matched-avatar').src = matched.avatar;
+                document.getElementById('matched-name').innerText = matched.name;
+
+                playSynthesizedSound('match');
+                showToast(`Match encontrado! Ligado com ${matched.name}.`, 'success');
+
+                // Iniciar contador
+                clearInterval(state.matchTimerInterval);
+                state.matchSeconds = 0;
+                state.matchTimerInterval = setInterval(() => {
+                    state.matchSeconds++;
+                    const m = Math.floor(state.matchSeconds / 60).toString().padStart(2, '0');
+                    const s = (state.matchSeconds % 60).toString().padStart(2, '0');
+                    document.getElementById('match-timer').innerText = `${m}:${s}`;
+                }, 1000);
+
+            }, 4000);
+        }
+
+        function stopVideoChat() {
+            playSynthesizedSound('click');
+            clearInterval(state.matchTimerInterval);
+            
+            // Desligar câmera
+            if (state.webcamStream) {
+                state.webcamStream.getTracks().forEach(track => track.stop());
+                state.webcamStream = null;
+            }
+
+            document.getElementById('video-searching').classList.add('hidden');
+            document.getElementById('video-connected').classList.add('hidden');
+            document.getElementById('video-idle').classList.remove('hidden');
+        }
+
+        async function activateWebcam() {
+            const selfVideo = document.getElementById('self-video');
+            const selfCanvas = document.getElementById('self-canvas');
+            
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+                state.webcamStream = stream;
+                selfVideo.srcObject = stream;
+                selfVideo.classList.remove('hidden');
+                selfCanvas.classList.add('hidden');
+            } catch (err) {
+                // Caso não tenha permissão de webcam, desenhar renderizador 2D interativo no Canvas
+                selfVideo.classList.add('hidden');
+                selfCanvas.classList.remove('hidden');
+                drawStaticCanvasFallback(selfCanvas);
+            }
+        }
+
+        // Desenha estática/ondas interativas de simulação no Canvas para a câmera
+        let fallbackAnimFrame;
+        function drawStaticCanvasFallback(canvas) {
+            const ctx = canvas.getContext('2d');
+            let width = canvas.width = 300;
+            let height = canvas.height = 200;
+            
+            let pulse = 0;
+            function render() {
+                if (state.activeTab !== 'videochat' || state.webcamStream) {
+                    cancelAnimationFrame(fallbackAnimFrame);
+                    return;
+                }
+
+                ctx.fillStyle = "#110a2d";
+                ctx.fillRect(0, 0, width, height);
+
+                // Desenha avatar do usuário de forma artística
+                ctx.beginPath();
+                ctx.arc(width/2, height/2 - 10, 35, 0, Math.PI * 2);
+                ctx.fillStyle = "#251854";
+                ctx.fill();
+                ctx.strokeStyle = "#ec4899";
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Espectro visual fictício de voz
+                pulse += 0.05;
+                ctx.fillStyle = "rgba(236,72,153,0.6)";
+                for (let i = 0; i < 20; i++) {
+                    const h = Math.abs(Math.sin(pulse + i * 0.3)) * 25 + 5;
+                    ctx.fillRect(40 + i * 11, height - 30 - h/2, 6, h);
+                }
+
+                ctx.font = "bold 9px sans-serif";
+                ctx.fillStyle = "rgba(255, 255, 255, 0.4)";
+                ctx.textAlign = "center";
+                ctx.fillText("Simulação de Câmera Desativada", width/2, height - 10);
+
+                fallbackAnimFrame = requestAnimationFrame(render);
+            }
+            render();
+        }
+
+        // --- SIMULADOR DE ONDAS SONORAS E EQUALIZADOR DA LIVE ---
+        let visualizerFrame;
+        function startCanvasVisualizer() {
+            const canvas = document.getElementById('streamer-visualizer-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            
+            let width = canvas.width = canvas.parentElement.clientWidth;
+            let height = canvas.height = canvas.parentElement.clientHeight;
+
+            window.addEventListener('resize', () => {
+                if (canvas && canvas.parentElement) {
+                    width = canvas.width = canvas.parentElement.clientWidth;
+                    height = canvas.height = canvas.parentElement.clientHeight;
+                }
+            });
+
+            let bars = [];
+            const barCount = 45;
+            for (let i = 0; i < barCount; i++) {
+                bars.push({
+                    x: (width / barCount) * i,
+                    targetHeight: 10,
+                    currentHeight: 10,
+                    speed: 0.1 + Math.random() * 0.15
+                });
+            }
+
+            function draw() {
+                if (state.activeTab !== 'live-room') {
+                    cancelAnimationFrame(visualizerFrame);
+                    return;
+                }
+
+                ctx.clearRect(0, 0, width, height);
+                
+                // Desenhar efeito nebulosa de fundo no player
+                const grad = ctx.createRadialGradient(width/2, height/2, 10, width/2, height/2, width*0.8);
+                grad.addColorStop(0, 'rgba(37, 24, 84, 0.25)');
+                grad.addColorStop(1, 'rgba(7, 3, 18, 0.95)');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, width, height);
+
+                // Desenhar Barras de Equalização de Áudio Estéreo
+                ctx.fillStyle = "rgba(236, 72, 153, 0.35)";
+                for (let i = 0; i < barCount; i++) {
+                    const b = bars[i];
+                    if (Math.random() > 0.9) {
+                        b.targetHeight = Math.random() * (height * 0.4) + 15;
+                    }
+                    b.currentHeight += (b.targetHeight - b.currentHeight) * b.speed;
+                    
+                    // Desenhar barra superior espelhada
+                    ctx.fillRect(b.x, height/2 - b.currentHeight/2, (width / barCount) - 4, b.currentHeight);
+                }
+
+                // Desenhar partículas de estúdio subindo
+                ctx.fillStyle = "rgba(255, 255, 255, 0.12)";
+                for(let j=0; j<5; j++) {
+                    ctx.beginPath();
+                    ctx.arc(Math.random() * width, Math.random() * height, Math.random() * 3 + 1, 0, Math.PI*2);
+                    ctx.fill();
+                }
+
+                visualizerFrame = requestAnimationFrame(draw);
+            }
+            draw();
+        }
+    </script>
 </body>
 </html>
