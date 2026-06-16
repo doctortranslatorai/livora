@@ -1,29 +1,30 @@
-# LIVORA — Fundos com efeitos animados
+# LIVORA — Creator Studio
+
+Nova página:
+- `creator_studio.html`
 
 Inclui:
-- 10 cenários de fundo.
-- upload de cenário personalizado.
-- 10 efeitos animados:
-  - Sem efeito
-  - Aurora viva
-  - Partículas
-  - Corações
-  - Estrelas
-  - Pulso Neon
-  - Chuva Digital
-  - Scanlines
-  - Bolhas
-  - Neblina
-- seleção no registo.
-- troca no editar perfil.
-- efeito visível no cartão do perfil.
+- Ferramentas de live
+- Câmara
+- Aprimorar
+- Efeitos
+- Atmosfera
+- Filtros
+- Fundos
+- Metas
+- Enquetes
+- Galeria de presentes
+- Fã-clube
+- Eventos de live
+- Segurança
 
-Upload GitHub:
-- index.html
-- entrada_livora.html
-- regras.html
-- admin_safety.html
-- admin_reports.html
+Upload no GitHub:
+- substituir `index.html`
+- adicionar `creator_studio.html`
+- manter `entrada_livora.html`
+- manter `regras.html`
+- manter `admin_safety.html`
+- manter `admin_reports.html`
 
 Supabase:
-- executar supabase_livora_background_effects.sql
+- executar `supabase_livora_creator_studio.sql`

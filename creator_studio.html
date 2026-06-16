@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LIVORA — Estúdio do Criador</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap');
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background:
+        radial-gradient(circle at 14% 10%, rgba(236,72,153,.14), transparent 32%),
+        radial-gradient(circle at 86% 8%, rgba(124,58,237,.16), transparent 34%),
+        radial-gradient(circle at 50% 100%, rgba(79,70,229,.13), transparent 34%),
+        #070312;
+      color: white;
+      min-height: 100vh;
+    }
+
+    .glass {
+      background: rgba(12, 7, 33, .78);
+      border: 1px solid rgba(168,85,247,.24);
+      backdrop-filter: blur(22px);
+      box-shadow: 0 30px 90px rgba(0,0,0,.34);
+    }
+
+    .studio-card {
+      background: linear-gradient(180deg, rgba(20,11,46,.94), rgba(10,5,29,.97));
+      border: 1px solid rgba(168,85,247,.18);
+      transition: .22s ease;
+    }
+
+    .studio-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(236,72,153,.45);
+      box-shadow: 0 18px 50px rgba(236,72,153,.08);
+    }
+
+    .tab-btn.active {
+      color: white;
+      border-color: #ec4899;
+      background: linear-gradient(90deg, rgba(236,72,153,.22), rgba(124,58,237,.18));
+    }
+
+    .tool-card.active {
+      border-color: rgba(236,72,153,.85);
+      background: linear-gradient(180deg, rgba(236,72,153,.14), rgba(124,58,237,.14));
+      box-shadow: 0 0 26px rgba(236,72,153,.13);
+    }
+
+    .meter {
+      background: linear-gradient(90deg, #ec4899, #8b5cf6, #facc15);
+    }
+  </style>
+</head>
+
+<body>
+  <header class="px-5 py-5 md:px-10 flex items-center justify-between border-b border-purple-950/60 bg-[#0c0721]/80 backdrop-blur-xl sticky top-0 z-40">
+    <a href="index.html" class="flex items-center gap-3 group">
+      <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-pink-500 via-purple-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-pink-500/20 group-hover:rotate-6 transition-all">
+        <i data-lucide="broadcast" class="w-6 h-6 text-white"></i>
+      </div>
+      <div>
+        <div class="text-2xl font-black tracking-tight bg-gradient-to-r from-white via-purple-200 to-pink-400 bg-clip-text text-transparent">LIVORA Studio</div>
+        <div class="text-[9px] text-pink-400 font-black tracking-[0.28em] uppercase -mt-1">Creator Control Center</div>
+      </div>
+    </a>
+
+    <div class="flex items-center gap-3">
+      <button onclick="saveStudioSettings()" class="rounded-full border border-green-500/30 bg-green-500/10 px-5 py-2.5 text-xs font-black text-green-300 hover:bg-green-500/20 transition-all">
+        Guardar
+      </button>
+      <a href="index.html" class="rounded-full bg-gradient-to-r from-pink-500 to-purple-600 px-5 py-2.5 text-xs font-black text-white shadow-lg">
+        Voltar
+      </a>
+    </div>
+  </header>
+
+  <main class="px-5 py-8 md:px-10">
+    <section class="mx-auto max-w-7xl space-y-8">
+
+      <!-- HERO -->
+      <div class="glass rounded-[2rem] p-6 md:p-10 overflow-hidden relative">
+        <div class="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_20%_0%,rgba(236,72,153,.12),transparent_32%)]"></div>
+
+        <div class="relative z-10 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
+          <div>
+            <span class="inline-flex items-center gap-2 rounded-full bg-pink-500/10 border border-pink-500/30 px-4 py-2 text-xs font-black text-pink-300">
+              <i data-lucide="sparkles" class="w-4 h-4"></i>
+              ESTÚDIO DO CRIADOR
+            </span>
+
+            <h1 class="mt-5 text-4xl md:text-6xl font-black leading-[0.95] tracking-tight">
+              Controla a tua live
+              <span class="block bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-300 bg-clip-text text-transparent">
+                como um profissional.
+              </span>
+            </h1>
+
+            <p class="mt-5 max-w-3xl text-purple-100/75 leading-relaxed">
+              Ferramentas para interação, câmara, efeitos, metas, presentes, fã-clube, eventos e segurança.
+              No MVP, as opções ficam guardadas neste navegador.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-3 gap-3 min-w-[300px]">
+            <div class="rounded-2xl bg-[#09051c] border border-purple-950 p-4 text-center">
+              <p id="stat-tools" class="text-2xl font-black text-pink-300">0</p>
+              <p class="text-[10px] text-purple-400 uppercase tracking-wide">Ferramentas</p>
+            </div>
+            <div class="rounded-2xl bg-[#09051c] border border-purple-950 p-4 text-center">
+              <p id="stat-live-goal" class="text-2xl font-black text-yellow-300">0%</p>
+              <p class="text-[10px] text-purple-400 uppercase tracking-wide">Meta</p>
+            </div>
+            <div class="rounded-2xl bg-[#09051c] border border-purple-950 p-4 text-center">
+              <p id="stat-studio-mode" class="text-2xl font-black text-green-300">ON</p>
+              <p class="text-[10px] text-purple-400 uppercase tracking-wide">Studio</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TABS -->
+      <div class="glass rounded-3xl p-3 overflow-x-auto">
+        <div class="flex gap-2 min-w-max">
+          <button onclick="switchStudioTab('tools')" data-tab="tools" class="tab-btn active px-5 py-3 rounded-2xl border border-transparent text-sm font-black text-purple-300 transition-all">
+            Ferramentas
+          </button>
+          <button onclick="switchStudioTab('camera')" data-tab="camera" class="tab-btn px-5 py-3 rounded-2xl border border-transparent text-sm font-black text-purple-300 transition-all">
+            Câmara
+          </button>
+          <button onclick="switchStudioTab('effects')" data-tab="effects" class="tab-btn px-5 py-3 rounded-2xl border border-transparent text-sm font-black text-purple-300 transition-all">
+            Efeitos
+          </button>
+          <button onclick="switchStudioTab('goals')" data-tab="goals" class="tab-btn px-5 py-3 rounded-2xl border border-transparent text-sm font-black text-purple-300 transition-all">
+            Metas
+          </button>
+          <button onclick="switchStudioTab('gifts')" data-tab="gifts" class="tab-btn px-5 py-3 rounded-2xl border border-transparent text-sm font-black text-purple-300 transition-all">
+            Presentes
+          </button>
+          <button onclick="switchStudioTab('club')" data-tab="club" class="tab-btn px-5 py-3 rounded-2xl border border-transparent text-sm font-black text-purple-300 transition-all">
+            Fã-clube
+          </button>
+          <button onclick="switchStudioTab('events')" data-tab="events" class="tab-btn px-5 py-3 rounded-2xl border border-transparent text-sm font-black text-purple-300 transition-all">
+            Eventos
+          </button>
+          <button onclick="switchStudioTab('safety')" data-tab="safety" class="tab-btn px-5 py-3 rounded-2xl border border-transparent text-sm font-black text-purple-300 transition-all">
+            Segurança
+          </button>
+        </div>
+      </div>
+
+      <!-- TAB: TOOLS -->
+      <section id="tab-tools" class="studio-tab space-y-6">
+        <div>
+          <h2 class="text-2xl font-black">Ferramentas da live</h2>
+          <p class="text-sm text-purple-400 mt-1">Ativa ferramentas para tornar a tua transmissão mais interativa.</p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4" id="tools-grid"></div>
+      </section>
+
+      <!-- TAB: CAMERA -->
+      <section id="tab-camera" class="studio-tab hidden space-y-6">
+        <div>
+          <h2 class="text-2xl font-black">Câmara</h2>
+          <p class="text-sm text-purple-400 mt-1">Configura a aparência da tua live.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <div class="studio-card rounded-3xl p-6 space-y-5">
+            <h3 class="font-black text-lg">Geral</h3>
+
+            <label class="block">
+              <span class="text-xs font-bold text-purple-300">Qualidade da transmissão</span>
+              <select id="camera-quality" class="mt-2 w-full rounded-2xl border border-purple-900/60 bg-[#10092c] px-4 py-3 text-sm text-white outline-none focus:border-pink-500">
+                <option>720p — leve</option>
+                <option selected>1080p — recomendado</option>
+                <option>4K — premium</option>
+              </select>
+            </label>
+
+            <label class="block">
+              <span class="text-xs font-bold text-purple-300">Microfone</span>
+              <select id="microphone-mode" class="mt-2 w-full rounded-2xl border border-purple-900/60 bg-[#10092c] px-4 py-3 text-sm text-white outline-none focus:border-pink-500">
+                <option selected>Normal</option>
+                <option>Redução de ruído</option>
+                <option>Modo música</option>
+                <option>Modo ASMR</option>
+              </select>
+            </label>
+
+            <label class="flex items-center justify-between rounded-2xl border border-purple-950 bg-[#09051c] p-4">
+              <span>
+                <strong class="block text-sm">Pré-visualização antes de entrar</strong>
+                <small class="text-purple-400">Mostra câmara e micro antes da live.</small>
+              </span>
+              <input id="preview-before-live" type="checkbox" class="accent-pink-500" checked>
+            </label>
+          </div>
+
+          <div class="studio-card rounded-3xl p-6 space-y-5">
+            <h3 class="font-black text-lg">Aprimorar</h3>
+
+            <div>
+              <div class="flex items-center justify-between text-xs font-bold text-purple-300">
+                <span>Iluminação automática</span>
+                <span id="lighting-value">70%</span>
+              </div>
+              <input id="lighting-range" type="range" min="0" max="100" value="70" oninput="updateRangeLabel('lighting')" class="w-full accent-pink-500 mt-3">
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between text-xs font-bold text-purple-300">
+                <span>Nitidez</span>
+                <span id="sharpness-value">55%</span>
+              </div>
+              <input id="sharpness-range" type="range" min="0" max="100" value="55" oninput="updateRangeLabel('sharpness')" class="w-full accent-pink-500 mt-3">
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between text-xs font-bold text-purple-300">
+                <span>Suavização</span>
+                <span id="smooth-value">25%</span>
+              </div>
+              <input id="smooth-range" type="range" min="0" max="100" value="25" oninput="updateRangeLabel('smooth')" class="w-full accent-pink-500 mt-3">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: EFFECTS -->
+      <section id="tab-effects" class="studio-tab hidden space-y-6">
+        <div>
+          <h2 class="text-2xl font-black">Efeitos, atmosfera e fundo</h2>
+          <p class="text-sm text-purple-400 mt-1">Escolhe o ambiente visual da tua live.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+          <div class="studio-card rounded-3xl p-6">
+            <h3 class="font-black text-lg">Atmosfera</h3>
+            <div id="atmosphere-grid" class="mt-4 grid grid-cols-2 gap-3"></div>
+          </div>
+
+          <div class="studio-card rounded-3xl p-6">
+            <h3 class="font-black text-lg">Filtros</h3>
+            <div id="filters-grid" class="mt-4 grid grid-cols-2 gap-3"></div>
+          </div>
+
+          <div class="studio-card rounded-3xl p-6">
+            <h3 class="font-black text-lg">Fundo rápido</h3>
+            <div id="studio-background-grid" class="mt-4 grid grid-cols-2 gap-3"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: GOALS -->
+      <section id="tab-goals" class="studio-tab hidden space-y-6">
+        <div>
+          <h2 class="text-2xl font-black">Metas e enquetes</h2>
+          <p class="text-sm text-purple-400 mt-1">Cria objetivos e perguntas para envolver o público.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <div class="studio-card rounded-3xl p-6 space-y-4">
+            <h3 class="font-black text-lg">Meta de live</h3>
+
+            <label class="block">
+              <span class="text-xs font-bold text-purple-300">Título da meta</span>
+              <input id="goal-title" value="Meta de 10.000 moedas" class="mt-2 w-full rounded-2xl border border-purple-900/60 bg-[#10092c] px-4 py-3 text-sm text-white outline-none focus:border-pink-500">
+            </label>
+
+            <label class="block">
+              <span class="text-xs font-bold text-purple-300">Objetivo</span>
+              <input id="goal-target" type="number" value="10000" class="mt-2 w-full rounded-2xl border border-purple-900/60 bg-[#10092c] px-4 py-3 text-sm text-white outline-none focus:border-pink-500">
+            </label>
+
+            <label class="block">
+              <span class="text-xs font-bold text-purple-300">Progresso atual</span>
+              <input id="goal-current" type="number" value="2450" oninput="updateGoalPreview()" class="mt-2 w-full rounded-2xl border border-purple-900/60 bg-[#10092c] px-4 py-3 text-sm text-white outline-none focus:border-pink-500">
+            </label>
+
+            <div class="rounded-2xl bg-[#09051c] border border-purple-950 p-4">
+              <div class="flex items-center justify-between text-xs font-bold">
+                <span id="goal-preview-title">Meta de 10.000 moedas</span>
+                <span id="goal-percent">24%</span>
+              </div>
+              <div class="mt-3 h-3 rounded-full bg-purple-950 overflow-hidden">
+                <div id="goal-bar" class="meter h-full rounded-full" style="width:24%"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="studio-card rounded-3xl p-6 space-y-4">
+            <h3 class="font-black text-lg">Enquete rápida</h3>
+
+            <label class="block">
+              <span class="text-xs font-bold text-purple-300">Pergunta</span>
+              <input id="poll-question" value="Que música canto agora?" class="mt-2 w-full rounded-2xl border border-purple-900/60 bg-[#10092c] px-4 py-3 text-sm text-white outline-none focus:border-pink-500">
+            </label>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <input id="poll-a" value="Pop" class="rounded-2xl border border-purple-900/60 bg-[#10092c] px-4 py-3 text-sm text-white outline-none focus:border-pink-500">
+              <input id="poll-b" value="Acústico" class="rounded-2xl border border-purple-900/60 bg-[#10092c] px-4 py-3 text-sm text-white outline-none focus:border-pink-500">
+              <input id="poll-c" value="Romântica" class="rounded-2xl border border-purple-900/60 bg-[#10092c] px-4 py-3 text-sm text-white outline-none focus:border-pink-500">
+              <input id="poll-d" value="Surpresa" class="rounded-2xl border border-purple-900/60 bg-[#10092c] px-4 py-3 text-sm text-white outline-none focus:border-pink-500">
+            </div>
+
+            <button onclick="simulatePoll()" class="w-full rounded-2xl bg-gradient-to-r from-pink-500 to-purple-600 px-5 py-3 text-xs font-black text-white">
+              Lançar enquete
+            </button>
+
+            <div id="poll-result" class="hidden rounded-2xl bg-[#09051c] border border-purple-950 p-4 text-sm text-purple-200"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: GIFTS -->
+      <section id="tab-gifts" class="studio-tab hidden space-y-6">
+        <div>
+          <h2 class="text-2xl font-black">Galeria de presentes</h2>
+          <p class="text-sm text-purple-400 mt-1">Define presentes destacados e recompensas.</p>
+        </div>
+
+        <div id="gift-gallery" class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4"></div>
+      </section>
+
+      <!-- TAB: CLUB -->
+      <section id="tab-club" class="studio-tab hidden space-y-6">
+        <div>
+          <h2 class="text-2xl font-black">Fã-clube</h2>
+          <p class="text-sm text-purple-400 mt-1">Cria benefícios para os seguidores mais fiéis.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+          <div class="studio-card rounded-3xl p-6 space-y-4">
+            <h3 class="font-black text-lg">Plano Bronze</h3>
+            <p class="text-sm text-purple-400">Badge, chat destacado e emojis especiais.</p>
+            <input value="€2,99/mês" class="w-full rounded-2xl border border-purple-900/60 bg-[#10092c] px-4 py-3 text-sm text-white outline-none">
+          </div>
+
+          <div class="studio-card rounded-3xl p-6 space-y-4 border-yellow-500/40">
+            <h3 class="font-black text-lg text-yellow-300">Plano Ouro</h3>
+            <p class="text-sm text-purple-400">Tudo do Bronze + lives privadas e sorteios.</p>
+            <input value="€6,99/mês" class="w-full rounded-2xl border border-purple-900/60 bg-[#10092c] px-4 py-3 text-sm text-white outline-none">
+          </div>
+
+          <div class="studio-card rounded-3xl p-6 space-y-4">
+            <h3 class="font-black text-lg text-pink-300">Plano VIP</h3>
+            <p class="text-sm text-purple-400">Tudo do Ouro + mensagens prioritárias e eventos.</p>
+            <input value="€14,99/mês" class="w-full rounded-2xl border border-purple-900/60 bg-[#10092c] px-4 py-3 text-sm text-white outline-none">
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: EVENTS -->
+      <section id="tab-events" class="studio-tab hidden space-y-6">
+        <div>
+          <h2 class="text-2xl font-black">Eventos de live</h2>
+          <p class="text-sm text-purple-400 mt-1">Agenda transmissões especiais.</p>
+        </div>
+
+        <div class="studio-card rounded-3xl p-6 space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <input id="event-title" placeholder="Nome do evento" value="Noite Premium LIVORA" class="rounded-2xl border border-purple-900/60 bg-[#10092c] px-4 py-3 text-sm text-white outline-none focus:border-pink-500">
+            <input id="event-date" type="date" class="rounded-2xl border border-purple-900/60 bg-[#10092c] px-4 py-3 text-sm text-white outline-none focus:border-pink-500">
+            <input id="event-time" type="time" value="21:00" class="rounded-2xl border border-purple-900/60 bg-[#10092c] px-4 py-3 text-sm text-white outline-none focus:border-pink-500">
+          </div>
+
+          <textarea id="event-description" rows="4" placeholder="Descrição do evento..." class="w-full rounded-2xl border border-purple-900/60 bg-[#10092c] px-4 py-3 text-sm text-white outline-none focus:border-pink-500 resize-none">Live especial com metas, presentes e desafios com a comunidade.</textarea>
+
+          <button onclick="createStudioEvent()" class="rounded-2xl bg-gradient-to-r from-pink-500 to-purple-600 px-5 py-3 text-xs font-black text-white">
+            Criar evento
+          </button>
+
+          <div id="events-list" class="space-y-3"></div>
+        </div>
+      </section>
+
+      <!-- TAB: SAFETY -->
+      <section id="tab-safety" class="studio-tab hidden space-y-6">
+        <div>
+          <h2 class="text-2xl font-black">Segurança da live</h2>
+          <p class="text-sm text-purple-400 mt-1">Define proteções antes e durante a transmissão.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <div class="studio-card rounded-3xl p-6 space-y-4">
+            <h3 class="font-black text-lg">Moderação automática</h3>
+
+            <label class="flex items-center justify-between rounded-2xl border border-purple-950 bg-[#09051c] p-4">
+              <span>
+                <strong class="block text-sm">Filtro de linguagem agressiva</strong>
+                <small class="text-purple-400">Oculta comentários ofensivos.</small>
+              </span>
+              <input id="safety-language" type="checkbox" class="accent-pink-500" checked>
+            </label>
+
+            <label class="flex items-center justify-between rounded-2xl border border-purple-950 bg-[#09051c] p-4">
+              <span>
+                <strong class="block text-sm">Modo menores protegido</strong>
+                <small class="text-purple-400">Restringe temas impróprios.</small>
+              </span>
+              <input id="safety-minors" type="checkbox" class="accent-pink-500" checked>
+            </label>
+
+            <label class="flex items-center justify-between rounded-2xl border border-purple-950 bg-[#09051c] p-4">
+              <span>
+                <strong class="block text-sm">Gravar trecho sinalizado</strong>
+                <small class="text-purple-400">Apenas para Safety Review.</small>
+              </span>
+              <input id="safety-clip" type="checkbox" class="accent-pink-500" checked>
+            </label>
+          </div>
+
+          <div class="studio-card rounded-3xl p-6 space-y-4">
+            <h3 class="font-black text-lg">Ações rápidas</h3>
+
+            <a href="admin_safety.html" class="flex items-center justify-between rounded-2xl border border-yellow-500/30 bg-yellow-500/10 p-4 text-yellow-300 font-black">
+              Abrir Safety Review
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
+
+            <a href="admin_reports.html" class="flex items-center justify-between rounded-2xl border border-red-500/30 bg-red-500/10 p-4 text-red-300 font-black">
+              Abrir Denúncias
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
+
+            <a href="regras.html" class="flex items-center justify-between rounded-2xl border border-purple-500/30 bg-purple-500/10 p-4 text-purple-200 font-black">
+              Regras da Comunidade
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <div id="toast" class="hidden fixed top-5 right-5 z-50 max-w-sm rounded-2xl border border-pink-500/30 bg-[#120a2d] px-4 py-3 text-sm text-purple-100 shadow-2xl">
+    <div class="flex items-start gap-3">
+      <i data-lucide="sparkles" class="w-5 h-5 text-pink-400 shrink-0 mt-0.5"></i>
+      <p id="toast-text"></p>
+    </div>
+  </div>
+
+  <script>
+    const TOOLS = [
+      { id:'cohost', title:'Co-host', icon:'link', desc:'Convida outro criador para entrar contigo.' },
+      { id:'multi_guests', title:'Vários convidados', icon:'users', desc:'Live em grupo com vários participantes.' },
+      { id:'live_goal', title:'Meta de LIVE', icon:'target', desc:'Mostra objetivos de moedas, seguidores ou gifts.' },
+      { id:'games', title:'Jogos interativos', icon:'gamepad-2', desc:'Mini-jogos com a audiência.' },
+      { id:'wishes', title:'Desejos dos espectadores', icon:'gift', desc:'Pedidos e desafios enviados pelo público.' },
+      { id:'play_together', title:'Jogue juntos', icon:'joystick', desc:'Atividades em tempo real com espectadores.' },
+      { id:'polls', title:'Enquete e votação', icon:'list-checks', desc:'Votações rápidas durante a live.' },
+      { id:'rewards', title:'Recompensas de jogos', icon:'badge-dollar-sign', desc:'Pontos, badges e recompensas.' },
+      { id:'fanclub', title:'Fã-clube', icon:'heart', desc:'Área para apoiadores fiéis.' },
+      { id:'manual', title:'Manual', icon:'book-open-check', desc:'Guia de crescimento para criadores.' },
+      { id:'gift_gallery', title:'Galeria de Presentes', icon:'gem', desc:'Mostra e destaca gifts premium.' },
+      { id:'live_events', title:'Eventos de LIVE', icon:'calendar-star', desc:'Agenda lives especiais.' }
+    ];
+
+    const ATMOSPHERES = [
+      ['chill','Chill','cloud-sun'],
+      ['romantic','Romântico','heart'],
+      ['gamer','Gamer','gamepad-2'],
+      ['luxury','Luxo','crown'],
+      ['mystery','Misterioso','moon'],
+      ['asmr','ASMR','waves']
+    ];
+
+    const FILTERS = [
+      ['clean','Clean','sparkles'],
+      ['cinematic','Cinema','film'],
+      ['warm','Quente','sun'],
+      ['cold','Frio','snowflake'],
+      ['neon','Neon','zap'],
+      ['vintage','Vintage','camera']
+    ];
+
+    const BACKGROUNDS = [
+      ['neon_roxo','Neon Roxo'],
+      ['ceu_noturno','Céu Noturno'],
+      ['estudio_musical','Estúdio Musical'],
+      ['cidade_futurista','Cidade Futurista'],
+      ['praia_sunset','Praia Sunset'],
+      ['gamer_room','Gamer Room']
+    ];
+
+    const GIFTS = [
+      ['🌹','Rosa',10],
+      ['💖','Coração',49],
+      ['🧸','Urso',99],
+      ['🎤','Microfone',199],
+      ['🚀','Foguete',499],
+      ['🏰','Castelo',999]
+    ];
+
+    let studioState = JSON.parse(localStorage.getItem('livora_creator_studio') || '{}');
+
+    if (!studioState.activeTools) studioState.activeTools = ['live_goal', 'polls', 'gift_gallery', 'fanclub'];
+    if (!studioState.atmosphere) studioState.atmosphere = 'chill';
+    if (!studioState.filter) studioState.filter = 'clean';
+    if (!studioState.quickBackground) studioState.quickBackground = 'neon_roxo';
+    if (!studioState.events) studioState.events = [];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      renderTools();
+      renderAtmospheres();
+      renderFilters();
+      renderBackgrounds();
+      renderGifts();
+      renderEvents();
+      updateGoalPreview();
+      updateStats();
+      setDefaultEventDate();
+    });
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const text = document.getElementById('toast-text');
+      text.textContent = message;
+      toast.classList.remove('hidden');
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => toast.classList.add('hidden'), 3200);
+      lucide.createIcons();
+    }
+
+    function switchStudioTab(tab) {
+      document.querySelectorAll('.studio-tab').forEach(el => el.classList.add('hidden'));
+      document.getElementById('tab-' + tab).classList.remove('hidden');
+
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tab === tab);
+      });
+    }
+
+    function renderTools() {
+      const grid = document.getElementById('tools-grid');
+      grid.innerHTML = TOOLS.map(tool => `
+        <button onclick="toggleTool('${tool.id}')" id="tool-${tool.id}" class="tool-card studio-card rounded-3xl p-5 text-left ${studioState.activeTools.includes(tool.id) ? 'active' : ''}">
+          <div class="w-12 h-12 rounded-2xl bg-pink-500/10 flex items-center justify-center text-pink-300 mb-4">
+            <i data-lucide="${tool.icon}" class="w-6 h-6"></i>
+          </div>
+          <h3 class="font-black text-base">${tool.title}</h3>
+          <p class="text-xs text-purple-400 mt-2 leading-relaxed">${tool.desc}</p>
+        </button>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    function toggleTool(id) {
+      if (studioState.activeTools.includes(id)) {
+        studioState.activeTools = studioState.activeTools.filter(item => item !== id);
+      } else {
+        studioState.activeTools.push(id);
+      }
+      renderTools();
+      updateStats();
+      saveStudioSettings(false);
+    }
+
+    function renderOptionGrid(targetId, items, selected, handler) {
+      const grid = document.getElementById(targetId);
+      grid.innerHTML = items.map(item => `
+        <button onclick="${handler}('${item[0]}')" class="studio-card rounded-2xl p-4 text-left ${selected === item[0] ? 'tool-card active' : ''}">
+          <i data-lucide="${item[2]}" class="w-5 h-5 text-pink-300 mb-3"></i>
+          <p class="text-xs font-black">${item[1]}</p>
+        </button>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    function renderAtmospheres() {
+      renderOptionGrid('atmosphere-grid', ATMOSPHERES, studioState.atmosphere, 'selectAtmosphere');
+    }
+
+    function renderFilters() {
+      renderOptionGrid('filters-grid', FILTERS, studioState.filter, 'selectFilter');
+    }
+
+    function renderBackgrounds() {
+      const grid = document.getElementById('studio-background-grid');
+      grid.innerHTML = BACKGROUNDS.map(item => `
+        <button onclick="selectQuickBackground('${item[0]}')" class="studio-card rounded-2xl p-4 text-left ${studioState.quickBackground === item[0] ? 'tool-card active' : ''}">
+          <div class="h-14 rounded-xl mb-3 bg-gradient-to-br from-pink-500 via-purple-600 to-indigo-600"></div>
+          <p class="text-xs font-black">${item[1]}</p>
+        </button>
+      `).join('');
+    }
+
+    function selectAtmosphere(id) {
+      studioState.atmosphere = id;
+      renderAtmospheres();
+      saveStudioSettings(false);
+    }
+
+    function selectFilter(id) {
+      studioState.filter = id;
+      renderFilters();
+      saveStudioSettings(false);
+    }
+
+    function selectQuickBackground(id) {
+      studioState.quickBackground = id;
+      renderBackgrounds();
+      saveStudioSettings(false);
+    }
+
+    function renderGifts() {
+      const grid = document.getElementById('gift-gallery');
+      grid.innerHTML = GIFTS.map(gift => `
+        <div class="studio-card rounded-3xl p-5 text-center">
+          <div class="text-4xl">${gift[0]}</div>
+          <h3 class="font-black text-sm mt-3">${gift[1]}</h3>
+          <p class="text-xs text-yellow-300 font-black mt-1">${gift[2]} moedas</p>
+          <button onclick="highlightGift('${gift[1]}')" class="mt-4 rounded-xl bg-[#150d32] border border-purple-900/60 px-4 py-2 text-[10px] font-black text-purple-200 hover:border-pink-500">
+            Destacar
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function highlightGift(name) {
+      studioState.highlightedGift = name;
+      saveStudioSettings(false);
+      showToast('Presente destacado: ' + name);
+    }
+
+    function updateRangeLabel(id) {
+      const value = document.getElementById(id + '-range').value;
+      document.getElementById(id + '-value').textContent = value + '%';
+    }
+
+    function updateGoalPreview() {
+      const title = document.getElementById('goal-title')?.value || 'Meta de live';
+      const target = Number(document.getElementById('goal-target')?.value || 1);
+      const current = Number(document.getElementById('goal-current')?.value || 0);
+      const percent = Math.min(100, Math.round((current / target) * 100));
+
+      document.getElementById('goal-preview-title').textContent = title;
+      document.getElementById('goal-percent').textContent = percent + '%';
+      document.getElementById('goal-bar').style.width = percent + '%';
+      document.getElementById('stat-live-goal').textContent = percent + '%';
+    }
+
+    function simulatePoll() {
+      const question = document.getElementById('poll-question').value;
+      const options = [
+        document.getElementById('poll-a').value,
+        document.getElementById('poll-b').value,
+        document.getElementById('poll-c').value,
+        document.getElementById('poll-d').value
+      ];
+
+      const winner = options[Math.floor(Math.random() * options.length)];
+      const result = document.getElementById('poll-result');
+      result.classList.remove('hidden');
+      result.innerHTML = `<strong class="text-pink-300">Enquete lançada:</strong> ${question}<br><span class="text-purple-400">Resultado simulado: ${winner}</span>`;
+      showToast('Enquete lançada na live.');
+    }
+
+    function setDefaultEventDate() {
+      const dateInput = document.getElementById('event-date');
+      if (!dateInput) return;
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      dateInput.value = tomorrow.toISOString().split('T')[0];
+    }
+
+    function createStudioEvent() {
+      const event = {
+        id: 'EV-' + Date.now(),
+        title: document.getElementById('event-title').value,
+        date: document.getElementById('event-date').value,
+        time: document.getElementById('event-time').value,
+        description: document.getElementById('event-description').value,
+        createdAt: new Date().toISOString()
+      };
+
+      studioState.events.unshift(event);
+      renderEvents();
+      saveStudioSettings(false);
+      showToast('Evento criado.');
+    }
+
+    function renderEvents() {
+      const list = document.getElementById('events-list');
+      if (!list) return;
+
+      if (!studioState.events.length) {
+        list.innerHTML = `<p class="text-xs text-purple-400 py-4">Ainda não criaste eventos.</p>`;
+        return;
+      }
+
+      list.innerHTML = studioState.events.map(event => `
+        <div class="rounded-2xl bg-[#09051c] border border-purple-950 p-4">
+          <div class="flex items-center justify-between gap-3">
+            <div>
+              <h3 class="font-black text-sm">${event.title}</h3>
+              <p class="text-xs text-purple-400 mt-1">${event.date} às ${event.time}</p>
+            </div>
+            <button onclick="deleteEvent('${event.id}')" class="text-red-300 text-xs font-black">Remover</button>
+          </div>
+          <p class="text-xs text-purple-300 mt-3">${event.description}</p>
+        </div>
+      `).join('');
+    }
+
+    function deleteEvent(id) {
+      studioState.events = studioState.events.filter(event => event.id !== id);
+      renderEvents();
+      saveStudioSettings(false);
+    }
+
+    function updateStats() {
+      document.getElementById('stat-tools').textContent = studioState.activeTools.length;
+    }
+
+    function saveStudioSettings(show = true) {
+      studioState.cameraQuality = document.getElementById('camera-quality')?.value || studioState.cameraQuality;
+      studioState.microphoneMode = document.getElementById('microphone-mode')?.value || studioState.microphoneMode;
+      studioState.previewBeforeLive = document.getElementById('preview-before-live')?.checked ?? true;
+      studioState.safetyLanguage = document.getElementById('safety-language')?.checked ?? true;
+      studioState.safetyMinors = document.getElementById('safety-minors')?.checked ?? true;
+      studioState.safetyClip = document.getElementById('safety-clip')?.checked ?? true;
+      studioState.goalTitle = document.getElementById('goal-title')?.value || '';
+      studioState.goalTarget = document.getElementById('goal-target')?.value || '';
+      studioState.goalCurrent = document.getElementById('goal-current')?.value || '';
+
+      localStorage.setItem('livora_creator_studio', JSON.stringify(studioState));
+
+      if (show) showToast('Definições do Estúdio guardadas.');
+    }
+  </script>
+</body>
+</html>
