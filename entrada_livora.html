@@ -96,7 +96,7 @@
       from { opacity: 0; transform: translateY(-8px) scale(.98); }
       to { opacity: 1; transform: translateY(0) scale(1); }
     }
-  </style>
+  .background-card.active{border-color:rgba(236,72,153,.95)!important;box-shadow:0 0 24px rgba(236,72,153,.18);transform:translateY(-2px)}</style>
 </head>
 
 <body class="selection:bg-pink-500 selection:text-white">
@@ -313,6 +313,26 @@
                 </div>
               </div>
 
+              
+              <div class="rounded-2xl border border-purple-900/60 bg-[#10092c] p-4">
+                <div class="flex items-center justify-between gap-3">
+                  <div>
+                    <span class="text-xs font-bold text-purple-300">Cenário de fundo</span>
+                    <p class="mt-1 text-[10px] text-purple-400">Escolhe um dos 10 cenários ou envia o teu próprio fundo.</p>
+                  </div>
+                  <span class="rounded-full bg-pink-500/10 border border-pink-500/30 px-3 py-1 text-[9px] font-black text-pink-300">NOVO</span>
+                </div>
+                <div id="signup-background-grid" class="mt-4 grid grid-cols-2 md:grid-cols-5 gap-2"></div>
+                <div class="mt-4 flex flex-col sm:flex-row sm:items-center gap-3">
+                  <label for="signup-background-file" class="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-purple-800 bg-[#09051c] px-4 py-3 text-xs font-black text-purple-100 hover:border-pink-500 transition-all">
+                    <i data-lucide="image-plus" class="w-4 h-4"></i>
+                    Usar cenário próprio
+                  </label>
+                  <input id="signup-background-file" type="file" accept="image/*" class="hidden" onchange="handleSignupBackground(event)">
+                  <p id="signup-background-status" class="text-[10px] text-purple-400">Cenário atual: Neon Roxo</p>
+                </div>
+              </div>
+
               <label class="flex items-start gap-3 rounded-2xl border border-purple-900/40 bg-[#09051c]/80 p-3 cursor-pointer">
                 <input id="age-check" type="checkbox" class="mt-1 accent-pink-500" required>
                 <span class="text-[11px] text-purple-200 leading-relaxed">
@@ -395,9 +415,12 @@
 
     let selectedRole = 'creator';
     let selectedAvatarDataUrl = '';
+    let selectedBackgroundPreset = 'neon_roxo';
+    let selectedBackgroundUrl = '';
 
     document.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
+      renderSignupBackgrounds();
       const saved = localStorage.getItem('livora_user');
       if (saved) {
         try {
@@ -461,6 +484,50 @@
     function togglePassword(inputId) {
       const input = document.getElementById(inputId);
       input.type = input.type === 'password' ? 'text' : 'password';
+    }
+
+
+
+    const LIVORA_BACKGROUNDS = [{"id": "neon_roxo", "name": "Neon Roxo", "style": "linear-gradient(135deg, #0A0318, #8B00FF 45%, #FF00C7)"}, {"id": "ceu_noturno", "name": "Céu Noturno", "style": "radial-gradient(circle at 30% 20%, #7C3AED, transparent 25%), linear-gradient(135deg, #020617, #111827, #312E81)"}, {"id": "estudio_musical", "name": "Estúdio Musical", "style": "linear-gradient(135deg, #111827, #7F1D1D 55%, #F97316)"}, {"id": "cidade_futurista", "name": "Cidade Futurista", "style": "linear-gradient(135deg, #030712, #0E7490 45%, #A855F7)"}, {"id": "praia_sunset", "name": "Praia Sunset", "style": "linear-gradient(135deg, #0F172A, #F97316 48%, #EC4899)"}, {"id": "gamer_room", "name": "Gamer Room", "style": "linear-gradient(135deg, #020617, #16A34A 45%, #06B6D4)"}, {"id": "luxo_minimalista", "name": "Luxo Minimalista", "style": "linear-gradient(135deg, #0F0F0F, #3F3F46 55%, #D4AF37)"}, {"id": "cafe_artistico", "name": "Café Artístico", "style": "linear-gradient(135deg, #1C0A00, #92400E 55%, #F59E0B)"}, {"id": "espaco_cosmico", "name": "Espaço Cósmico", "style": "radial-gradient(circle at 70% 20%, #F0ABFC, transparent 18%), linear-gradient(135deg, #020617, #4C1D95 45%, #DB2777)"}, {"id": "floresta_mistica", "name": "Floresta Mística", "style": "linear-gradient(135deg, #052E16, #166534 55%, #A3E635)"}];
+
+    function renderSignupBackgrounds() {
+      const grid = document.getElementById('signup-background-grid');
+      if (!grid) return;
+      grid.innerHTML = LIVORA_BACKGROUNDS.map(bg => `
+        <button type="button" onclick="selectSignupBackground('${bg.id}')" id="signup-bg-${bg.id}" class="background-card rounded-2xl border border-purple-900/60 overflow-hidden bg-[#09051c] transition-all">
+          <div class="h-16" style="background: ${bg.style}"></div>
+          <div class="p-2 text-left"><p class="text-[10px] font-black text-purple-100 truncate">${bg.name}</p></div>
+        </button>`).join('');
+      selectSignupBackground(selectedBackgroundPreset);
+      lucide.createIcons();
+    }
+
+    function selectSignupBackground(id) {
+      selectedBackgroundPreset = id;
+      selectedBackgroundUrl = '';
+      document.querySelectorAll('.background-card').forEach(card => card.classList.remove('active'));
+      const active = document.getElementById('signup-bg-' + id);
+      if (active) active.classList.add('active');
+      const bg = LIVORA_BACKGROUNDS.find(item => item.id === id);
+      const status = document.getElementById('signup-background-status');
+      if (status && bg) status.textContent = 'Cenário atual: ' + bg.name;
+    }
+
+    function handleSignupBackground(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      if (!file.type.startsWith('image/')) {
+        showToast('Escolhe uma imagem válida para cenário.');
+        return;
+      }
+      compressImageToDataUrl(file, function(dataUrl) {
+        selectedBackgroundUrl = dataUrl;
+        selectedBackgroundPreset = 'custom';
+        document.querySelectorAll('.background-card').forEach(card => card.classList.remove('active'));
+        const status = document.getElementById('signup-background-status');
+        if (status) status.textContent = 'Cenário atual: personalizado';
+        showToast('Cenário personalizado escolhido.');
+      });
     }
 
 
@@ -534,6 +601,8 @@
         plan: 'supabase',
         coins: 12450,
         avatar: selectedAvatarDataUrl || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300',
+        backgroundPreset: selectedBackgroundPreset,
+        backgroundUrl: selectedBackgroundUrl,
         createdAt: new Date().toISOString()
       };
 
@@ -544,7 +613,7 @@
           email,
           password,
           options: {
-            data: { name, username, role: selectedRole, avatar_url: selectedAvatarDataUrl || '' }
+            data: { name, username, role: selectedRole, avatar_url: selectedAvatarDataUrl || '', background_preset: selectedBackgroundPreset, background_url: selectedBackgroundUrl || '' }
           }
         });
 
@@ -607,6 +676,8 @@
         plan: 'demo',
         coins: 12450,
         avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300',
+        backgroundPreset: 'neon_roxo',
+        backgroundUrl: '',
         createdAt: new Date().toISOString()
       };
 

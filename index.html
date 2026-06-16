@@ -52,6 +52,9 @@
         ::-webkit-scrollbar-track { background: #070312; }
         ::-webkit-scrollbar-thumb { background: #2e1065; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #ec4899; }
+    
+        .profile-bg-card.active{border-color:rgba(236,72,153,.95)!important;box-shadow:0 0 24px rgba(236,72,153,.20);transform:translateY(-2px)}
+        .safety-pill{background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.28)}
     </style>
 </head>
 <body class="min-h-screen bg-[#070312] text-slate-100 flex flex-col justify-between overflow-x-hidden selection:bg-pink-500 selection:text-white">
@@ -82,7 +85,12 @@
             <input id="global-search" type="text" oninput="handleSearch(this.value)" placeholder="Procurar criadores, lives, tags ou categorias..." class="bg-transparent text-sm text-purple-100 outline-none w-full placeholder:text-purple-400/60" />
         </div>
 
-        <a href="regras.html" class="hidden lg:inline-flex items-center gap-2 text-xs font-bold text-purple-300 hover:text-pink-300 transition-all">
+        <a href="admin_safety.html" class="hidden lg:inline-flex items-center gap-2 text-xs font-bold text-yellow-300 hover:text-yellow-200 transition-all">
+                <i data-lucide="shield-alert" class="w-4 h-4"></i>
+                Safety
+            </a>
+
+            <a href="regras.html" class="hidden lg:inline-flex items-center gap-2 text-xs font-bold text-purple-300 hover:text-pink-300 transition-all">
                 <i data-lucide="shield-check" class="w-4 h-4"></i>
                 Regras
             </a>
@@ -443,7 +451,7 @@
 
             <!-- ABA: PERFIL DO USUÁRIO E EDITAR -->
             <div id="tab-profile" class="tab-content space-y-6">
-                <div class="bg-gradient-to-b from-[#1b0d46] to-[#0c0721] border border-purple-900/40 rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-8 shadow-2xl">
+                <div id="profile-hero-card" class="bg-gradient-to-b from-[#1b0d46] to-[#0c0721] border border-purple-900/40 rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-8 shadow-2xl overflow-hidden relative">
                     <div class="relative group">
                         <img id="user-profile-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300" class="w-32 h-32 rounded-full border-4 border-pink-500 object-cover shadow-2xl" onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'"/>
                         <div class="absolute inset-0 bg-black/60 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
@@ -490,9 +498,10 @@
                             <div class="flex items-center gap-3">
                                 <img id="live-streamer-avatar" src="" class="w-10 h-10 rounded-full object-cover border-2 border-pink-500" onerror="this.src='https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=150'"/>
                                 <div>
-                                    <div class="flex items-center gap-1.5">
+                                    <div class="flex items-center gap-1.5 flex-wrap">
                                         <h4 id="live-streamer-name" class="font-black text-sm text-white">Larissa</h4>
                                         <button id="follow-btn" onclick="toggleFollowCurrentStreamer()" class="bg-pink-500 hover:bg-pink-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full transition-all">Seguir</button>
+                                        <button onclick="triggerSafetyRestriction('Saúde mental', 10)" class="safety-pill text-yellow-300 text-[10px] font-black px-2.5 py-0.5 rounded-full transition-all">Simular Safety Mode</button>
                                     </div>
                                     <span id="live-streamer-tag" class="text-[10px] text-purple-200">#Música</span>
                                 </div>
@@ -613,6 +622,20 @@
                 </div>
             </div>
 
+
+                <div class="flex flex-col gap-2">
+                    <div class="flex items-center justify-between gap-3">
+                        <label class="text-xs font-bold text-purple-300">Cenário de fundo</label>
+                        <span id="edit-background-status" class="text-[10px] text-pink-300 font-bold">Cenário atual: Neon Roxo</span>
+                    </div>
+                    <div id="edit-background-grid" class="grid grid-cols-2 md:grid-cols-5 gap-2"></div>
+                    <label for="edit-background-file" class="inline-flex cursor-pointer items-center justify-center gap-2 bg-[#150d32] hover:bg-[#1f134c] text-purple-200 border border-purple-900/60 font-semibold px-4 py-3 rounded-xl text-xs transition-all">
+                        <i data-lucide="image-plus" class="w-4 h-4"></i>
+                        Usar cenário personalizado
+                    </label>
+                    <input id="edit-background-file" type="file" accept="image/*" class="hidden" onchange="handleEditBackground(event)" />
+                </div>
+
             <div class="flex justify-end gap-3 pt-4">
                 <button onclick="closeEditProfileModal()" class="bg-purple-950 hover:bg-purple-900 text-purple-300 text-xs font-semibold px-4 py-2.5 rounded-xl">Cancelar</button>
                 <button onclick="saveProfileChanges()" class="bg-gradient-to-r from-pink-500 to-purple-600 hover:opacity-90 text-white text-xs font-extrabold px-5 py-2.5 rounded-xl">Salvar Mudanças</button>
@@ -620,11 +643,45 @@
         </div>
     </div>
 
+
+    <!-- MODAL: LIVE RESTRITA / SAFETY MODE -->
+    <div id="safety-restriction-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
+        <div class="bg-[#0f0a28] border border-yellow-500/40 rounded-3xl p-6 max-w-lg w-full space-y-5 shadow-2xl relative">
+            <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-2xl bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-center text-yellow-300 shrink-0">
+                    <i data-lucide="shield-alert" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h3 id="safety-modal-title" class="text-xl font-black text-white">Visibilidade da LIVE restrita</h3>
+                    <p id="safety-modal-text" class="text-sm text-purple-200/80 mt-2 leading-relaxed">
+                        Esta live foi limitada temporariamente por conter conteúdo sensível.
+                    </p>
+                </div>
+            </div>
+            <div class="rounded-2xl bg-[#09051c] border border-purple-950 p-4 space-y-2">
+                <p class="text-xs text-purple-300"><strong class="text-yellow-300">Motivo:</strong> <span id="safety-modal-reason">Saúde mental</span></p>
+                <p class="text-xs text-purple-300"><strong class="text-yellow-300">Ação:</strong> trecho guardado para revisão interna.</p>
+                <p class="text-[10px] text-purple-500 leading-relaxed">Este é um protótipo. Em produção, o sistema guardaria apenas o trecho necessário para análise e por tempo limitado.</p>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-3 justify-end">
+                <button onclick="appealSafetyRestriction()" class="bg-[#150d32] hover:bg-[#1f134c] text-purple-200 border border-purple-900/60 font-bold px-4 py-3 rounded-xl text-xs transition-all">
+                    Enviar feedback
+                </button>
+                <button onclick="closeSafetyRestriction()" class="bg-gradient-to-r from-yellow-500 to-amber-400 text-slate-950 font-black px-5 py-3 rounded-xl text-xs transition-all">
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+
+
     <!-- JAVASCRIPT PRINCIPAL -->
     <script>
         const SUPABASE_URL = "https://cgitrfqsnipqlecejwtd.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNnaXRyZnFzbmlwcWxlY2Vqd3RkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2MTU5MTEsImV4cCI6MjA5NzE5MTkxMX0.N3GWrR771k-fa7TTRAWsHewKXSdN0cmiIoWABQQ0bxA";
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        const LIVORA_BACKGROUNDS = [{"id": "neon_roxo", "name": "Neon Roxo", "style": "linear-gradient(135deg, #0A0318, #8B00FF 45%, #FF00C7)"}, {"id": "ceu_noturno", "name": "Céu Noturno", "style": "radial-gradient(circle at 30% 20%, #7C3AED, transparent 25%), linear-gradient(135deg, #020617, #111827, #312E81)"}, {"id": "estudio_musical", "name": "Estúdio Musical", "style": "linear-gradient(135deg, #111827, #7F1D1D 55%, #F97316)"}, {"id": "cidade_futurista", "name": "Cidade Futurista", "style": "linear-gradient(135deg, #030712, #0E7490 45%, #A855F7)"}, {"id": "praia_sunset", "name": "Praia Sunset", "style": "linear-gradient(135deg, #0F172A, #F97316 48%, #EC4899)"}, {"id": "gamer_room", "name": "Gamer Room", "style": "linear-gradient(135deg, #020617, #16A34A 45%, #06B6D4)"}, {"id": "luxo_minimalista", "name": "Luxo Minimalista", "style": "linear-gradient(135deg, #0F0F0F, #3F3F46 55%, #D4AF37)"}, {"id": "cafe_artistico", "name": "Café Artístico", "style": "linear-gradient(135deg, #1C0A00, #92400E 55%, #F59E0B)"}, {"id": "espaco_cosmico", "name": "Espaço Cósmico", "style": "radial-gradient(circle at 70% 20%, #F0ABFC, transparent 18%), linear-gradient(135deg, #020617, #4C1D95 45%, #DB2777)"}, {"id": "floresta_mistica", "name": "Floresta Mística", "style": "linear-gradient(135deg, #052E16, #166534 55%, #A3E635)"}];
 
         // CONFIGURAÇÕES DO ESTADO DA APLICAÇÃO
         let state = {
@@ -639,7 +696,9 @@
             user: {
                 name: "Pedro Creator",
                 bio: "Criador digital, fã de lives, vídeo match e comunidades criativas. Entra, conversa e apoia quem cria. 👋",
-                avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300"
+                avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300",
+                backgroundPreset: "neon_roxo",
+                backgroundUrl: ""
             },
             followedStreamers: ['larissa', 'gabriel'],
             webcamStream: null
@@ -746,6 +805,8 @@
                     state.user.name = profile.name || state.user.name;
                     state.user.bio = profile.bio || state.user.bio;
                     state.user.avatar = profile.avatar_url || state.user.avatar;
+                    state.user.backgroundPreset = profile.background_preset || state.user.backgroundPreset;
+                    state.user.backgroundUrl = profile.background_url || state.user.backgroundUrl;
                     state.coins = typeof profile.coins === 'number' ? profile.coins : state.coins;
                     state.supabaseUserId = session.user.id;
                     updateUIInfo();
@@ -777,6 +838,8 @@
                     name: state.user.name,
                     bio: state.user.bio,
                     avatar_url: state.user.avatar,
+                    background_preset: state.user.backgroundPreset,
+                    background_url: state.user.backgroundUrl,
                     coins: state.coins
                 });
             } catch (error) {
@@ -794,6 +857,8 @@
                 const user = JSON.parse(saved);
                 if (user.name) state.user.name = user.name;
                 if (user.avatar) state.user.avatar = user.avatar;
+                if (user.backgroundPreset) state.user.backgroundPreset = user.backgroundPreset;
+                if (user.backgroundUrl) state.user.backgroundUrl = user.backgroundUrl;
                 if (typeof user.coins === 'number') state.coins = user.coins;
                 if (user.role) state.user.role = user.role;
             } catch (error) {
@@ -817,6 +882,38 @@ document.addEventListener("DOMContentLoaded", () => {
             // Iniciar animação do canvas simulado da Live
             startCanvasVisualizer();
         });
+
+
+        function triggerSafetyRestriction(reason = "Saúde mental", duration = 10) {
+            const incident = {
+                id: "SR-" + Date.now(),
+                reason,
+                duration,
+                streamer: USERS[state.currentStreamer]?.name || "Criador",
+                streamerId: state.currentStreamer,
+                status: "pending_review",
+                severity: reason === "Automutilação ou suicídio" ? "high" : "medium",
+                clipWindow: "30s antes + 120s depois",
+                createdAt: new Date().toISOString(),
+                ipAction: "not_blocked"
+            };
+            const incidents = JSON.parse(localStorage.getItem("livora_safety_reviews") || "[]");
+            incidents.unshift(incident);
+            localStorage.setItem("livora_safety_reviews", JSON.stringify(incidents));
+            document.getElementById("safety-modal-title").innerText = `Visibilidade da LIVE restrita por ${duration} minutos`;
+            document.getElementById("safety-modal-text").innerText = "A live não será recomendada no feed durante este período e o trecho sinalizado ficará disponível no painel Safety Review.";
+            document.getElementById("safety-modal-reason").innerText = reason;
+            document.getElementById("safety-restriction-modal").classList.remove("hidden");
+            lucide.createIcons();
+        }
+        function closeSafetyRestriction() {
+            document.getElementById("safety-restriction-modal").classList.add("hidden");
+        }
+        function appealSafetyRestriction() {
+            showToast("Feedback enviado para revisão do administrador.", "success");
+            closeSafetyRestriction();
+        }
+
 
         // TOASTS DE NOTIFICAÇÃO CUSTOMIZADOS
         function showToast(message, type = 'info') {
@@ -928,6 +1025,66 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
+
+        function getBackgroundStyle() {
+            if (state.user.backgroundUrl) return `linear-gradient(180deg, rgba(7,3,18,.25), rgba(7,3,18,.88)), url('${state.user.backgroundUrl}') center/cover`;
+            const bg = LIVORA_BACKGROUNDS.find(item => item.id === state.user.backgroundPreset) || LIVORA_BACKGROUNDS[0];
+            return bg.style;
+        }
+        function applyProfileBackground() {
+            const profileCard = document.getElementById('profile-hero-card');
+            if (profileCard) {
+                profileCard.style.background = getBackgroundStyle();
+                profileCard.style.backgroundSize = 'cover';
+                profileCard.style.backgroundPosition = 'center';
+            }
+        }
+        function renderEditBackgrounds() {
+            const grid = document.getElementById('edit-background-grid');
+            if (!grid) return;
+            grid.innerHTML = LIVORA_BACKGROUNDS.map(bg => `
+                <button type="button" onclick="selectEditBackground('${bg.id}')" id="edit-bg-${bg.id}" class="profile-bg-card rounded-2xl border border-purple-900/60 overflow-hidden bg-[#09051c] transition-all">
+                    <div class="h-16" style="background: ${bg.style}"></div>
+                    <div class="p-2 text-left"><p class="text-[10px] font-black text-purple-100 truncate">${bg.name}</p></div>
+                </button>`).join('');
+            document.querySelectorAll('.profile-bg-card').forEach(card => card.classList.remove('active'));
+            const active = document.getElementById('edit-bg-' + state.user.backgroundPreset);
+            if (active && !state.user.backgroundUrl) active.classList.add('active');
+            const status = document.getElementById('edit-background-status');
+            if (status) {
+                if (state.user.backgroundUrl) status.textContent = 'Cenário atual: personalizado';
+                else {
+                    const bg = LIVORA_BACKGROUNDS.find(item => item.id === state.user.backgroundPreset) || LIVORA_BACKGROUNDS[0];
+                    status.textContent = 'Cenário atual: ' + bg.name;
+                }
+            }
+            lucide.createIcons();
+        }
+        function selectEditBackground(id) {
+            state.user.backgroundPreset = id;
+            state.user.backgroundUrl = '';
+            renderEditBackgrounds();
+            applyProfileBackground();
+            saveLocalLivoraUser();
+            saveProfileToSupabase();
+            const bg = LIVORA_BACKGROUNDS.find(item => item.id === id);
+            showToast(`Cenário atualizado: ${bg ? bg.name : 'novo cenário'}.`, "success");
+        }
+        function handleEditBackground(event) {
+            const file = event.target.files?.[0];
+            if (!file) return;
+            if (!file.type.startsWith('image/')) { showToast("Escolhe uma imagem válida para cenário.", "error"); return; }
+            compressImageToDataUrl(file, function(dataUrl) {
+                state.user.backgroundPreset = 'custom';
+                state.user.backgroundUrl = dataUrl;
+                renderEditBackgrounds();
+                applyProfileBackground();
+                saveLocalLivoraUser();
+                saveProfileToSupabase();
+                showToast("Cenário personalizado atualizado.", "success");
+            });
+        }
+
         function compressImageToDataUrl(file, callback) {
             const reader = new FileReader();
 
@@ -992,6 +1149,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     name: state.user.name,
                     bio: state.user.bio,
                     avatar: state.user.avatar,
+                    backgroundPreset: state.user.backgroundPreset,
+                    backgroundUrl: state.user.backgroundUrl,
                     coins: state.coins,
                     updatedAt: new Date().toISOString()
                 };
