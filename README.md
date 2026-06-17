@@ -1,30 +1,24 @@
-# LIVORA — Live Room Pública
+# LIVORA — Premium Format
 
-Nova página:
-- `live_room.html`
+Projeto LIVORA uniformizado no mesmo formato visual premium do ficheiro de entrada enviado.
 
-Inclui:
-- sala pública para espectadores
-- chat público
-- seguir criador
-- denunciar live
-- enviar presentes
-- meta da live
-- enquete ativa
-- ferramentas do Estúdio visíveis
-- pedidos de co-host/convidado
-- desejos/desafios dos espectadores
-- leitura da live iniciada em `go_live.html`
+## Páginas incluídas
 
-Upload no GitHub:
-- substituir `index.html`
-- substituir `go_live.html`
-- adicionar `live_room.html`
-- manter `creator_studio.html`
-- manter `entrada_livora.html`
-- manter `regras.html`
-- manter `admin_safety.html`
-- manter `admin_reports.html`
+- index.html — portal/dashboard premium
+- entrada_livora.html — entrada, login e registo demo
+- explorar.html — descoberta de lives e creators
+- batalha_livora.html — batalha 1 vs 1 com cronómetro, gifts e chat
+- go_live.html — criação de live demo
+- live_room.html — sala pública ao vivo
+- creator_studio.html — painel do criador
+- perfil.html — perfil premium
+- regras.html — regras da comunidade
+- admin_safety.html — painel safety
+- admin_reports.html — denúncias
 
-Supabase:
-- executar `supabase_livora_live_room.sql`
+## Como publicar no GitHub Pages
+
+1. Extrair este ZIP.
+2. Substituir os ficheiros antigos do repositório por estes ficheiros.
+3. Fazer commit e push.
+4. Abrir o link do GitHub Pages e testar o menu.

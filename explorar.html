@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LIVORA — Regras</title>
+  <title>LIVORA — Explorar</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
@@ -69,15 +69,32 @@
       <div class="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
         <div>
           <div class="inline-flex items-center gap-2 rounded-full border border-pink-500/30 bg-pink-500/10 px-4 py-2 text-xs font-black text-pink-300 mb-4">
-            <span class="h-2 w-2 rounded-full bg-pink-500 animate-pulse"></span>COMUNIDADE
+            <span class="h-2 w-2 rounded-full bg-pink-500 animate-pulse"></span>DESCOBERTA AO VIVO
           </div>
-          <h1 class="text-3xl md:text-5xl font-black tracking-tight leading-tight">Regras da comunidade.</h1>
-          <p class="mt-3 max-w-2xl text-sm md:text-base text-purple-100/70 leading-relaxed">A base de segurança, respeito e confiança para a LIVORA crescer de forma saudável.</p>
+          <h1 class="text-3xl md:text-5xl font-black tracking-tight leading-tight">Explora creators, salas e batalhas.</h1>
+          <p class="mt-3 max-w-2xl text-sm md:text-base text-purple-100/70 leading-relaxed">Uma página de descoberta no mesmo estilo premium, pronta para crescer com categorias, filtros e algoritmo.</p>
         </div>
         
       </div>
       
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-5"><section class="lg:col-span-2 glass rounded-[2rem] p-6 space-y-5"><div class="soft-card rounded-3xl p-5"><h2 class="text-2xl font-black mb-2">1. Respeito primeiro</h2><p class="text-purple-200">A LIVORA deve ser uma rede de ligação, entretenimento e criação. Não são permitidos ataques pessoais, assédio, humilhação ou ameaças.</p></div><div class="soft-card rounded-3xl p-5"><h2 class="text-2xl font-black mb-2">2. Conteúdo seguro</h2><p class="text-purple-200">Lives e perfis devem respeitar idade, privacidade e regras de comunidade. Conteúdos denunciados entram no painel de moderação.</p></div><div class="soft-card rounded-3xl p-5"><h2 class="text-2xl font-black mb-2">3. Gifts e moedas</h2><p class="text-purple-200">LIV Coins, presentes digitais e rankings são elementos do protótipo. Pagamentos reais só devem ser ligados numa fase posterior com termos legais claros.</p></div><div class="soft-card rounded-3xl p-5"><h2 class="text-2xl font-black mb-2">4. Criadores</h2><p class="text-purple-200">Criadores podem fazer lives, batalhas e salas VIP. O estúdio serve para gerir metas, comunidade, eventos e ferramentas de monetização.</p></div></section><aside class="glass rounded-[2rem] p-5 h-fit"><h3 class="text-xl font-black mb-4">Administração</h3><div class="space-y-3"><a href="admin_safety.html" class="block soft-card rounded-2xl p-4 hover:border-pink-500/60">Painel Safety</a><a href="admin_reports.html" class="block soft-card rounded-2xl p-4 hover:border-pink-500/60">Denúncias</a><a href="entrada_livora.html" class="block soft-card rounded-2xl p-4 hover:border-pink-500/60">Entrada</a></div></aside></div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+  <section class="lg:col-span-2 glass rounded-[2rem] p-5 md:p-6">
+    <div class="flex flex-col md:flex-row md:items-center gap-3 mb-5">
+      <div class="relative flex-1"><i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-purple-300"></i><input class="field pl-11" placeholder="Pesquisar creators, lives, batalhas ou reinos..."></div>
+      <button onclick="showToast('Filtros avançados ligados no próximo passo.')" class="btn-soft rounded-2xl px-5 py-3 text-sm font-black text-purple-100">Filtros</button>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <a href="live_room.html" class="group rounded-[1.75rem] overflow-hidden soft-card hover:border-pink-500/60 transition-all"><div class="h-56 bg-[url('https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=700')] bg-cover bg-center relative"><div class="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-transparent"></div><span class="absolute top-3 left-3 rounded-full bg-pink-500 px-3 py-1 text-[10px] font-black">AO VIVO</span><div class="absolute bottom-4 left-4"><p class="text-xl font-black">Música & conversa</p><p class="text-xs text-purple-200">8.7K pessoas</p></div></div><div class="p-4"><p class="text-sm text-purple-300">Sala aberta com chat, gifts e convidados.</p></div></a>
+      <a href="batalha_livora.html" class="group rounded-[1.75rem] overflow-hidden soft-card hover:border-pink-500/60 transition-all"><div class="h-56 bg-[url('https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=700')] bg-cover bg-center relative"><div class="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-transparent"></div><span class="absolute top-3 left-3 rounded-full bg-purple-600 px-3 py-1 text-[10px] font-black">BATALHA</span><div class="absolute bottom-4 left-4"><p class="text-xl font-black">Batalha Épica</p><p class="text-xs text-purple-200">10 minutos restantes</p></div></div><div class="p-4"><p class="text-sm text-purple-300">Dois criadores, gifts, barra de força e vencedor.</p></div></a>
+      <a href="creator_studio.html" class="group rounded-[1.75rem] overflow-hidden soft-card hover:border-pink-500/60 transition-all"><div class="h-56 bg-[url('https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=700')] bg-cover bg-center relative"><div class="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-transparent"></div><span class="absolute top-3 left-3 rounded-full bg-indigo-600 px-3 py-1 text-[10px] font-black">CREATOR</span><div class="absolute bottom-4 left-4"><p class="text-xl font-black">Sala VIP Aurora</p><p class="text-xs text-purple-200">Presentes digitais ativos</p></div></div><div class="p-4"><p class="text-sm text-purple-300">Perfil premium com clubes privados e metas.</p></div></a>
+      <a href="go_live.html" class="group rounded-[1.75rem] overflow-hidden soft-card hover:border-pink-500/60 transition-all"><div class="h-56 bg-[url('https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=700')] bg-cover bg-center relative"><div class="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-transparent"></div><span class="absolute top-3 left-3 rounded-full bg-yellow-500 text-black px-3 py-1 text-[10px] font-black">NOVO</span><div class="absolute bottom-4 left-4"><p class="text-xl font-black">Começar live</p><p class="text-xs text-purple-200">Liga câmara, título e tema</p></div></div><div class="p-4"><p class="text-sm text-purple-300">Cria uma sala em modo demonstração.</p></div></a>
+    </div>
+  </section>
+  <aside class="space-y-4">
+    <div class="glass rounded-[2rem] p-5"><h3 class="font-black text-xl mb-4">Ranking global</h3><div class="space-y-3"><div class="flex items-center justify-between soft-card rounded-2xl p-3"><span>🥇 AuroraQueen</span><b>98K</b></div><div class="flex items-center justify-between soft-card rounded-2xl p-3"><span>🥈 PedroCreator</span><b>84K</b></div><div class="flex items-center justify-between soft-card rounded-2xl p-3"><span>🥉 LivoraStar</span><b>72K</b></div></div></div>
+    <div class="glass rounded-[2rem] p-5"><h3 class="font-black text-xl mb-3">Categorias</h3><div class="flex flex-wrap gap-2"><span class="rounded-full bg-pink-500/15 border border-pink-500/25 px-3 py-2 text-xs font-black">Música</span><span class="rounded-full bg-purple-500/15 border border-purple-500/25 px-3 py-2 text-xs font-black">Conversa</span><span class="rounded-full bg-indigo-500/15 border border-indigo-500/25 px-3 py-2 text-xs font-black">Gaming</span><span class="rounded-full bg-yellow-500/15 border border-yellow-500/25 px-3 py-2 text-xs font-black">VIP</span></div></div>
+  </aside>
+</div>
 
     </section>
   </main>
@@ -85,7 +102,7 @@
   <nav class="fixed bottom-0 left-0 right-0 z-40 border-t border-purple-900/60 bg-[#080416]/95 backdrop-blur-xl lg:hidden">
     <div class="grid grid-cols-5 h-16">
       <a href="index.html" class="mobile-tab "><i data-lucide="home" class="w-5 h-5"></i>Início</a>
-      <a href="explorar.html" class="mobile-tab "><i data-lucide="search" class="w-5 h-5"></i>Explorar</a>
+      <a href="explorar.html" class="mobile-tab active"><i data-lucide="search" class="w-5 h-5"></i>Explorar</a>
       <a href="go_live.html" class="mobile-tab "><span class="-mt-5 mb-0.5 h-12 w-12 rounded-full icon-box flex items-center justify-center shadow-lg shadow-pink-500/25"><i data-lucide="plus" class="w-7 h-7"></i></span>Criar</a>
       <a href="live_room.html" class="mobile-tab "><i data-lucide="radio" class="w-5 h-5"></i>Live</a>
       <a href="perfil.html" class="mobile-tab "><i data-lucide="user" class="w-5 h-5"></i>Perfil</a>

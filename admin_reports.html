@@ -8,111 +8,108 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap');
-    body{font-family:'Plus Jakarta Sans',sans-serif;background:radial-gradient(circle at 15% 10%,rgba(239,68,68,.14),transparent 32%),radial-gradient(circle at 85% 15%,rgba(236,72,153,.15),transparent 34%),#070312;color:white;min-height:100vh}
-    .glass{background:rgba(12,7,33,.78);border:1px solid rgba(168,85,247,.24);backdrop-filter:blur(22px);box-shadow:0 30px 90px rgba(0,0,0,.34)}
-    .report-card{background:linear-gradient(180deg,rgba(20,11,46,.94),rgba(10,5,29,.97));border:1px solid rgba(168,85,247,.18)}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:'Plus Jakarta Sans',sans-serif;
+      background:
+        radial-gradient(circle at 15% 15%,rgba(236,72,153,.18),transparent 32%),
+        radial-gradient(circle at 85% 10%,rgba(124,58,237,.20),transparent 34%),
+        radial-gradient(circle at 55% 90%,rgba(79,70,229,.18),transparent 30%),
+        #070312;
+      min-height:100vh;color:white;overflow-x:hidden;
+    }
+    .glass{background:rgba(12,7,33,.74);border:1px solid rgba(168,85,247,.25);backdrop-filter:blur(22px);box-shadow:0 30px 80px rgba(0,0,0,.35)}
+    .soft-card{background:linear-gradient(180deg,rgba(20,11,46,.92),rgba(10,5,29,.96));border:1px solid rgba(168,85,247,.18)}
+    .nav-link{color:rgba(216,180,254,.78);font-weight:800;font-size:12px;padding:.72rem .95rem;border-radius:999px;border:1px solid transparent;transition:.2s}
+    .nav-link:hover,.nav-link.active{color:#fff;background:rgba(236,72,153,.12);border-color:rgba(236,72,153,.35)}
+    .icon-box{background:linear-gradient(135deg,#ec4899,#7c3aed,#4f46e5)}
+    .btn-primary{background:linear-gradient(90deg,#ec4899,#7c3aed,#4f46e5);box-shadow:0 16px 36px rgba(236,72,153,.18)}
+    .btn-soft{background:#110a2d;border:1px solid rgba(107,33,168,.75)}
+    .field{width:100%;border-radius:1rem;border:1px solid rgba(88,28,135,.65);background:#10092c;padding:.78rem 1rem;font-size:.875rem;color:white;outline:none}
+    .field:focus{border-color:#ec4899}
+    .mobile-tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:rgba(216,180,254,.72);font-size:10px;font-weight:900}
+    .mobile-tab.active{color:white}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+    @keyframes pulse-ring{0%{box-shadow:0 0 0 0 rgba(236,72,153,.48)}70%{box-shadow:0 0 0 18px rgba(236,72,153,0)}100%{box-shadow:0 0 0 0 rgba(236,72,153,0)}}
+    @keyframes shimmer{0%{transform:translateX(-110%)}100%{transform:translateX(110%)}}
+    .float{animation:float 5s ease-in-out infinite}.pulse-ring{animation:pulse-ring 2.4s infinite}
+    .shine{position:relative;overflow:hidden}.shine:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.10),transparent);transform:translateX(-110%);animation:shimmer 5s infinite;pointer-events:none}
+    .toast{animation:toastIn .25s ease-out forwards}@keyframes toastIn{from{opacity:0;transform:translateY(-8px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+    .gradient-text{background:linear-gradient(90deg,#f472b6,#d8b4fe,#a5b4fc);-webkit-background-clip:text;background-clip:text;color:transparent}
   </style>
 </head>
-<body>
-  <header class="px-5 py-5 md:px-10 flex items-center justify-between">
-    <a href="index.html" class="flex items-center gap-3 group">
-      <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-red-500 via-pink-500 to-purple-600 flex items-center justify-center shadow-lg shadow-red-500/20 group-hover:rotate-6 transition-all">
-        <i data-lucide="flag" class="w-6 h-6 text-white"></i>
-      </div>
-      <div>
-        <div class="text-2xl font-black tracking-tight bg-gradient-to-r from-white via-red-200 to-pink-400 bg-clip-text text-transparent">LIVORA Reports</div>
-        <div class="text-[9px] text-red-300 font-black tracking-[0.28em] uppercase -mt-1">Moderação</div>
-      </div>
-    </a>
+<body class="selection:bg-pink-500 selection:text-white pb-24 md:pb-0">
+  <div id="toast" class="hidden fixed top-5 right-5 z-50 max-w-sm rounded-2xl border border-pink-500/30 bg-[#120a2d] px-4 py-3 text-sm text-purple-100 shadow-2xl">
+    <div class="flex items-start gap-3"><i data-lucide="sparkles" class="w-5 h-5 text-pink-400 shrink-0 mt-0.5"></i><p id="toast-text"></p></div>
+  </div>
 
-    <div class="flex items-center gap-3">
-      <button onclick="seedDemoReport()" class="rounded-full border border-red-500/30 bg-red-500/10 px-5 py-2.5 text-xs font-black text-red-300 hover:bg-red-500/20 transition-all">Criar denúncia teste</button>
-      <a href="admin_safety.html" class="rounded-full border border-yellow-500/30 bg-yellow-500/10 px-5 py-2.5 text-xs font-black text-yellow-300">Safety</a>
-      <a href="index.html" class="rounded-full bg-gradient-to-r from-pink-500 to-purple-600 px-5 py-2.5 text-xs font-black text-white shadow-lg">Voltar</a>
+  <header class="relative z-20 px-5 py-5 md:px-10 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-3 group">
+      <div class="w-11 h-11 rounded-2xl icon-box flex items-center justify-center shadow-lg shadow-pink-500/20 group-hover:rotate-6 transition-all"><span class="text-xl font-black italic tracking-tight">L</span></div>
+      <div class="text-left"><div class="text-2xl font-black tracking-tight gradient-text">LIVORA</div><div class="text-[9px] text-pink-400 font-black tracking-[0.28em] uppercase -mt-1">Creator Live Network</div></div>
+    </a>
+    <nav class="hidden lg:flex items-center gap-2">
+      <a class="nav-link " href="index.html">Início</a>
+      <a class="nav-link " href="explorar.html">Explorar</a>
+      <a class="nav-link " href="batalha_livora.html">Batalha</a>
+      <a class="nav-link " href="go_live.html">Criar Live</a>
+      <a class="nav-link " href="live_room.html">Live</a>
+      <a class="nav-link " href="creator_studio.html">Estúdio</a>
+      <a class="nav-link " href="perfil.html">Perfil</a>
+    </nav>
+    <div class="flex items-center gap-2">
+      <a href="entrada_livora.html" class="hidden sm:inline-flex rounded-full border border-purple-800 bg-[#110a2d]/80 px-5 py-2.5 text-xs font-bold text-purple-100 hover:border-pink-500 hover:text-white transition-all">Entrada</a>
+      <button onclick="showToast('Protótipo LIVORA ativo. Próximo passo: ligar Supabase e autenticação real.')" class="rounded-full btn-primary px-5 py-2.5 text-xs font-black text-white hover:opacity-95 transition-all">Demo</button>
     </div>
   </header>
 
-  <main class="px-5 pb-12 md:px-10">
+  <main class="relative z-10 px-5 pb-10 md:px-10">
     <section class="mx-auto max-w-7xl">
-      <div class="glass rounded-[2rem] p-6 md:p-10">
-        <span class="inline-flex items-center gap-2 rounded-full bg-red-500/10 border border-red-500/30 px-4 py-2 text-xs font-black text-red-300">
-          <i data-lucide="flag" class="w-4 h-4"></i> PAINEL DE DENÚNCIAS
-        </span>
-
-        <h1 class="mt-5 text-4xl md:text-6xl font-black leading-[0.95] tracking-tight">
-          Denúncias e Bloqueios
-          <span class="block bg-gradient-to-r from-red-300 via-pink-300 to-purple-300 bg-clip-text text-transparent">LIVORA</span>
-        </h1>
-
-        <p class="mt-5 max-w-3xl text-purple-100/75 leading-relaxed">
-          Aqui aparecem denúncias enviadas por utilizadores. No MVP ficam guardadas no navegador. Em produção, devem ser guardadas no Supabase e revistas por administradores.
-        </p>
+      <div class="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+        <div>
+          <div class="inline-flex items-center gap-2 rounded-full border border-pink-500/30 bg-pink-500/10 px-4 py-2 text-xs font-black text-pink-300 mb-4">
+            <span class="h-2 w-2 rounded-full bg-pink-500 animate-pulse"></span>ADMIN REPORTS
+          </div>
+          <h1 class="text-3xl md:text-5xl font-black tracking-tight leading-tight">Denúncias da comunidade.</h1>
+          <p class="mt-3 max-w-2xl text-sm md:text-base text-purple-100/70 leading-relaxed">Tabela de denúncias e ações de moderação para manter a plataforma segura.</p>
+        </div>
+        
       </div>
+      
+<div class="glass rounded-[2rem] p-5 md:p-6"><div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-5"><h2 class="text-2xl font-black">Denúncias da comunidade</h2><button onclick="showToast('Exportação CSV preparada no próximo passo.')" class="btn-soft rounded-2xl px-5 py-3 text-sm font-black text-purple-100">Exportar</button></div><div class="overflow-x-auto"><table class="w-full text-sm"><thead class="text-left text-purple-300"><tr><th class="py-3">Tipo</th><th>Origem</th><th>Prioridade</th><th>Estado</th><th>Ação</th></tr></thead><tbody class="divide-y divide-purple-950"><tr><td class="py-4 font-bold">Assédio</td><td>Live Room</td><td><span class="text-pink-300 font-black">Alta</span></td><td>Pendente</td><td><button onclick="showToast('Denúncia aberta.')" class="rounded-xl bg-pink-500/15 border border-pink-500/30 px-3 py-2 text-xs font-black">Abrir</button></td></tr><tr><td class="py-4 font-bold">Spam</td><td>Perfil</td><td><span class="text-yellow-300 font-black">Média</span></td><td>Em análise</td><td><button onclick="showToast('Denúncia aberta.')" class="rounded-xl bg-pink-500/15 border border-pink-500/30 px-3 py-2 text-xs font-black">Abrir</button></td></tr><tr><td class="py-4 font-bold">Conteúdo impróprio</td><td>Batalha</td><td><span class="text-pink-300 font-black">Alta</span></td><td>Pendente</td><td><button onclick="showToast('Denúncia aberta.')" class="rounded-xl bg-pink-500/15 border border-pink-500/30 px-3 py-2 text-xs font-black">Abrir</button></td></tr></tbody></table></div></div>
 
-      <div id="reports-list" class="mt-8 space-y-4"></div>
     </section>
   </main>
 
+  <nav class="fixed bottom-0 left-0 right-0 z-40 border-t border-purple-900/60 bg-[#080416]/95 backdrop-blur-xl lg:hidden">
+    <div class="grid grid-cols-5 h-16">
+      <a href="index.html" class="mobile-tab "><i data-lucide="home" class="w-5 h-5"></i>Início</a>
+      <a href="explorar.html" class="mobile-tab "><i data-lucide="search" class="w-5 h-5"></i>Explorar</a>
+      <a href="go_live.html" class="mobile-tab "><span class="-mt-5 mb-0.5 h-12 w-12 rounded-full icon-box flex items-center justify-center shadow-lg shadow-pink-500/25"><i data-lucide="plus" class="w-7 h-7"></i></span>Criar</a>
+      <a href="live_room.html" class="mobile-tab "><i data-lucide="radio" class="w-5 h-5"></i>Live</a>
+      <a href="perfil.html" class="mobile-tab "><i data-lucide="user" class="w-5 h-5"></i>Perfil</a>
+    </div>
+  </nav>
+
   <script>
-    document.addEventListener('DOMContentLoaded',()=>{lucide.createIcons();renderReports();});
-    function getReports(){return JSON.parse(localStorage.getItem('livora_user_reports')||'[]')}
-    function setReports(reports){localStorage.setItem('livora_user_reports',JSON.stringify(reports));renderReports()}
-
-    function seedDemoReport(){
-      const reports=getReports();
-      reports.unshift({id:'RP-'+Date.now(),targetId:'demo',targetName:'Utilizador Teste',context:'live',reason:'assédio',details:'Exemplo de denúncia para testar o painel.',status:'pending_review',severity:'medium',createdAt:new Date().toISOString(),action:'reported'});
-      setReports(reports);
+    document.addEventListener('DOMContentLoaded',()=>{ if(window.lucide){lucide.createIcons();} });
+    function showToast(message){
+      const toast=document.getElementById('toast'); const text=document.getElementById('toast-text');
+      if(!toast||!text) return; text.textContent=message; toast.classList.remove('hidden'); toast.classList.add('toast');
+      clearTimeout(window.toastTimer); window.toastTimer=setTimeout(()=>{toast.classList.add('hidden');toast.classList.remove('toast');},3200);
+      if(window.lucide){lucide.createIcons();}
     }
-
-    function renderReports(){
-      const reports=getReports();
-      const list=document.getElementById('reports-list');
-
-      if(!reports.length){
-        list.innerHTML=`<div class="report-card rounded-3xl p-8 text-center">
-          <i data-lucide="shield-check" class="w-10 h-10 text-green-300 mx-auto mb-4"></i>
-          <h2 class="text-xl font-black">Nenhuma denúncia recebida</h2>
-          <p class="text-sm text-purple-400 mt-2">Quando alguém denunciar um perfil, live ou mensagem, aparecerá aqui.</p>
-        </div>`;
-        lucide.createIcons();
-        return;
-      }
-
-      list.innerHTML=reports.map(report=>{
-        const date=new Date(report.createdAt).toLocaleString('pt-PT');
-        const severe=report.severity==='high';
-        return `<article class="report-card rounded-3xl p-5 md:p-6">
-          <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-5">
-            <div class="flex gap-4">
-              <div class="w-12 h-12 rounded-2xl ${severe?'bg-red-500/10 border-red-500/30 text-red-300':'bg-yellow-500/10 border-yellow-500/30 text-yellow-300'} border flex items-center justify-center shrink-0">
-                <i data-lucide="flag"></i>
-              </div>
-              <div>
-                <div class="flex flex-wrap items-center gap-2">
-                  <h2 class="text-lg font-black">${report.targetName}</h2>
-                  <span class="rounded-full border ${severe?'text-red-300 border-red-500/30 bg-red-500/10':'text-yellow-300 border-yellow-500/30 bg-yellow-500/10'} px-2.5 py-1 text-[10px] font-black">${report.severity}</span>
-                  <span class="rounded-full bg-[#09051c] border border-purple-950 px-2.5 py-1 text-[10px] font-black text-purple-300">${report.status}</span>
-                </div>
-                <p class="text-sm text-purple-300 mt-2"><strong class="text-red-300">Motivo:</strong> ${report.reason} · <strong class="text-red-300">Contexto:</strong> ${report.context}</p>
-                <p class="text-sm text-purple-200/80 mt-3">${report.details || 'Sem detalhes adicionais.'}</p>
-                <p class="text-[11px] text-purple-500 mt-2">ID: ${report.id} · ${date}</p>
-              </div>
-            </div>
-            <div class="grid grid-cols-2 lg:grid-cols-1 gap-2 min-w-[190px]">
-              <button onclick="updateReport('${report.id}','reviewed_no_action')" class="rounded-xl bg-green-500/10 border border-green-500/30 px-4 py-3 text-xs font-black text-green-300 hover:bg-green-500/20">Sem ação</button>
-              <button onclick="updateReport('${report.id}','warning_sent')" class="rounded-xl bg-yellow-500/10 border border-yellow-500/30 px-4 py-3 text-xs font-black text-yellow-300 hover:bg-yellow-500/20">Enviar aviso</button>
-              <button onclick="updateReport('${report.id}','account_suspended')" class="rounded-xl bg-orange-500/10 border border-orange-500/30 px-4 py-3 text-xs font-black text-orange-300 hover:bg-orange-500/20">Suspender conta</button>
-              <button onclick="updateReport('${report.id}','blocked')" class="rounded-xl bg-red-500/10 border border-red-500/30 px-4 py-3 text-xs font-black text-red-300 hover:bg-red-500/20">Bloquear</button>
-            </div>
-          </div>
-        </article>`;
-      }).join('');
-      lucide.createIcons();
+    function saveDemoUser(){
+      const user={name:'Pedro Creator',username:'@pedrocreator',role:'creator',coins:12450,level:592,createdAt:new Date().toISOString()};
+      localStorage.setItem('livora_user',JSON.stringify(user));
+      showToast('Perfil demo guardado neste navegador.');
+      return user;
     }
-
-    function updateReport(id,status){
-      setReports(getReports().map(item=>item.id===id?{...item,status,reviewedAt:new Date().toISOString()}:item));
+    function getDemoUser(){
+      try{return JSON.parse(localStorage.getItem('livora_user')) || saveDemoUser();}catch(e){return saveDemoUser();}
     }
+    
   </script>
 </body>
 </html>

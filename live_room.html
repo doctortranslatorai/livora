@@ -3,650 +3,129 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LIVORA — Live Room Pública</title>
-
+  <title>LIVORA — Live Room</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
-
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap');
-
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:'Plus Jakarta Sans',sans-serif;
       background:
-        radial-gradient(circle at 12% 8%, rgba(236,72,153,.14), transparent 32%),
-        radial-gradient(circle at 88% 12%, rgba(124,58,237,.16), transparent 34%),
-        radial-gradient(circle at 50% 100%, rgba(79,70,229,.13), transparent 34%),
+        radial-gradient(circle at 15% 15%,rgba(236,72,153,.18),transparent 32%),
+        radial-gradient(circle at 85% 10%,rgba(124,58,237,.20),transparent 34%),
+        radial-gradient(circle at 55% 90%,rgba(79,70,229,.18),transparent 30%),
         #070312;
-      color: white;
-      min-height: 100vh;
+      min-height:100vh;color:white;overflow-x:hidden;
     }
-
-    .glass {
-      background: rgba(12, 7, 33, .80);
-      border: 1px solid rgba(168,85,247,.24);
-      backdrop-filter: blur(22px);
-      box-shadow: 0 30px 90px rgba(0,0,0,.34);
-    }
-
-    .panel {
-      background: linear-gradient(180deg, rgba(20,11,46,.94), rgba(10,5,29,.97));
-      border: 1px solid rgba(168,85,247,.18);
-    }
-
-    .live-stage {
-      background:
-        radial-gradient(circle at 20% 20%, rgba(236,72,153,.24), transparent 32%),
-        radial-gradient(circle at 80% 30%, rgba(124,58,237,.24), transparent 34%),
-        linear-gradient(135deg, #09051c, #160b35);
-    }
-
-    .meter {
-      background: linear-gradient(90deg, #ec4899, #8b5cf6, #facc15);
-    }
-
-    .live-effect-layer {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-      border-radius: inherit;
-      z-index: 1;
-    }
-
-    .fx-aurora::before,
-    .fx-aurora::after {
-      content: "";
-      position: absolute;
-      width: 55%;
-      height: 55%;
-      filter: blur(45px);
-      opacity: .38;
-      border-radius: 999px;
-      animation: livoraAurora 9s ease-in-out infinite alternate;
-    }
-
-    .fx-aurora::before {
-      background: rgba(236, 72, 153, .72);
-      left: -12%;
-      top: -18%;
-    }
-
-    .fx-aurora::after {
-      background: rgba(124, 58, 237, .72);
-      right: -15%;
-      bottom: -20%;
-      animation-delay: -3s;
-    }
-
-    @keyframes livoraAurora {
-      0% { transform: translate(0,0) scale(1); }
-      50% { transform: translate(18%,12%) scale(1.15); }
-      100% { transform: translate(4%,24%) scale(.95); }
-    }
-
-    .fx-particles {
-      background-image:
-        radial-gradient(circle, rgba(255,255,255,.55) 1px, transparent 1.5px),
-        radial-gradient(circle, rgba(236,72,153,.45) 1px, transparent 1.5px);
-      background-size: 34px 34px, 58px 58px;
-      animation: livoraParticles 14s linear infinite;
-      opacity: .45;
-    }
-
-    @keyframes livoraParticles {
-      from { background-position: 0 0, 0 0; }
-      to { background-position: 160px -180px, -140px 160px; }
-    }
-
-    .fx-stars {
-      background-image:
-        radial-gradient(circle, rgba(255,255,255,.70) 1px, transparent 2px),
-        radial-gradient(circle, rgba(240,171,252,.60) 1px, transparent 2px);
-      background-size: 42px 42px, 76px 76px;
-      animation: livoraStars 18s linear infinite;
-      opacity: .52;
-    }
-
-    @keyframes livoraStars {
-      from { background-position: 0 0, 0 0; }
-      to { background-position: 220px 160px, -180px 260px; }
-    }
-
-    .fx-hearts {
-      background-image:
-        radial-gradient(circle at 20% 80%, rgba(236,72,153,.30) 0 4px, transparent 5px),
-        radial-gradient(circle at 50% 40%, rgba(255,255,255,.20) 0 3px, transparent 4px),
-        radial-gradient(circle at 80% 70%, rgba(236,72,153,.24) 0 5px, transparent 6px);
-      background-size: 88px 88px;
-      animation: livoraHearts 10s ease-in-out infinite;
-      opacity: .48;
-    }
-
-    @keyframes livoraHearts {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-18px); }
-    }
-
-    .chat-line {
-      animation: chatIn .22s ease-out forwards;
-    }
-
-    @keyframes chatIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .heart-float {
-      animation: floatHeart 2.8s ease-out forwards;
-    }
-
-    @keyframes floatHeart {
-      0% { transform: translateY(0) scale(.7) rotate(0deg); opacity: 0; }
-      15% { opacity: 1; }
-      100% { transform: translateY(-220px) scale(1.4) rotate(20deg); opacity: 0; }
-    }
-
-    .gift-burst {
-      animation: giftBurst 1.2s ease-out forwards;
-    }
-
-    @keyframes giftBurst {
-      0% { transform: scale(.4); opacity: 0; }
-      30% { transform: scale(1.2); opacity: 1; }
-      100% { transform: scale(.9); opacity: 0; }
-    }
+    .glass{background:rgba(12,7,33,.74);border:1px solid rgba(168,85,247,.25);backdrop-filter:blur(22px);box-shadow:0 30px 80px rgba(0,0,0,.35)}
+    .soft-card{background:linear-gradient(180deg,rgba(20,11,46,.92),rgba(10,5,29,.96));border:1px solid rgba(168,85,247,.18)}
+    .nav-link{color:rgba(216,180,254,.78);font-weight:800;font-size:12px;padding:.72rem .95rem;border-radius:999px;border:1px solid transparent;transition:.2s}
+    .nav-link:hover,.nav-link.active{color:#fff;background:rgba(236,72,153,.12);border-color:rgba(236,72,153,.35)}
+    .icon-box{background:linear-gradient(135deg,#ec4899,#7c3aed,#4f46e5)}
+    .btn-primary{background:linear-gradient(90deg,#ec4899,#7c3aed,#4f46e5);box-shadow:0 16px 36px rgba(236,72,153,.18)}
+    .btn-soft{background:#110a2d;border:1px solid rgba(107,33,168,.75)}
+    .field{width:100%;border-radius:1rem;border:1px solid rgba(88,28,135,.65);background:#10092c;padding:.78rem 1rem;font-size:.875rem;color:white;outline:none}
+    .field:focus{border-color:#ec4899}
+    .mobile-tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:rgba(216,180,254,.72);font-size:10px;font-weight:900}
+    .mobile-tab.active{color:white}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+    @keyframes pulse-ring{0%{box-shadow:0 0 0 0 rgba(236,72,153,.48)}70%{box-shadow:0 0 0 18px rgba(236,72,153,0)}100%{box-shadow:0 0 0 0 rgba(236,72,153,0)}}
+    @keyframes shimmer{0%{transform:translateX(-110%)}100%{transform:translateX(110%)}}
+    .float{animation:float 5s ease-in-out infinite}.pulse-ring{animation:pulse-ring 2.4s infinite}
+    .shine{position:relative;overflow:hidden}.shine:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.10),transparent);transform:translateX(-110%);animation:shimmer 5s infinite;pointer-events:none}
+    .toast{animation:toastIn .25s ease-out forwards}@keyframes toastIn{from{opacity:0;transform:translateY(-8px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+    .gradient-text{background:linear-gradient(90deg,#f472b6,#d8b4fe,#a5b4fc);-webkit-background-clip:text;background-clip:text;color:transparent}
   </style>
 </head>
+<body class="selection:bg-pink-500 selection:text-white pb-24 md:pb-0">
+  <div id="toast" class="hidden fixed top-5 right-5 z-50 max-w-sm rounded-2xl border border-pink-500/30 bg-[#120a2d] px-4 py-3 text-sm text-purple-100 shadow-2xl">
+    <div class="flex items-start gap-3"><i data-lucide="sparkles" class="w-5 h-5 text-pink-400 shrink-0 mt-0.5"></i><p id="toast-text"></p></div>
+  </div>
 
-<body>
-  <header class="px-5 py-5 md:px-10 flex items-center justify-between border-b border-purple-950/60 bg-[#0c0721]/80 backdrop-blur-xl sticky top-0 z-40">
+  <header class="relative z-20 px-5 py-5 md:px-10 flex items-center justify-between">
     <a href="index.html" class="flex items-center gap-3 group">
-      <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-pink-500 via-purple-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-pink-500/20 group-hover:rotate-6 transition-all">
-        <i data-lucide="tv" class="w-6 h-6 text-white"></i>
-      </div>
-      <div>
-        <div class="text-2xl font-black tracking-tight bg-gradient-to-r from-white via-purple-200 to-pink-400 bg-clip-text text-transparent">LIVORA Live</div>
-        <div class="text-[9px] text-pink-400 font-black tracking-[0.28em] uppercase -mt-1">Public Room</div>
-      </div>
+      <div class="w-11 h-11 rounded-2xl icon-box flex items-center justify-center shadow-lg shadow-pink-500/20 group-hover:rotate-6 transition-all"><span class="text-xl font-black italic tracking-tight">L</span></div>
+      <div class="text-left"><div class="text-2xl font-black tracking-tight gradient-text">LIVORA</div><div class="text-[9px] text-pink-400 font-black tracking-[0.28em] uppercase -mt-1">Creator Live Network</div></div>
     </a>
-
-    <div class="flex items-center gap-3">
-      <a href="go_live.html" class="rounded-full border border-red-500/30 bg-red-500/10 px-5 py-2.5 text-xs font-black text-red-300 hover:bg-red-500/20 transition-all">
-        Criador
-      </a>
-      <a href="index.html" class="rounded-full bg-gradient-to-r from-pink-500 to-purple-600 px-5 py-2.5 text-xs font-black text-white shadow-lg">
-        Voltar
-      </a>
+    <nav class="hidden lg:flex items-center gap-2">
+      <a class="nav-link " href="index.html">Início</a>
+      <a class="nav-link " href="explorar.html">Explorar</a>
+      <a class="nav-link " href="batalha_livora.html">Batalha</a>
+      <a class="nav-link " href="go_live.html">Criar Live</a>
+      <a class="nav-link " href="live_room.html">Live</a>
+      <a class="nav-link " href="creator_studio.html">Estúdio</a>
+      <a class="nav-link " href="perfil.html">Perfil</a>
+    </nav>
+    <div class="flex items-center gap-2">
+      <a href="entrada_livora.html" class="hidden sm:inline-flex rounded-full border border-purple-800 bg-[#110a2d]/80 px-5 py-2.5 text-xs font-bold text-purple-100 hover:border-pink-500 hover:text-white transition-all">Entrada</a>
+      <button onclick="showToast('Protótipo LIVORA ativo. Próximo passo: ligar Supabase e autenticação real.')" class="rounded-full btn-primary px-5 py-2.5 text-xs font-black text-white hover:opacity-95 transition-all">Demo</button>
     </div>
   </header>
 
-  <main class="px-5 py-8 md:px-10">
-    <section class="mx-auto max-w-7xl grid grid-cols-1 xl:grid-cols-12 gap-6">
-
-      <!-- LIVE PLAYER -->
-      <div class="xl:col-span-8 space-y-6">
-        <div class="glass rounded-[2rem] p-4 md:p-6">
-          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-5">
-            <div class="flex items-center gap-4">
-              <img id="creator-avatar" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300" class="w-14 h-14 rounded-full object-cover border-2 border-pink-500" alt="Criador">
-              <div>
-                <div class="flex items-center gap-2 flex-wrap">
-                  <h1 id="creator-name" class="text-xl md:text-2xl font-black">Pedro Creator</h1>
-                  <span id="live-status" class="rounded-full bg-red-600 px-3 py-1 text-[10px] font-black">AO VIVO</span>
-                  <span id="viewer-count" class="rounded-full bg-[#09051c] border border-purple-950 px-3 py-1 text-[10px] font-black text-purple-200">👥 0</span>
-                </div>
-                <p id="live-category" class="text-xs text-purple-400 mt-1">#Conversa · Live pública</p>
-              </div>
-            </div>
-
-            <div class="flex gap-2">
-              <button id="follow-btn" onclick="toggleFollow()" class="rounded-full bg-pink-500 px-5 py-2.5 text-xs font-black text-white">
-                Seguir
-              </button>
-              <button onclick="openReportModal()" class="rounded-full border border-red-500/30 bg-red-500/10 px-5 py-2.5 text-xs font-black text-red-300">
-                Denunciar
-              </button>
-            </div>
+  <main class="relative z-10 px-5 pb-10 md:px-10">
+    <section class="mx-auto max-w-7xl">
+      <div class="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+        <div>
+          <div class="inline-flex items-center gap-2 rounded-full border border-pink-500/30 bg-pink-500/10 px-4 py-2 text-xs font-black text-pink-300 mb-4">
+            <span class="h-2 w-2 rounded-full bg-pink-500 animate-pulse"></span>SALA PÚBLICA
           </div>
-
-          <div id="live-stage" class="live-stage relative aspect-video rounded-[1.8rem] overflow-hidden border border-purple-900/50 shadow-2xl">
-            <div id="live-effect-layer" class="live-effect-layer"></div>
-
-            <div class="absolute inset-0 flex items-center justify-center text-center p-8 z-0">
-              <div>
-                <div class="w-28 h-28 rounded-full mx-auto bg-gradient-to-tr from-pink-500 to-purple-600 flex items-center justify-center shadow-2xl">
-                  <i data-lucide="radio" class="w-12 h-12"></i>
-                </div>
-                <h2 id="live-title" class="text-2xl md:text-4xl font-black mt-6">Live Premium LIVORA</h2>
-                <p id="live-subtitle" class="text-sm text-purple-300 mt-3">Transmissão pública em modo MVP</p>
-              </div>
-            </div>
-
-            <div id="gift-overlay" class="hidden absolute inset-0 z-30 flex items-center justify-center bg-black/45 backdrop-blur-sm">
-              <div class="text-center gift-burst">
-                <div id="gift-overlay-icon" class="text-8xl">💖</div>
-                <h3 id="gift-overlay-text" class="text-2xl font-black text-yellow-300 mt-4">Presente enviado!</h3>
-              </div>
-            </div>
-
-            <div id="heart-layer" class="absolute right-6 bottom-24 z-30 h-64 w-24 pointer-events-none"></div>
-
-            <div class="absolute left-4 bottom-4 right-4 z-20">
-              <div class="rounded-2xl bg-black/55 backdrop-blur-md border border-white/10 p-4">
-                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                  <div>
-                    <h3 id="goal-title" class="font-black text-sm">Meta de live</h3>
-                    <p id="goal-info" class="text-[10px] text-purple-200 mt-1">0 / 10000 moedas</p>
-                  </div>
-
-                  <div class="min-w-[240px]">
-                    <div class="flex items-center justify-between text-[10px] font-black text-purple-100">
-                      <span>Progresso</span>
-                      <span id="goal-percent">0%</span>
-                    </div>
-                    <div class="mt-2 h-2 rounded-full bg-purple-950 overflow-hidden">
-                      <div id="goal-bar" class="meter h-full rounded-full" style="width:0%"></div>
-                    </div>
-                  </div>
-                </div>
-
-                <div id="active-tools" class="mt-4 flex flex-wrap gap-2"></div>
-              </div>
-            </div>
-          </div>
+          <h1 class="text-3xl md:text-5xl font-black tracking-tight leading-tight">Live Room LIVORA.</h1>
+          <p class="mt-3 max-w-2xl text-sm md:text-base text-purple-100/70 leading-relaxed">Uma sala ao vivo visualmente premium, com chat, gifts, meta de coins e atalho para batalha.</p>
         </div>
-
-        <!-- Gifts -->
-        <div class="panel rounded-[2rem] p-5">
-          <div class="flex items-center justify-between mb-4">
-            <h2 class="text-xl font-black flex items-center gap-2">
-              <i data-lucide="gift" class="w-5 h-5 text-yellow-300"></i>
-              Enviar presente
-            </h2>
-            <span id="coin-balance" class="rounded-full bg-yellow-500/10 border border-yellow-500/30 px-3 py-1 text-xs font-black text-yellow-300">12.450 moedas</span>
-          </div>
-
-          <div id="gift-grid" class="grid grid-cols-3 md:grid-cols-6 gap-3"></div>
-        </div>
-
-        <!-- Poll -->
-        <div id="poll-box" class="panel rounded-[2rem] p-5">
-          <h2 class="text-xl font-black flex items-center gap-2">
-            <i data-lucide="list-checks" class="w-5 h-5 text-pink-300"></i>
-            Enquete ativa
-          </h2>
-
-          <p id="poll-question" class="text-sm text-purple-200 mt-3">Que conteúdo fazemos agora?</p>
-
-          <div id="poll-options" class="mt-4 grid grid-cols-2 gap-3"></div>
-
-          <div id="poll-result" class="hidden mt-4 rounded-2xl bg-[#09051c] border border-purple-950 p-4 text-sm text-purple-200"></div>
-        </div>
+        
       </div>
+      
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-5">
+  <section class="xl:col-span-8 glass rounded-[2rem] p-4 md:p-5">
+    <div class="relative rounded-[2rem] overflow-hidden bg-black min-h-[620px]"><div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=1000')] bg-cover bg-center opacity-90"></div><div class="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-black/40"></div><div class="absolute top-4 left-4 flex items-center gap-2"><span class="rounded-full bg-pink-500 px-3 py-1 text-[10px] font-black">AO VIVO</span><span class="rounded-full bg-black/50 border border-white/10 px-3 py-1 text-[10px] font-black">8.7K</span></div><div class="absolute bottom-5 left-5 right-5"><p id="roomTitle" class="text-3xl md:text-5xl font-black">Noite no Reino Aurora</p><p class="mt-2 max-w-xl text-purple-100/80">Chat aberto, gifts digitais e convidados em vídeo.</p><div class="mt-5 flex flex-wrap gap-3"><button onclick="sendGiftLive('💜',50)" class="btn-primary rounded-2xl px-5 py-3 font-black">💜 Gift 50</button><button onclick="sendGiftLive('👑',250)" class="btn-soft rounded-2xl px-5 py-3 font-black text-purple-100">👑 Coroa</button><a href="batalha_livora.html" class="btn-soft rounded-2xl px-5 py-3 font-black text-purple-100">Entrar em batalha</a></div></div></div>
+  </section>
+  <aside class="xl:col-span-4 space-y-4">
+    <div class="glass rounded-[2rem] p-5"><div class="flex items-center justify-between mb-4"><h3 class="text-xl font-black">Gifts recebidos</h3><b id="giftTotal" class="text-yellow-300">2.450</b></div><div class="h-3 rounded-full bg-purple-950 overflow-hidden"><div id="giftBar" class="h-full w-[49%] bg-gradient-to-r from-yellow-300 to-pink-400"></div></div><p class="mt-2 text-xs text-purple-300">Meta: 5.000 LIV Coins.</p></div>
+    <div class="glass rounded-[2rem] p-5"><h3 class="text-xl font-black mb-3">Chat</h3><div id="liveChat" class="space-y-2 max-h-96 overflow-auto text-sm"></div><div class="mt-3 flex gap-2"><input id="liveInput" class="field" placeholder="Mensagem..."><button onclick="liveComment()" class="btn-primary rounded-2xl px-4 font-black">Enviar</button></div></div>
+  </aside>
+</div>
 
-      <!-- Sidebar -->
-      <aside class="xl:col-span-4 space-y-6">
-        <div class="panel rounded-[2rem] p-5">
-          <h2 class="text-xl font-black flex items-center gap-2">
-            <i data-lucide="message-square" class="w-5 h-5 text-purple-300"></i>
-            Chat público
-          </h2>
-
-          <div id="public-chat" class="mt-4 h-[410px] overflow-y-auto space-y-3 rounded-2xl bg-[#09051c] border border-purple-950 p-4"></div>
-
-          <form onsubmit="sendPublicMessage(event)" class="mt-4 flex gap-2">
-            <input id="chat-input" placeholder="Escreve no chat..." class="flex-1 rounded-2xl border border-purple-900/60 bg-[#10092c] px-4 py-3 text-sm text-white outline-none focus:border-pink-500">
-            <button class="rounded-2xl bg-gradient-to-r from-pink-500 to-purple-600 px-4 py-3 text-xs font-black text-white">
-              Enviar
-            </button>
-          </form>
-        </div>
-
-        <div class="panel rounded-[2rem] p-5">
-          <h2 class="text-xl font-black flex items-center gap-2">
-            <i data-lucide="users" class="w-5 h-5 text-green-300"></i>
-            Participar
-          </h2>
-
-          <div class="mt-4 grid grid-cols-1 gap-3">
-            <button onclick="requestCoHost()" class="rounded-2xl border border-purple-900/60 bg-[#10092c] px-4 py-4 text-left hover:border-pink-500/60 transition-all">
-              <strong class="block text-sm">Pedir para entrar como co-host</strong>
-              <span class="text-xs text-purple-400">Envia pedido ao criador.</span>
-            </button>
-
-            <button onclick="requestGuest()" class="rounded-2xl border border-purple-900/60 bg-[#10092c] px-4 py-4 text-left hover:border-pink-500/60 transition-all">
-              <strong class="block text-sm">Entrar como convidado</strong>
-              <span class="text-xs text-purple-400">Para lives com vários convidados.</span>
-            </button>
-
-            <button onclick="sendWish()" class="rounded-2xl border border-purple-900/60 bg-[#10092c] px-4 py-4 text-left hover:border-pink-500/60 transition-all">
-              <strong class="block text-sm">Enviar desejo/desafio</strong>
-              <span class="text-xs text-purple-400">Sugere algo para a live.</span>
-            </button>
-          </div>
-        </div>
-      </aside>
     </section>
   </main>
 
-  <!-- Report Modal -->
-  <div id="report-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
-    <div class="panel rounded-3xl p-6 max-w-lg w-full">
-      <div class="flex items-start gap-4">
-        <div class="w-12 h-12 rounded-2xl bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-300">
-          <i data-lucide="flag"></i>
-        </div>
-        <div>
-          <h2 class="text-xl font-black">Denunciar live</h2>
-          <p class="text-sm text-purple-300 mt-2">A denúncia ficará disponível no painel Admin Reports.</p>
-        </div>
-      </div>
-
-      <select id="report-reason" class="mt-5 w-full rounded-2xl border border-purple-900/60 bg-[#10092c] px-4 py-3 text-sm text-white outline-none">
-        <option>Assédio</option>
-        <option>Conteúdo sexual explícito</option>
-        <option>Menores em risco</option>
-        <option>Golpe ou fraude</option>
-        <option>Ódio ou discriminação</option>
-        <option>Violência ou ameaça</option>
-        <option>Automutilação ou suicídio</option>
-        <option>Privacidade</option>
-      </select>
-
-      <textarea id="report-details" rows="4" placeholder="Descreve o que aconteceu..." class="mt-3 w-full rounded-2xl border border-purple-900/60 bg-[#10092c] px-4 py-3 text-sm text-white outline-none resize-none"></textarea>
-
-      <div class="mt-5 flex justify-end gap-3">
-        <button onclick="closeReportModal()" class="rounded-xl bg-[#150d32] border border-purple-900/60 px-4 py-3 text-xs font-black text-purple-200">Cancelar</button>
-        <button onclick="submitReport()" class="rounded-xl bg-red-600 px-4 py-3 text-xs font-black text-white">Enviar denúncia</button>
-      </div>
+  <nav class="fixed bottom-0 left-0 right-0 z-40 border-t border-purple-900/60 bg-[#080416]/95 backdrop-blur-xl lg:hidden">
+    <div class="grid grid-cols-5 h-16">
+      <a href="index.html" class="mobile-tab "><i data-lucide="home" class="w-5 h-5"></i>Início</a>
+      <a href="explorar.html" class="mobile-tab "><i data-lucide="search" class="w-5 h-5"></i>Explorar</a>
+      <a href="go_live.html" class="mobile-tab "><span class="-mt-5 mb-0.5 h-12 w-12 rounded-full icon-box flex items-center justify-center shadow-lg shadow-pink-500/25"><i data-lucide="plus" class="w-7 h-7"></i></span>Criar</a>
+      <a href="live_room.html" class="mobile-tab active"><i data-lucide="radio" class="w-5 h-5"></i>Live</a>
+      <a href="perfil.html" class="mobile-tab "><i data-lucide="user" class="w-5 h-5"></i>Perfil</a>
     </div>
-  </div>
-
-  <div id="toast" class="hidden fixed top-5 right-5 z-50 max-w-sm rounded-2xl border border-pink-500/30 bg-[#120a2d] px-4 py-3 text-sm text-purple-100 shadow-2xl">
-    <div class="flex items-start gap-3">
-      <i data-lucide="sparkles" class="w-5 h-5 text-pink-400 shrink-0 mt-0.5"></i>
-      <p id="toast-text"></p>
-    </div>
-  </div>
+  </nav>
 
   <script>
-    const TOOL_NAMES = {
-      cohost: 'Co-host',
-      multi_guests: 'Vários convidados',
-      live_goal: 'Meta',
-      games: 'Jogos',
-      wishes: 'Desejos',
-      play_together: 'Jogar juntos',
-      polls: 'Enquete',
-      rewards: 'Recompensas',
-      fanclub: 'Fã-clube',
-      gift_gallery: 'Presentes',
-      live_events: 'Eventos'
-    };
-
-    const GIFTS = [
-      { icon:'🌹', name:'Rosa', cost:10 },
-      { icon:'💖', name:'Coração', cost:49 },
-      { icon:'🧸', name:'Urso', cost:99 },
-      { icon:'🎤', name:'Microfone', cost:199 },
-      { icon:'🚀', name:'Foguete', cost:499 },
-      { icon:'🏰', name:'Castelo', cost:999 }
-    ];
-
-    let liveState = JSON.parse(localStorage.getItem('livora_current_live') || '{}');
-    let studioState = JSON.parse(localStorage.getItem('livora_creator_studio') || '{}');
-    let user = JSON.parse(localStorage.getItem('livora_user') || '{}');
-
-    if (!studioState.activeTools) studioState.activeTools = ['live_goal', 'polls', 'gift_gallery', 'fanclub'];
-    if (!studioState.goalTitle) studioState.goalTitle = 'Meta de 10.000 moedas';
-    if (!studioState.goalTarget) studioState.goalTarget = '10000';
-    if (!studioState.goalCurrent) studioState.goalCurrent = '2450';
-
-    let coins = Number(user.coins || 12450);
-    let currentGoal = Number(studioState.goalCurrent || 2450);
-    let targetGoal = Number(studioState.goalTarget || 10000);
-    let viewers = Number(liveState.viewers || 128);
-
-    document.addEventListener('DOMContentLoaded', () => {
-      lucide.createIcons();
-      hydrateLiveRoom();
-      renderGifts();
-      renderPoll();
-      renderInitialChat();
-      setInterval(simulateChat, 8500);
-    });
-
-    function showToast(message) {
-      const toast = document.getElementById('toast');
-      const text = document.getElementById('toast-text');
-      text.textContent = message;
-      toast.classList.remove('hidden');
-      clearTimeout(window.toastTimer);
-      window.toastTimer = setTimeout(() => toast.classList.add('hidden'), 3200);
-      lucide.createIcons();
+    document.addEventListener('DOMContentLoaded',()=>{ if(window.lucide){lucide.createIcons();} });
+    function showToast(message){
+      const toast=document.getElementById('toast'); const text=document.getElementById('toast-text');
+      if(!toast||!text) return; text.textContent=message; toast.classList.remove('hidden'); toast.classList.add('toast');
+      clearTimeout(window.toastTimer); window.toastTimer=setTimeout(()=>{toast.classList.add('hidden');toast.classList.remove('toast');},3200);
+      if(window.lucide){lucide.createIcons();}
     }
-
-    function hydrateLiveRoom() {
-      document.getElementById('creator-name').textContent = user.name || 'Pedro Creator';
-      document.getElementById('creator-avatar').src = user.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300';
-
-      if (liveState.title) {
-        document.getElementById('live-title').textContent = liveState.title;
-      } else {
-        document.getElementById('live-title').textContent = localStorage.getItem('livora_live_title') || 'Live Premium LIVORA';
-      }
-
-      const category = liveState.category || localStorage.getItem('livora_live_category') || 'Conversa';
-      document.getElementById('live-category').textContent = '#' + category + ' · Live pública';
-
-      if (liveState.status !== 'live') {
-        document.getElementById('live-status').textContent = 'MODO DEMO';
-        document.getElementById('live-status').className = 'rounded-full bg-purple-600 px-3 py-1 text-[10px] font-black';
-      }
-
-      document.getElementById('viewer-count').textContent = '👥 ' + viewers.toLocaleString('pt-PT');
-
-      document.getElementById('live-subtitle').textContent =
-        'Atmosfera: ' + (studioState.atmosphere || 'chill') +
-        ' · Filtro: ' + (studioState.filter || 'clean') +
-        ' · Qualidade: ' + (studioState.cameraQuality || '1080p');
-
-      const layer = document.getElementById('live-effect-layer');
-      const effect = user.backgroundEffect || 'aurora';
-      const allowed = ['aurora','particles','stars','hearts','neon_pulse'];
-      if (effect !== 'none') layer.classList.add('fx-' + (allowed.includes(effect) ? effect : 'aurora'));
-
-      renderTools();
-      updateGoal();
-      updateCoins();
+    function saveDemoUser(){
+      const user={name:'Pedro Creator',username:'@pedrocreator',role:'creator',coins:12450,level:592,createdAt:new Date().toISOString()};
+      localStorage.setItem('livora_user',JSON.stringify(user));
+      showToast('Perfil demo guardado neste navegador.');
+      return user;
     }
-
-    function renderTools() {
-      const wrap = document.getElementById('active-tools');
-      wrap.innerHTML = studioState.activeTools.map(id => `
-        <span class="rounded-full bg-pink-500/10 border border-pink-500/30 px-3 py-1.5 text-[10px] font-black text-pink-200">${TOOL_NAMES[id] || id}</span>
-      `).join('');
+    function getDemoUser(){
+      try{return JSON.parse(localStorage.getItem('livora_user')) || saveDemoUser();}catch(e){return saveDemoUser();}
     }
+    
+let giftTotal=2450; const liveMsgs=['Que live bonita!','Manda salve para Portugal','Adorei a estética','Gift enviado 💜','Quero entrar como convidado']; const liveNames=['Pedro','Fran','Luméa','Mara','Rui','Sofia'];
+function loadLive(){try{const l=JSON.parse(localStorage.getItem('livora_live')); if(l&&l.title) document.getElementById('roomTitle').textContent=l.title;}catch(e){} for(let i=0;i<6;i++)addLiveMsg(liveMsgs[i%liveMsgs.length]); updateGift();}
+function addLiveMsg(t){const box=document.getElementById('liveChat'); const el=document.createElement('div'); el.className='rounded-2xl bg-[#09051c] border border-purple-950 px-3 py-2'; el.innerHTML='<b class="text-pink-300">'+liveNames[Math.floor(Math.random()*liveNames.length)]+'</b> <span class="text-purple-200">'+t+'</span>'; box.prepend(el); while(box.children.length>15) box.lastChild.remove();}
+function updateGift(){document.getElementById('giftTotal').textContent=giftTotal.toLocaleString('pt-PT'); document.getElementById('giftBar').style.width=Math.min(100,Math.round(giftTotal/5000*100))+'%';}
+function sendGiftLive(e,v){giftTotal+=v; addLiveMsg('enviou '+e+' para a live'); updateGift(); showToast('Gift enviado: '+e);}
+function liveComment(){const i=document.getElementById('liveInput'); if(!i.value.trim())return; addLiveMsg(i.value.trim()); i.value='';}
+loadLive(); setInterval(()=>{if(Math.random()>.55)addLiveMsg(liveMsgs[Math.floor(Math.random()*liveMsgs.length)]);},2800);
 
-    function updateGoal() {
-      const percent = Math.min(100, Math.round((currentGoal / targetGoal) * 100));
-      document.getElementById('goal-title').textContent = studioState.goalTitle || 'Meta de live';
-      document.getElementById('goal-info').textContent = currentGoal.toLocaleString('pt-PT') + ' / ' + targetGoal.toLocaleString('pt-PT') + ' moedas';
-      document.getElementById('goal-percent').textContent = percent + '%';
-      document.getElementById('goal-bar').style.width = percent + '%';
-    }
-
-    function updateCoins() {
-      document.getElementById('coin-balance').textContent = coins.toLocaleString('pt-PT') + ' moedas';
-    }
-
-    function renderGifts() {
-      const grid = document.getElementById('gift-grid');
-      grid.innerHTML = GIFTS.map(gift => `
-        <button onclick="sendGift('${gift.icon}','${gift.name}',${gift.cost})" class="rounded-2xl bg-[#09051c] border border-purple-950 p-4 text-center hover:border-yellow-500/50 transition-all">
-          <div class="text-3xl">${gift.icon}</div>
-          <p class="text-xs font-black mt-2">${gift.name}</p>
-          <p class="text-[10px] text-yellow-300 font-black mt-1">${gift.cost}</p>
-        </button>
-      `).join('');
-    }
-
-    function sendGift(icon, name, cost) {
-      if (coins < cost) {
-        showToast('Moedas insuficientes para este presente.');
-        return;
-      }
-
-      coins -= cost;
-      currentGoal += cost;
-      user.coins = coins;
-      studioState.goalCurrent = String(currentGoal);
-
-      localStorage.setItem('livora_user', JSON.stringify(user));
-      localStorage.setItem('livora_creator_studio', JSON.stringify(studioState));
-
-      document.getElementById('gift-overlay-icon').textContent = icon;
-      document.getElementById('gift-overlay-text').textContent = name + ' enviado!';
-      document.getElementById('gift-overlay').classList.remove('hidden');
-
-      setTimeout(() => document.getElementById('gift-overlay').classList.add('hidden'), 1300);
-
-      addChat('Tu', 'enviaste ' + icon + ' ' + name);
-      updateCoins();
-      updateGoal();
-      spawnHeart();
-      showToast('Presente enviado: ' + name);
-    }
-
-    function spawnHeart() {
-      const layer = document.getElementById('heart-layer');
-      const heart = document.createElement('div');
-      heart.className = 'heart-float absolute bottom-0 right-4 text-3xl';
-      heart.textContent = ['💖','💜','🔥','✨'][Math.floor(Math.random() * 4)];
-      heart.style.right = Math.floor(Math.random() * 60) + 'px';
-      layer.appendChild(heart);
-      setTimeout(() => heart.remove(), 2900);
-    }
-
-    function renderPoll() {
-      const options = ['Música', 'Conversa', 'Desafio', 'Surpresa'];
-      const grid = document.getElementById('poll-options');
-
-      grid.innerHTML = options.map(option => `
-        <button onclick="votePoll('${option}')" class="rounded-2xl bg-[#09051c] border border-purple-950 p-4 text-sm font-black text-purple-100 hover:border-pink-500 transition-all">
-          ${option}
-        </button>
-      `).join('');
-    }
-
-    function votePoll(option) {
-      document.getElementById('poll-result').classList.remove('hidden');
-      document.getElementById('poll-result').innerHTML = '<strong class="text-pink-300">Votaste:</strong> ' + option + '<br><span class="text-purple-400">Resultado simulado enviado ao criador.</span>';
-      addChat('Enquete', 'Tu votaste em ' + option);
-    }
-
-    function renderInitialChat() {
-      addChat('LIVORA', 'Bem-vindo à sala pública da live.');
-      addChat('Sistema', liveState.status === 'live' ? 'A transmissão está ao vivo.' : 'Esta live está em modo demonstração.');
-    }
-
-    function addChat(name, text) {
-      const chat = document.getElementById('public-chat');
-      const line = document.createElement('div');
-      line.className = 'chat-line rounded-2xl bg-[#120a2d] border border-purple-950 p-3 text-sm';
-      line.innerHTML = `<strong class="text-pink-300">${name}</strong><p class="text-purple-200 mt-1">${text}</p>`;
-      chat.appendChild(line);
-      chat.scrollTop = chat.scrollHeight;
-    }
-
-    function sendPublicMessage(event) {
-      event.preventDefault();
-      const input = document.getElementById('chat-input');
-      const text = input.value.trim();
-      if (!text) return;
-      addChat('Tu', text);
-      input.value = '';
-    }
-
-    function simulateChat() {
-      const names = ['Marta', 'João', 'Luna', 'Rafa', 'Beatriz'];
-      const messages = [
-        'Que live bonita!',
-        'Este fundo está incrível.',
-        'Manda mais um desafio!',
-        'A meta está quase!',
-        'Adorei a energia.'
-      ];
-
-      addChat(names[Math.floor(Math.random() * names.length)], messages[Math.floor(Math.random() * messages.length)]);
-      viewers += Math.floor(Math.random() * 8) + 1;
-      document.getElementById('viewer-count').textContent = '👥 ' + viewers.toLocaleString('pt-PT');
-    }
-
-    function toggleFollow() {
-      const btn = document.getElementById('follow-btn');
-      if (btn.textContent.trim() === 'Seguir') {
-        btn.textContent = 'Seguindo';
-        btn.className = 'rounded-full bg-[#150d32] border border-purple-900/60 px-5 py-2.5 text-xs font-black text-purple-200';
-        showToast('Agora estás a seguir este criador.');
-      } else {
-        btn.textContent = 'Seguir';
-        btn.className = 'rounded-full bg-pink-500 px-5 py-2.5 text-xs font-black text-white';
-        showToast('Deixaste de seguir este criador.');
-      }
-    }
-
-    function requestCoHost() {
-      addChat('Sistema', 'Pedido de co-host enviado ao criador.');
-      showToast('Pedido de co-host enviado.');
-    }
-
-    function requestGuest() {
-      addChat('Sistema', 'Pedido para entrar como convidado enviado.');
-      showToast('Pedido de convidado enviado.');
-    }
-
-    function sendWish() {
-      const wish = prompt('Que desejo/desafio queres enviar?');
-      if (!wish) return;
-      addChat('Desejo do espectador', wish);
-      showToast('Desejo enviado ao criador.');
-    }
-
-    function openReportModal() {
-      document.getElementById('report-modal').classList.remove('hidden');
-      lucide.createIcons();
-    }
-
-    function closeReportModal() {
-      document.getElementById('report-modal').classList.add('hidden');
-    }
-
-    function submitReport() {
-      const reason = document.getElementById('report-reason').value;
-      const details = document.getElementById('report-details').value.trim();
-
-      const report = {
-        id: 'RP-' + Date.now(),
-        targetId: 'live-public-room',
-        targetName: document.getElementById('creator-name').textContent,
-        context: 'live',
-        reason,
-        details,
-        status: 'pending_review',
-        severity: reason.includes('Menores') || reason.includes('suicídio') || reason.includes('Violência') ? 'high' : 'medium',
-        createdAt: new Date().toISOString(),
-        action: 'reported'
-      };
-
-      const reports = JSON.parse(localStorage.getItem('livora_user_reports') || '[]');
-      reports.unshift(report);
-      localStorage.setItem('livora_user_reports', JSON.stringify(reports));
-
-      closeReportModal();
-      showToast('Denúncia enviada.');
-    }
   </script>
 </body>
 </html>
