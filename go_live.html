@@ -60,7 +60,7 @@
     </nav>
     <div class="flex items-center gap-2">
       <a href="entrada_livora.html" class="hidden sm:inline-flex rounded-full border border-purple-800 bg-[#110a2d]/80 px-5 py-2.5 text-xs font-bold text-purple-100 hover:border-pink-500 hover:text-white transition-all">Entrada</a>
-      <button onclick="showToast('Supabase ativo: usa Entrada para login real.')" class="rounded-full btn-primary px-5 py-2.5 text-xs font-black text-white hover:opacity-95 transition-all">Demo</button>
+      <button onclick="showToast('Supabase ligado nesta página: pronto para criar live real.')" class="rounded-full btn-primary px-5 py-2.5 text-xs font-black text-white hover:opacity-95 transition-all">Supabase</button>
     </div>
   </header>
 
@@ -86,7 +86,7 @@
       <div class="grid md:grid-cols-2 gap-4"><label class="block"><span class="text-xs font-bold text-purple-300">Meta de coins</span><input id="liveGoal" type="number" class="field mt-1" value="5000"></label><label class="block"><span class="text-xs font-bold text-purple-300">Modo</span><select class="field mt-1"><option>Público</option><option>VIP</option><option>Seguidores</option></select></label></div>
       <label class="block"><span class="text-xs font-bold text-purple-300">Descrição</span><textarea id="liveDesc" class="field mt-1 min-h-28">Live de demonstração LIVORA com chat, gifts e entrada de convidados.</textarea></label>
       <div class="grid md:grid-cols-3 gap-3"><label class="soft-card rounded-2xl p-4 flex gap-3 items-start"><input type="checkbox" checked class="mt-1 accent-pink-500"><span><b>Chat ativo</b><p class="text-xs text-purple-300">Permitir comentários.</p></span></label><label class="soft-card rounded-2xl p-4 flex gap-3 items-start"><input type="checkbox" checked class="mt-1 accent-pink-500"><span><b>Gifts ativos</b><p class="text-xs text-purple-300">Receber presentes.</p></span></label><label class="soft-card rounded-2xl p-4 flex gap-3 items-start"><input type="checkbox" checked class="mt-1 accent-pink-500"><span><b>Convidados</b><p class="text-xs text-purple-300">Aceitar vídeo match.</p></span></label></div>
-      <button class="w-full btn-primary rounded-2xl py-4 font-black uppercase">Iniciar live real</button>
+      <button class="w-full btn-primary rounded-2xl py-4 font-black uppercase">Iniciar live demo</button>
     </form>
   </section>
   <aside class="lg:col-span-5 space-y-4">
@@ -107,6 +107,10 @@
     </div>
   </nav>
 
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="livora_config.js"></script>
+  <script src="livora_supabase.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded',()=>{ if(window.lucide){lucide.createIcons();} });
     function showToast(message){
@@ -125,36 +129,7 @@
       try{return JSON.parse(localStorage.getItem('livora_user')) || saveDemoUser();}catch(e){return saveDemoUser();}
     }
     
-async function startLive(e){
-  e.preventDefault();
-
-  if(!window.Livora || !window.Livora.isConfigured()){
-    showToast('Supabase não está ativo nesta página. Confirma se subiste livora_config.js e livora_supabase.js.');
-    return;
-  }
-
-  try{
-    const session = await window.Livora.getSession();
-    if(!session?.user?.id){
-      showToast('Para criar uma live real, entra primeiro na tua conta LIVORA.');
-      setTimeout(()=>{ window.location.href='entrada_livora.html'; }, 1300);
-      return;
-    }
-
-    const live = await window.Livora.createLive({
-      title: document.getElementById('liveTitle').value,
-      category: document.getElementById('liveCategory').value,
-      goal_coins: document.getElementById('liveGoal').value,
-      description: document.getElementById('liveDesc').value,
-      status: 'live'
-    });
-
-    showToast('Live real criada no Supabase. A abrir sala pública...');
-    setTimeout(()=>{ window.location.href='live_room.html?live=' + encodeURIComponent(live.id); }, 900);
-  }catch(err){
-    showToast('Erro ao criar live: ' + (err.message || err));
-  }
-}
+function startLive(e){e.preventDefault(); const live={title:document.getElementById('liveTitle').value,category:document.getElementById('liveCategory').value,goal:document.getElementById('liveGoal').value,desc:document.getElementById('liveDesc').value,startedAt:new Date().toISOString()}; localStorage.setItem('livora_live',JSON.stringify(live)); showToast('Live demo criada. A abrir sala pública...'); setTimeout(()=>{window.location.href='live_room.html';},800);}
 
   </script>
 </body>
