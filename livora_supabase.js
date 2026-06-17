@@ -132,25 +132,55 @@
     return data || [];
   }
 
-  async function createLive({ title, category, description, goal_coins }) {
-    if (!isConfigured()) throw new Error('Supabase ainda não está configurado.');
-    const session = await getSession();
-    if (!session?.user?.id) throw new Error('Tens de entrar primeiro.');
+  async function ensureProfile(session) {
+    if (!session?.user?.id) return null;
 
+    let profile = await getProfile(session.user.id);
+    if (profile) return profile;
+
+    const username = '@creator_' + String(session.user.id).slice(0, 8);
     const { data, error } = await client
-      .from('lives')
+      .from('profiles')
       .insert({
-        creator_id: session.user.id,
-        title,
-        category: category || 'Conversa',
-        description: description || '',
-        status: 'scheduled',
-        goal_coins: Number(goal_coins || 0)
+        id: session.user.id,
+        email: session.user.email || null,
+        username,
+        display_name: session.user.user_metadata?.display_name || 'Creator',
+        role: session.user.user_metadata?.role || 'creator',
+        coins: 12450,
+        level: 592
       })
       .select('*')
       .single();
 
     if (error) throw error;
+    return data;
+  }
+
+  async function createLive({ title, category, description, goal_coins, status }) {
+    if (!isConfigured()) throw new Error('Supabase ainda não está configurado.');
+    const session = await getSession();
+    if (!session?.user?.id) throw new Error('Tens de entrar primeiro em entrada_livora.html.');
+
+    await ensureProfile(session);
+
+    const { data, error } = await client
+      .from('lives')
+      .insert({
+        creator_id: session.user.id,
+        title: title || 'Live LIVORA',
+        category: category || 'Conversa',
+        description: description || '',
+        status: status || 'live',
+        goal_coins: Number(goal_coins || 0),
+        started_at: new Date().toISOString()
+      })
+      .select('*')
+      .single();
+
+    if (error) throw error;
+    localStorage.setItem('livora_current_live_id', data.id);
+    localStorage.setItem('livora_live', JSON.stringify(data));
     return data;
   }
 
@@ -194,6 +224,7 @@
     signOut,
     getSession,
     getProfile,
+    ensureProfile,
     getCurrentProfile,
     loadGifts,
     createLive,
