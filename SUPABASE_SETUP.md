@@ -81,3 +81,14 @@ Ligar em tempo real:
 - gifts a aparecerem em tempo real;
 - ranking global;
 - battle 1 vs 1 real.
+
+## Configuração aplicada
+
+Este pacote foi atualizado com:
+
+```js
+SUPABASE_URL: "https://cgitrfqsnipqlecejwtd.supabase.co"
+DEMO_MODE: false
+```
+
+A URL usada é a Project URL base. Não uses o sufixo `/rest/v1/` dentro do `livora_config.js`.

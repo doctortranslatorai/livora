@@ -1,17 +1,7 @@
-// LIVORA — Configuração Supabase
-// 1) Cria um projeto em https://supabase.com
-// 2) Cola o conteúdo de supabase_schema.sql no SQL Editor
-// 3) Substitui os valores abaixo pela tua Project URL e anon public key
-
+// LIVORA — Supabase Config
+// Nota: usa a Project URL base, sem /rest/v1/ no fim.
 window.LIVORA_CONFIG = {
-  SUPABASE_URL: "COLOCA_AQUI_A_TUA_SUPABASE_URL",
-  SUPABASE_ANON_KEY: "COLOCA_AQUI_A_TUA_SUPABASE_ANON_KEY",
-
-  // true = mantém tudo a funcionar em demonstração/localStorage.
-  // false = tenta usar Supabase real.
-  DEMO_MODE: true,
-
-  APP_NAME: "LIVORA",
-  DEFAULT_COINS: 12450,
-  DEFAULT_LEVEL: 592
+  SUPABASE_URL: "https://cgitrfqsnipqlecejwtd.supabase.co",
+  SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNnaXRyZnFzbmlwcWxlY2Vqd3RkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2MTU5MTEsImV4cCI6MjA5NzE5MTkxMX0.N3GWrR771k-fa7TTRAWsHewKXSdN0cmiIoWABQQ0bxA",
+  DEMO_MODE: false
 };
