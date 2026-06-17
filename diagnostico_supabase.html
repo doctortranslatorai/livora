@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LIVORA — Diagnóstico Supabase</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="livora_config.js"></script>
+  <script src="livora_supabase.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap');
+    body{font-family:'Plus Jakarta Sans',sans-serif;background:radial-gradient(circle at 15% 15%,rgba(236,72,153,.18),transparent 32%),radial-gradient(circle at 85% 10%,rgba(124,58,237,.20),transparent 34%),#070312;color:white;min-height:100vh}.glass{background:rgba(12,7,33,.74);border:1px solid rgba(168,85,247,.25);backdrop-filter:blur(22px);box-shadow:0 30px 80px rgba(0,0,0,.35)}.btn{background:linear-gradient(90deg,#ec4899,#7c3aed,#4f46e5)}.gradient-text{background:linear-gradient(90deg,#f472b6,#d8b4fe,#a5b4fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+  </style>
+</head>
+<body class="p-5 md:p-10">
+  <main class="mx-auto max-w-4xl">
+    <a href="index.html" class="inline-flex items-center gap-3 mb-8">
+      <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-pink-500 via-purple-600 to-indigo-600 flex items-center justify-center font-black">L</div>
+      <div><div class="text-2xl font-black gradient-text">LIVORA</div><div class="text-[9px] text-pink-400 font-black tracking-[0.28em] uppercase -mt-1">Supabase Diagnostic</div></div>
+    </a>
+
+    <section class="glass rounded-[2rem] p-6 md:p-8">
+      <h1 class="text-3xl md:text-5xl font-black">Diagnóstico Supabase</h1>
+      <p class="mt-3 text-purple-100/70">Usa esta página para confirmar se a LIVORA está ligada ao Supabase.</p>
+
+      <div id="status" class="mt-8 rounded-3xl border border-purple-800 bg-[#10092c] p-5 text-sm text-purple-100">A verificar...</div>
+
+      <div class="mt-6 grid md:grid-cols-3 gap-3">
+        <button onclick="testConnection()" class="btn rounded-2xl py-4 font-black">Testar ligação</button>
+        <button onclick="testProfiles()" class="rounded-2xl border border-purple-800 bg-[#110a2d] py-4 font-black">Testar perfis</button>
+        <button onclick="location.href='entrada_livora.html'" class="rounded-2xl border border-purple-800 bg-[#110a2d] py-4 font-black">Ir para entrada</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const box = document.getElementById('status');
+    function write(html){ box.innerHTML = html; }
+    async function testConnection(){
+      if (!window.Livora?.isConfigured()) {
+        write('<b class="text-yellow-300">DEMO LOCAL</b><br>O Supabase ainda não está configurado. Abre <code>livora_config.js</code>, coloca URL/key e muda <code>DEMO_MODE</code> para <code>false</code>.');
+        return;
+      }
+      const { data, error } = await window.Livora.client.from('gifts').select('*').limit(3);
+      if (error) write('<b class="text-pink-300">Erro:</b><br>' + error.message);
+      else write('<b class="text-emerald-300">Supabase ligado!</b><br>Gifts carregados: ' + data.map(g => g.emoji + ' ' + g.name).join(', '));
+    }
+    async function testProfiles(){
+      if (!window.Livora?.isConfigured()) { write('Ainda estás em modo demo local.'); return; }
+      const { data, error } = await window.Livora.client.from('profiles').select('username, display_name, role').limit(5);
+      if (error) write('<b class="text-pink-300">Erro:</b><br>' + error.message);
+      else write('<b class="text-emerald-300">Tabela profiles OK.</b><pre class="mt-3 whitespace-pre-wrap text-xs">' + JSON.stringify(data, null, 2) + '</pre>');
+    }
+    document.addEventListener('DOMContentLoaded', testConnection);
+  </script>
+</body>
+</html>

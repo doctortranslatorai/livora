@@ -22,3 +22,19 @@ Projeto LIVORA uniformizado no mesmo formato visual premium do ficheiro de entra
 2. Substituir os ficheiros antigos do repositório por estes ficheiros.
 3. Fazer commit e push.
 4. Abrir o link do GitHub Pages e testar o menu.
+
+
+## Supabase Ready
+
+Esta versão inclui ligação preparada para Supabase.
+
+Ficheiros principais:
+
+- `SUPABASE_SETUP.md`
+- `supabase_schema.sql`
+- `livora_config.js`
+- `livora_supabase.js`
+- `livora_page_bindings.js`
+- `diagnostico_supabase.html`
+
+Para ativar dados reais, segue o ficheiro `SUPABASE_SETUP.md`.
