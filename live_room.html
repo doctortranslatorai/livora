@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LIVORA — Live Room</title>
+  <title>LIVORA — Live Room Real</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
@@ -30,13 +30,9 @@
     .field:focus{border-color:#ec4899}
     .mobile-tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:rgba(216,180,254,.72);font-size:10px;font-weight:900}
     .mobile-tab.active{color:white}
-    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-    @keyframes pulse-ring{0%{box-shadow:0 0 0 0 rgba(236,72,153,.48)}70%{box-shadow:0 0 0 18px rgba(236,72,153,0)}100%{box-shadow:0 0 0 0 rgba(236,72,153,0)}}
-    @keyframes shimmer{0%{transform:translateX(-110%)}100%{transform:translateX(110%)}}
-    .float{animation:float 5s ease-in-out infinite}.pulse-ring{animation:pulse-ring 2.4s infinite}
-    .shine{position:relative;overflow:hidden}.shine:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.10),transparent);transform:translateX(-110%);animation:shimmer 5s infinite;pointer-events:none}
     .toast{animation:toastIn .25s ease-out forwards}@keyframes toastIn{from{opacity:0;transform:translateY(-8px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
     .gradient-text{background:linear-gradient(90deg,#f472b6,#d8b4fe,#a5b4fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .chat-scroll{scrollbar-width:thin;scrollbar-color:rgba(236,72,153,.5) rgba(12,7,33,.4)}
   </style>
 </head>
 <body class="selection:bg-pink-500 selection:text-white pb-24 md:pb-0">
@@ -50,17 +46,17 @@
       <div class="text-left"><div class="text-2xl font-black tracking-tight gradient-text">LIVORA</div><div class="text-[9px] text-pink-400 font-black tracking-[0.28em] uppercase -mt-1">Creator Live Network</div></div>
     </a>
     <nav class="hidden lg:flex items-center gap-2">
-      <a class="nav-link " href="index.html">Início</a>
-      <a class="nav-link " href="explorar.html">Explorar</a>
-      <a class="nav-link " href="batalha_livora.html">Batalha</a>
-      <a class="nav-link " href="go_live.html">Criar Live</a>
-      <a class="nav-link " href="live_room.html">Live</a>
-      <a class="nav-link " href="creator_studio.html">Estúdio</a>
-      <a class="nav-link " href="perfil.html">Perfil</a>
+      <a class="nav-link" href="index.html">Início</a>
+      <a class="nav-link" href="explorar.html">Explorar</a>
+      <a class="nav-link" href="batalha_livora.html">Batalha</a>
+      <a class="nav-link" href="go_live.html">Criar Live</a>
+      <a class="nav-link active" href="live_room.html">Live</a>
+      <a class="nav-link" href="creator_studio.html">Estúdio</a>
+      <a class="nav-link" href="perfil.html">Perfil</a>
     </nav>
     <div class="flex items-center gap-2">
       <a href="entrada_livora.html" class="hidden sm:inline-flex rounded-full border border-purple-800 bg-[#110a2d]/80 px-5 py-2.5 text-xs font-bold text-purple-100 hover:border-pink-500 hover:text-white transition-all">Entrada</a>
-      <button onclick="showToast('LIVORA Supabase Ready: ativa livora_config.js para dados reais.')" class="rounded-full btn-primary px-5 py-2.5 text-xs font-black text-white hover:opacity-95 transition-all">Demo</button>
+      <button onclick="refreshRoom(true)" class="rounded-full btn-primary px-5 py-2.5 text-xs font-black text-white hover:opacity-95 transition-all">Atualizar</button>
     </div>
   </header>
 
@@ -69,63 +65,294 @@
       <div class="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
         <div>
           <div class="inline-flex items-center gap-2 rounded-full border border-pink-500/30 bg-pink-500/10 px-4 py-2 text-xs font-black text-pink-300 mb-4">
-            <span class="h-2 w-2 rounded-full bg-pink-500 animate-pulse"></span>SALA PÚBLICA
+            <span class="h-2 w-2 rounded-full bg-pink-500 animate-pulse"></span>SALA REAL SUPABASE
           </div>
-          <h1 class="text-3xl md:text-5xl font-black tracking-tight leading-tight">Live Room LIVORA.</h1>
-          <p class="mt-3 max-w-2xl text-sm md:text-base text-purple-100/70 leading-relaxed">Uma sala ao vivo visualmente premium, com chat, gifts, meta de coins e atalho para batalha.</p>
+          <h1 id="pageTitle" class="text-3xl md:text-5xl font-black tracking-tight leading-tight">Live Room LIVORA.</h1>
+          <p id="pageSubtitle" class="mt-3 max-w-2xl text-sm md:text-base text-purple-100/70 leading-relaxed">A carregar live real, chat, gifts e meta de LIV Coins.</p>
         </div>
-        
+        <div class="flex flex-wrap gap-2">
+          <a href="go_live.html" class="btn-soft rounded-2xl px-4 py-3 text-xs font-black text-purple-100">Criar outra live</a>
+          <button onclick="endLive()" class="btn-soft rounded-2xl px-4 py-3 text-xs font-black text-purple-100">Terminar live</button>
+        </div>
       </div>
-      
-<div class="grid grid-cols-1 xl:grid-cols-12 gap-5">
-  <section class="xl:col-span-8 glass rounded-[2rem] p-4 md:p-5">
-    <div class="relative rounded-[2rem] overflow-hidden bg-black min-h-[620px]"><div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=1000')] bg-cover bg-center opacity-90"></div><div class="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-black/40"></div><div class="absolute top-4 left-4 flex items-center gap-2"><span class="rounded-full bg-pink-500 px-3 py-1 text-[10px] font-black">AO VIVO</span><span class="rounded-full bg-black/50 border border-white/10 px-3 py-1 text-[10px] font-black">8.7K</span></div><div class="absolute bottom-5 left-5 right-5"><p id="roomTitle" class="text-3xl md:text-5xl font-black">Noite no Reino Aurora</p><p class="mt-2 max-w-xl text-purple-100/80">Chat aberto, gifts digitais e convidados em vídeo.</p><div class="mt-5 flex flex-wrap gap-3"><button onclick="sendGiftLive('💜',50)" class="btn-primary rounded-2xl px-5 py-3 font-black">💜 Gift 50</button><button onclick="sendGiftLive('👑',250)" class="btn-soft rounded-2xl px-5 py-3 font-black text-purple-100">👑 Coroa</button><a href="batalha_livora.html" class="btn-soft rounded-2xl px-5 py-3 font-black text-purple-100">Entrar em batalha</a></div></div></div>
-  </section>
-  <aside class="xl:col-span-4 space-y-4">
-    <div class="glass rounded-[2rem] p-5"><div class="flex items-center justify-between mb-4"><h3 class="text-xl font-black">Gifts recebidos</h3><b id="giftTotal" class="text-yellow-300">2.450</b></div><div class="h-3 rounded-full bg-purple-950 overflow-hidden"><div id="giftBar" class="h-full w-[49%] bg-gradient-to-r from-yellow-300 to-pink-400"></div></div><p class="mt-2 text-xs text-purple-300">Meta: 5.000 LIV Coins.</p></div>
-    <div class="glass rounded-[2rem] p-5"><h3 class="text-xl font-black mb-3">Chat</h3><div id="liveChat" class="space-y-2 max-h-96 overflow-auto text-sm"></div><div class="mt-3 flex gap-2"><input id="liveInput" class="field" placeholder="Mensagem..."><button onclick="liveComment()" class="btn-primary rounded-2xl px-4 font-black">Enviar</button></div></div>
-  </aside>
-</div>
 
+      <div class="grid grid-cols-1 xl:grid-cols-12 gap-5">
+        <section class="xl:col-span-8 glass rounded-[2rem] p-4 md:p-5">
+          <div class="relative rounded-[2rem] overflow-hidden bg-black min-h-[620px]">
+            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=1000')] bg-cover bg-center opacity-90"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-black/40"></div>
+            <div class="absolute top-4 left-4 flex items-center gap-2 flex-wrap">
+              <span id="statusBadge" class="rounded-full bg-pink-500 px-3 py-1 text-[10px] font-black">AO VIVO</span>
+              <span id="viewerBadge" class="rounded-full bg-black/50 border border-white/10 px-3 py-1 text-[10px] font-black">0 pessoas</span>
+              <span id="categoryBadge" class="rounded-full bg-black/50 border border-white/10 px-3 py-1 text-[10px] font-black">Conversa</span>
+            </div>
+            <div class="absolute bottom-5 left-5 right-5">
+              <p id="roomTitle" class="text-3xl md:text-5xl font-black">A carregar live...</p>
+              <p id="roomDesc" class="mt-2 max-w-xl text-purple-100/80">A preparar sala real.</p>
+              <div id="giftButtons" class="mt-5 flex flex-wrap gap-3"></div>
+            </div>
+          </div>
+        </section>
+
+        <aside class="xl:col-span-4 space-y-4">
+          <div class="glass rounded-[2rem] p-5">
+            <div class="flex items-center justify-between mb-4"><h3 class="text-xl font-black">Meta de gifts</h3><b id="giftTotal" class="text-yellow-300">0</b></div>
+            <div class="h-3 rounded-full bg-purple-950 overflow-hidden"><div id="giftBar" class="h-full w-[0%] bg-gradient-to-r from-yellow-300 to-pink-400 transition-all"></div></div>
+            <p id="goalText" class="mt-2 text-xs text-purple-300">Meta: 0 LIV Coins.</p>
+          </div>
+
+          <div class="glass rounded-[2rem] p-5">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="text-xl font-black">Chat real</h3>
+              <button onclick="loadComments()" class="text-xs font-black text-pink-300">Atualizar</button>
+            </div>
+            <div id="liveChat" class="chat-scroll space-y-2 max-h-96 overflow-auto text-sm"></div>
+            <form onsubmit="sendComment(event)" class="mt-3 flex gap-2">
+              <input id="liveInput" class="field" placeholder="Mensagem...">
+              <button class="btn-primary rounded-2xl px-4 font-black">Enviar</button>
+            </form>
+          </div>
+        </aside>
+      </div>
     </section>
   </main>
 
   <nav class="fixed bottom-0 left-0 right-0 z-40 border-t border-purple-900/60 bg-[#080416]/95 backdrop-blur-xl lg:hidden">
     <div class="grid grid-cols-5 h-16">
-      <a href="index.html" class="mobile-tab "><i data-lucide="home" class="w-5 h-5"></i>Início</a>
-      <a href="explorar.html" class="mobile-tab "><i data-lucide="search" class="w-5 h-5"></i>Explorar</a>
-      <a href="go_live.html" class="mobile-tab "><span class="-mt-5 mb-0.5 h-12 w-12 rounded-full icon-box flex items-center justify-center shadow-lg shadow-pink-500/25"><i data-lucide="plus" class="w-7 h-7"></i></span>Criar</a>
+      <a href="index.html" class="mobile-tab"><i data-lucide="home" class="w-5 h-5"></i>Início</a>
+      <a href="explorar.html" class="mobile-tab"><i data-lucide="search" class="w-5 h-5"></i>Explorar</a>
+      <a href="go_live.html" class="mobile-tab"><span class="-mt-5 mb-0.5 h-12 w-12 rounded-full icon-box flex items-center justify-center shadow-lg shadow-pink-500/25"><i data-lucide="plus" class="w-7 h-7"></i></span>Criar</a>
       <a href="live_room.html" class="mobile-tab active"><i data-lucide="radio" class="w-5 h-5"></i>Live</a>
-      <a href="perfil.html" class="mobile-tab "><i data-lucide="user" class="w-5 h-5"></i>Perfil</a>
+      <a href="perfil.html" class="mobile-tab"><i data-lucide="user" class="w-5 h-5"></i>Perfil</a>
     </div>
   </nav>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="livora_config.js"></script>
+  <script src="livora_supabase.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded',()=>{ if(window.lucide){lucide.createIcons();} });
+    let currentLive = null;
+    let currentProfile = null;
+    let giftCatalog = [];
+    let refreshTimer = null;
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      if (window.lucide) lucide.createIcons();
+      await initRoom();
+      refreshTimer = setInterval(() => refreshRoom(false), 6000);
+    });
+
     function showToast(message){
       const toast=document.getElementById('toast'); const text=document.getElementById('toast-text');
       if(!toast||!text) return; text.textContent=message; toast.classList.remove('hidden'); toast.classList.add('toast');
-      clearTimeout(window.toastTimer); window.toastTimer=setTimeout(()=>{toast.classList.add('hidden');toast.classList.remove('toast');},3200);
-      if(window.lucide){lucide.createIcons();}
+      clearTimeout(window.toastTimer); window.toastTimer=setTimeout(()=>{toast.classList.add('hidden');toast.classList.remove('toast');},3600);
+      if(window.lucide) lucide.createIcons();
     }
-    function saveDemoUser(){
-      const user={name:'Pedro Creator',username:'@pedrocreator',role:'creator',coins:12450,level:592,createdAt:new Date().toISOString()};
-      localStorage.setItem('livora_user',JSON.stringify(user));
-      showToast('Perfil demo guardado neste navegador.');
-      return user;
-    }
-    function getDemoUser(){
-      try{return JSON.parse(localStorage.getItem('livora_user')) || saveDemoUser();}catch(e){return saveDemoUser();}
-    }
-    
-let giftTotal=2450; const liveMsgs=['Que live bonita!','Manda salve para Portugal','Adorei a estética','Gift enviado 💜','Quero entrar como convidado']; const liveNames=['Pedro','Fran','Luméa','Mara','Rui','Sofia'];
-function loadLive(){try{const l=JSON.parse(localStorage.getItem('livora_live')); if(l&&l.title) document.getElementById('roomTitle').textContent=l.title;}catch(e){} for(let i=0;i<6;i++)addLiveMsg(liveMsgs[i%liveMsgs.length]); updateGift();}
-function addLiveMsg(t){const box=document.getElementById('liveChat'); const el=document.createElement('div'); el.className='rounded-2xl bg-[#09051c] border border-purple-950 px-3 py-2'; el.innerHTML='<b class="text-pink-300">'+liveNames[Math.floor(Math.random()*liveNames.length)]+'</b> <span class="text-purple-200">'+t+'</span>'; box.prepend(el); while(box.children.length>15) box.lastChild.remove();}
-function updateGift(){document.getElementById('giftTotal').textContent=giftTotal.toLocaleString('pt-PT'); document.getElementById('giftBar').style.width=Math.min(100,Math.round(giftTotal/5000*100))+'%';}
-function sendGiftLive(e,v){giftTotal+=v; addLiveMsg('enviou '+e+' para a live'); updateGift(); showToast('Gift enviado: '+e);}
-function liveComment(){const i=document.getElementById('liveInput'); if(!i.value.trim())return; addLiveMsg(i.value.trim()); i.value='';}
-loadLive(); setInterval(()=>{if(Math.random()>.55)addLiveMsg(liveMsgs[Math.floor(Math.random()*liveMsgs.length)]);},2800);
 
+    function getLiveId(){
+      const params = new URLSearchParams(window.location.search);
+      return params.get('live_id') || localStorage.getItem('livora_current_live_id') || '';
+    }
+
+    function formatCoins(value){
+      return Number(value || 0).toLocaleString('pt-PT');
+    }
+
+    async function initRoom(){
+      try {
+        if (!window.Livora || !window.Livora.isConfigured || !window.Livora.isConfigured()) {
+          showToast('Supabase não está ativo nesta página. Confirma livora_config.js e livora_supabase.js.');
+          return;
+        }
+        currentProfile = await window.Livora.getCurrentProfile().catch(() => null);
+        giftCatalog = await window.Livora.loadGifts().catch(() => []);
+        renderGiftButtons();
+        await loadLive();
+        await loadComments();
+        showToast('Sala real ligada ao Supabase.');
+      } catch (error) {
+        showToast(error.message || 'Erro ao carregar sala.');
+      }
+    }
+
+    async function loadLive(){
+      const client = window.Livora.client;
+      let liveId = getLiveId();
+      let query = client.from('lives').select('*, profiles(username, display_name, avatar_url, is_verified)');
+      let data, error;
+
+      if (liveId) {
+        ({ data, error } = await query.eq('id', liveId).maybeSingle());
+      } else {
+        const result = await query.order('created_at', { ascending:false }).limit(1).maybeSingle();
+        data = result.data; error = result.error;
+      }
+
+      if (error) throw error;
+      if (!data) {
+        document.getElementById('roomTitle').textContent = 'Nenhuma live encontrada';
+        document.getElementById('roomDesc').textContent = 'Cria uma live em go_live.html para abrir uma sala real.';
+        return;
+      }
+
+      currentLive = data;
+      localStorage.setItem('livora_current_live_id', data.id);
+      localStorage.setItem('livora_live', JSON.stringify(data));
+      renderLive(data);
+    }
+
+    function renderLive(live){
+      const title = live.title || 'Live LIVORA';
+      const category = live.category || 'Conversa';
+      const status = live.status || 'live';
+      const total = Number(live.total_coins || 0);
+      const goal = Number(live.goal_coins || 0);
+      const creator = live.profiles?.display_name || live.profiles?.username || 'Creator LIVORA';
+
+      document.getElementById('pageTitle').textContent = title;
+      document.getElementById('pageSubtitle').textContent = `Criador: ${creator}. Sala ligada à tabela lives.`;
+      document.getElementById('roomTitle').textContent = title;
+      document.getElementById('roomDesc').textContent = live.description || 'Chat aberto, gifts digitais e convidados em vídeo.';
+      document.getElementById('categoryBadge').textContent = category;
+      document.getElementById('viewerBadge').textContent = `${Number(live.viewer_count || 0).toLocaleString('pt-PT')} pessoas`;
+      document.getElementById('statusBadge').textContent = status === 'live' ? 'AO VIVO' : status.toUpperCase();
+      document.getElementById('statusBadge').className = `rounded-full px-3 py-1 text-[10px] font-black ${status === 'live' ? 'bg-pink-500' : 'bg-purple-700'}`;
+      document.getElementById('giftTotal').textContent = formatCoins(total);
+      document.getElementById('goalText').textContent = `Meta: ${formatCoins(goal)} LIV Coins.`;
+      const pct = goal > 0 ? Math.min(100, Math.round(total / goal * 100)) : 0;
+      document.getElementById('giftBar').style.width = `${pct}%`;
+    }
+
+    function renderGiftButtons(){
+      const wrap = document.getElementById('giftButtons');
+      wrap.innerHTML = '';
+      const gifts = giftCatalog.length ? giftCatalog : [
+        { name:'Rosa Aurora', emoji:'🌹', coin_cost:50 },
+        { name:'Cristal Roxo', emoji:'💎', coin_cost:100 },
+        { name:'Coroa Real', emoji:'👑', coin_cost:250 }
+      ];
+      gifts.slice(0,5).forEach((gift, idx) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = idx === 0 ? 'btn-primary rounded-2xl px-5 py-3 font-black' : 'btn-soft rounded-2xl px-5 py-3 font-black text-purple-100';
+        btn.textContent = `${gift.emoji || '🎁'} ${gift.name} · ${formatCoins(gift.coin_cost)}`;
+        btn.onclick = () => sendGift(gift);
+        wrap.appendChild(btn);
+      });
+      const battle = document.createElement('a');
+      battle.href = 'batalha_livora.html';
+      battle.className = 'btn-soft rounded-2xl px-5 py-3 font-black text-purple-100';
+      battle.textContent = 'Entrar em batalha';
+      wrap.appendChild(battle);
+    }
+
+    async function loadComments(){
+      const box = document.getElementById('liveChat');
+      if (!currentLive?.id) return;
+      try {
+        const { data, error } = await window.Livora.client
+          .from('comments')
+          .select('id, body, created_at, profiles(username, display_name)')
+          .eq('live_id', currentLive.id)
+          .order('created_at', { ascending: false })
+          .limit(30);
+        if (error) throw error;
+        renderComments(data || []);
+      } catch (error) {
+        box.innerHTML = `<div class="rounded-2xl bg-[#09051c] border border-purple-950 px-3 py-2 text-purple-200">Chat ainda não está disponível: ${escapeHtml(error.message)}</div>`;
+      }
+    }
+
+    function renderComments(comments){
+      const box = document.getElementById('liveChat');
+      if (!comments.length) {
+        box.innerHTML = '<div class="rounded-2xl bg-[#09051c] border border-purple-950 px-3 py-2 text-purple-300">Ainda não há mensagens. Sê o primeiro a comentar.</div>';
+        return;
+      }
+      box.innerHTML = comments.map(comment => {
+        const name = comment.profiles?.display_name || comment.profiles?.username || 'Visitante';
+        return `<div class="rounded-2xl bg-[#09051c] border border-purple-950 px-3 py-2"><b class="text-pink-300">${escapeHtml(name)}</b> <span class="text-purple-200">${escapeHtml(comment.body)}</span></div>`;
+      }).join('');
+    }
+
+    async function sendComment(event){
+      event.preventDefault();
+      const input = document.getElementById('liveInput');
+      const body = input.value.trim();
+      if (!body || !currentLive?.id) return;
+      try {
+        const session = await window.Livora.getSession();
+        if (!session?.user?.id) {
+          showToast('Entra primeiro para comentar.');
+          setTimeout(() => window.location.href = 'entrada_livora.html', 900);
+          return;
+        }
+        await window.Livora.ensureProfile(session);
+        const { error } = await window.Livora.client.from('comments').insert({
+          user_id: session.user.id,
+          live_id: currentLive.id,
+          body
+        });
+        if (error) throw error;
+        input.value = '';
+        await loadComments();
+        showToast('Comentário enviado.');
+      } catch (error) {
+        showToast(error.message || 'Erro ao enviar comentário.');
+      }
+    }
+
+    async function sendGift(gift){
+      if (!currentLive?.id) return showToast('Live ainda não carregada.');
+      try {
+        const session = await window.Livora.getSession();
+        if (!session?.user?.id) {
+          showToast('Entra primeiro para enviar gifts.');
+          setTimeout(() => window.location.href = 'entrada_livora.html', 900);
+          return;
+        }
+        await window.Livora.sendGift({
+          to_user: currentLive.creator_id || null,
+          live_id: currentLive.id,
+          battle_id: null,
+          gift_name: gift.name,
+          emoji: gift.emoji || '🎁',
+          coin_cost: Number(gift.coin_cost || 0)
+        });
+        showToast(`${gift.emoji || '🎁'} Gift enviado: ${gift.name}`);
+        await refreshRoom(false);
+      } catch (error) {
+        showToast(error.message || 'Erro ao enviar gift.');
+      }
+    }
+
+    async function refreshRoom(manual){
+      if (!window.Livora || !window.Livora.isConfigured || !window.Livora.isConfigured()) return;
+      await loadLive().catch(error => manual && showToast(error.message));
+      await loadComments().catch(() => {});
+      if (manual) showToast('Sala atualizada.');
+    }
+
+    async function endLive(){
+      if (!currentLive?.id) return;
+      try {
+        const session = await window.Livora.getSession();
+        if (!session?.user?.id) return showToast('Entra primeiro para terminar a live.');
+        const { error } = await window.Livora.client
+          .from('lives')
+          .update({ status:'ended', ended_at:new Date().toISOString() })
+          .eq('id', currentLive.id);
+        if (error) throw error;
+        showToast('Live terminada.');
+        await refreshRoom(false);
+      } catch (error) {
+        showToast(error.message || 'Erro ao terminar live.');
+      }
+    }
+
+    function escapeHtml(value){
+      return String(value || '').replace(/[&<>'"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));
+    }
   </script>
 </body>
 </html>
